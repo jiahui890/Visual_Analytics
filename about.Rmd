@@ -1,0 +1,9 @@
+---
+title: "About this blog"
+description: |
+  This blog consists of my attempts to critically evaluate while re-creating visualization charts using R and Tableau for data science applications. Have fun reading and feel free to connect with me on LinkedIn!
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
