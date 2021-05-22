@@ -1,7 +1,7 @@
 ---
 title: "DataViz Makeover #1"
 description: |
-  In this post, the original visualization chart of Singapore's Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed.
+  Changing of SingStat's Merchandize Trade Visualization using R and Tableau.
 author:
   - name: Lim Jiahui, Masters of IT in Business (Analytics) 
     url: https://www.linkedin.com/in/lim-jiahui-171104151/
@@ -17,16 +17,27 @@ output:
     number_sections: true
     
 ---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating blogs with Distill at:
+# https://rstudio.github.io/distill/blog.html
+
+```
+
 >This post was written as part of requirements for Visual Analytics course in MITB.
 
 ## 1. Introduction
 
+In this post, the original visualization chart of Singapore's Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed.
 
 ## 2. Evaluation
 
 The original chart is as shown below, and it mainly consists of 6 main countries between a time period of 2019-2021.
 
-![](C:/Users/jiahu/Desktop/Visual Analytics/DataViz Makeover 1/originalchart.png)
+![](img/originalchart.png)
 
 ### 2.1 Clarity
 
@@ -46,13 +57,25 @@ Cell 3       | Cell 4
 ### 2.2 Aesthetics
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
 
-# Learn more about creating blogs with Distill at:
-# https://rstudio.github.io/distill/blog.html
+## 3. Proposed Graphic Design
 
-```
+
+## 4. Step-by-Step Methodology
+
+
+
+## 5. Major Observations
+
+
+
+
+
+
+
+
+
+
 
 
 

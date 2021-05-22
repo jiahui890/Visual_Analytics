@@ -88,7 +88,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_meta_tags-->
   <title>DataViz Makeover #1</title>
   
-  <meta property="description" itemprop="description" content="In this post, the original visualization chart of Singapore&#39;s Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed."/>
+  <meta property="description" itemprop="description" content="Changing of SingStat&#39;s Merchandize Trade Visualization using R and Tableau."/>
   
   
   <!--  https://schema.org/Article -->
@@ -99,24 +99,24 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="DataViz Makeover #1"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="In this post, the original visualization chart of Singapore&#39;s Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed."/>
+  <meta property="og:description" content="Changing of SingStat&#39;s Merchandize Trade Visualization using R and Tableau."/>
   <meta property="og:locale" content="en_US"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="DataViz Makeover #1"/>
-  <meta property="twitter:description" content="In this post, the original visualization chart of Singapore&#39;s Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed."/>
+  <meta property="twitter:description" content="Changing of SingStat&#39;s Merchandize Trade Visualization using R and Tableau."/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["DataViz Makeover #1"]},{"type":"character","attributes":{},"value":["In this post, the original visualization chart of Singapore's Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Lim Jiahui, Masters of IT in Business (Analytics)"]},{"type":"character","attributes":{},"value":["https://www.linkedin.com/in/lim-jiahui-171104151/"]},{"type":"character","attributes":{},"value":["School of Computing and Information Systems, Singapore Management University"]},{"type":"character","attributes":{},"value":["https://scis.smu.edu.sg/"]}]}]},{"type":"character","attributes":{},"value":["05-21-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","number_sections"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["DataViz Makeover #1"]},{"type":"character","attributes":{},"value":["Changing of SingStat's Merchandize Trade Visualization using R and Tableau.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Lim Jiahui, Masters of IT in Business (Analytics)"]},{"type":"character","attributes":{},"value":["https://www.linkedin.com/in/lim-jiahui-171104151/"]},{"type":"character","attributes":{},"value":["School of Computing and Information Systems, Singapore Management University"]},{"type":"character","attributes":{},"value":["https://scis.smu.edu.sg/"]}]}]},{"type":"character","attributes":{},"value":["05-21-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","number_sections"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["welcome_files/anchor-4.2.2/anchor.min.js","welcome_files/bowser-1.9.3/bowser.min.js","welcome_files/distill-2.2.21/template.v2.js","welcome_files/jquery-1.11.3/jquery.min.js","welcome_files/popper-2.6.0/popper.min.js","welcome_files/tippy-6.2.7/tippy-bundle.umd.min.js","welcome_files/tippy-6.2.7/tippy-light-border.css","welcome_files/tippy-6.2.7/tippy.css","welcome_files/tippy-6.2.7/tippy.umd.min.js","welcome_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["img/originalchart.png","welcome_files/anchor-4.2.2/anchor.min.js","welcome_files/bowser-1.9.3/bowser.min.js","welcome_files/distill-2.2.21/template.v2.js","welcome_files/jquery-1.11.3/jquery.min.js","welcome_files/popper-2.6.0/popper.min.js","welcome_files/tippy-6.2.7/tippy-bundle.umd.min.js","welcome_files/tippy-6.2.7/tippy-light-border.css","welcome_files/tippy-6.2.7/tippy.css","welcome_files/tippy-6.2.7/tippy.umd.min.js","welcome_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1454,7 +1454,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"DataViz Makeover #1","description":"In this post, the original visualization chart of Singapore's Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed.","authors":[{"author":"Lim Jiahui, Masters of IT in Business (Analytics)","authorURL":"https://www.linkedin.com/in/lim-jiahui-171104151/","affiliation":"School of Computing and Information Systems, Singapore Management University","affiliationURL":"https://scis.smu.edu.sg/","orcidID":""}],"publishedDate":"2021-05-21T00:00:00.000+08:00","citationText":"(Analytics), 2021"}
+{"title":"DataViz Makeover #1","description":"Changing of SingStat's Merchandize Trade Visualization using R and Tableau.","authors":[{"author":"Lim Jiahui, Masters of IT in Business (Analytics)","authorURL":"https://www.linkedin.com/in/lim-jiahui-171104151/","affiliation":"School of Computing and Information Systems, Singapore Management University","affiliationURL":"https://scis.smu.edu.sg/","orcidID":""}],"publishedDate":"2021-05-21T00:00:00.000+08:00","citationText":"(Analytics), 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1467,7 +1467,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1>DataViz Makeover #1</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>In this post, the original visualization chart of Singapore’s Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed.</p></p>
+<p><p>Changing of SingStat’s Merchandize Trade Visualization using R and Tableau.</p></p>
 </div>
 
 <div class="d-byline">
@@ -1486,6 +1486,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><a href="#clarity">2.1 Clarity</a></li>
 <li><a href="#aesthetics">2.2 Aesthetics</a></li>
 </ul></li>
+<li><a href="#proposed-graphic-design">3. Proposed Graphic Design</a></li>
+<li><a href="#step-by-step-methodology">4. Step-by-Step Methodology</a></li>
+<li><a href="#major-observations">5. Major Observations</a></li>
 </ul>
 </nav>
 </div>
@@ -1493,9 +1496,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>This post was written as part of requirements for Visual Analytics course in MITB.</p>
 </blockquote>
 <h2 id="introduction">1. Introduction</h2>
+<p>In this post, the original visualization chart of Singapore’s Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed.</p>
 <h2 id="evaluation">2. Evaluation</h2>
 <p>The original chart is as shown below, and it mainly consists of 6 main countries between a time period of 2019-2021.</p>
-<p><img src="C:/Users/jiahu/Desktop/Visual%20Analytics/DataViz%20Makeover%201/originalchart.png" /></p>
+<p><img src="img/originalchart.png" /></p>
 <h3 id="clarity">2.1 Clarity</h3>
 <h4 id="things-to-keep">Things to Keep:</h4>
 <ul>
@@ -1524,6 +1528,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </tbody>
 </table>
 <h3 id="aesthetics">2.2 Aesthetics</h3>
+<h2 id="proposed-graphic-design">3. Proposed Graphic Design</h2>
+<h2 id="step-by-step-methodology">4. Step-by-Step Methodology</h2>
+<h2 id="major-observations">5. Major Observations</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
