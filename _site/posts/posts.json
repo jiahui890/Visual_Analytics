@@ -30,7 +30,7 @@
     "categories": [],
     "contents": "\r\n\r\nContents\r\n1. Introduction\r\n2. Evaluation2.1 Clarity\r\n2.2 Aesthetics\r\n\r\n3. Proposed Graphic Design\r\n4. Step-by-Step Methodology\r\n5. Major Observations\r\n\r\n\r\nThis post was written as part of requirements for Visual Analytics course in MITB.\r\n\r\n1. Introduction\r\nIn this post, the original visualization chart of Singapore’s Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed.\r\n2. Evaluation\r\nThe original chart is as shown below, and it mainly consists of 6 main countries between a time period of 2019-2021.\r\n\r\n2.1 Clarity\r\nThings to Keep:\r\nitem 2\r\nsub-item 1\r\nsub-item 2\r\n\r\nTable Header\r\nSecond Header\r\nTable Cell\r\nCell 2\r\nCell 3\r\nCell 4\r\n2.2 Aesthetics\r\n3. Proposed Graphic Design\r\n4. Step-by-Step Methodology\r\n5. Major Observations\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-05-22T12:14:54+08:00",
+    "last_modified": "2021-05-22T12:26:57+08:00",
     "input_file": "welcome.knit.md"
   }
 ]

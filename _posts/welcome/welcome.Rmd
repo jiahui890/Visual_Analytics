@@ -30,8 +30,9 @@ knitr::opts_chunk$set(echo = FALSE)
 >This post was written as part of requirements for Visual Analytics course in MITB.
 
 ## 1. Introduction
+Singapore serves as an important port for trades 
 
-In this post, the original visualization chart of Singapore's Merchandise Trade from SingStat will be critically reviewed and an alternative design will be proposed.
+In this post, the original visualization chart of Singapore's Merchandise Trade from [_SingStat_](https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data) will be critically reviewed and an alternative design will be proposed.
 
 ## 2. Evaluation
 
