@@ -36,22 +36,24 @@ In this post, the original visualization chart of Singapore's Merchandise Trade 
 
 ## 2. Evaluation
 
-The original chart is as shown below, and it mainly consists of 6 main countries between a time period of 2019-2021.
+The original chart is as shown below, and it mainly consists of top 6 trading countries between a time period of 2019-2021. The graphs were plotted based on their exports and imports across the time period.
 
-![](img/originalchart.png)
+```{r, out.width='25%', fig.align='center', fig.cap='Original Chart'}
+knitr::include_graphics('img/originalchart.png')
+```
+
+Before evaluating the chart, primary research on the visualization was conducted in order to understand what are the purposes of this graph as well as key takeaways for the readers.
+
+* **Audience:** Government Agencies, policy-makers, businesses and individuals
+* **Purpose:** To have a clear overview on changes in trade volume (between exports and imports) of Singapore and its top 6 countries between 2019 to 2021, especially since it was during the Covid-19 pandemic.
+
 
 ### 2.1 Clarity
 
-#### Things to Keep:
-* item 2
-  + sub-item 1
-  + sub-item 2
-
-
-Table Header | Second Header
--------------| -------------
-Table Cell   | Cell 2
-Cell 3       | Cell 4
+S/N | Critique | Approach
+----| ---------|----------
+1   | Cell 3   |
+2   | Cell 4   |
 
 
 
@@ -59,20 +61,50 @@ Cell 3       | Cell 4
 
 
 
+
 ## 3. Proposed Visualization Design
 
-### 3.1 Data Preparation
+### 3.1 Sketched Design
 
 
+
+
+### 3.2 Advantages of New Design
 
 
 
 
 ## 4. Step-by-Step Methodology
 
+### 4.1 Data Source
+
+The raw excel data was downloaded from SingStat, and a preview of how the data looks like is shown below. 
+
+```{r, out.width='25%', fig.align='center', fig.cap='Singapore Exports from 1976'}
+knitr::include_graphics('img/exports_excel.png')
+```
+
+```{r, out.width='25%', fig.align='center', fig.cap='Singapore Imports from 1976'}
+knitr::include_graphics('img/imports_excel.png')
+```
+
+As observed, the data dated back from 1976 till 2021 in monthly basis. There are also many missing data (represented by "na") and unnecessary top few rows.
+
+### 4.2 Data Preparation
 
 
-## 5. Major Observations
+
+### 4.3 Data Visualization
+
+
+
+### 4.4 Dashboard
+
+
+
+## 5. Final Visualization
+
+3 Main Observations
 
 
 

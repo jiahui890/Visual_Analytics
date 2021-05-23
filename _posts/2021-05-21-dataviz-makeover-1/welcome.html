@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/originalchart.png","welcome_files/anchor-4.2.2/anchor.min.js","welcome_files/bowser-1.9.3/bowser.min.js","welcome_files/distill-2.2.21/template.v2.js","welcome_files/jquery-1.11.3/jquery.min.js","welcome_files/popper-2.6.0/popper.min.js","welcome_files/tippy-6.2.7/tippy-bundle.umd.min.js","welcome_files/tippy-6.2.7/tippy-light-border.css","welcome_files/tippy-6.2.7/tippy.css","welcome_files/tippy-6.2.7/tippy.umd.min.js","welcome_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["img/exports_excel.png","img/imports_excel.png","img/originalchart.png","welcome_files/anchor-4.2.2/anchor.min.js","welcome_files/bowser-1.9.3/bowser.min.js","welcome_files/distill-2.2.21/template.v2.js","welcome_files/jquery-1.11.3/jquery.min.js","welcome_files/popper-2.6.0/popper.min.js","welcome_files/tippy-6.2.7/tippy-bundle.umd.min.js","welcome_files/tippy-6.2.7/tippy-light-border.css","welcome_files/tippy-6.2.7/tippy.css","welcome_files/tippy-6.2.7/tippy.umd.min.js","welcome_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1487,10 +1487,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><a href="#aesthetics">2.2 Aesthetics</a></li>
 </ul></li>
 <li><a href="#proposed-visualization-design">3. Proposed Visualization Design</a><ul>
-<li><a href="#data-preparation">3.1 Data Preparation</a></li>
+<li><a href="#sketched-design">3.1 Sketched Design</a></li>
+<li><a href="#advantages-of-new-design">3.2 Advantages of New Design</a></li>
 </ul></li>
-<li><a href="#step-by-step-methodology">4. Step-by-Step Methodology</a></li>
-<li><a href="#major-observations">5. Major Observations</a></li>
+<li><a href="#step-by-step-methodology">4. Step-by-Step Methodology</a><ul>
+<li><a href="#data-source">4.1 Data Source</a></li>
+<li><a href="#data-preparation">4.2 Data Preparation</a></li>
+<li><a href="#data-visualization">4.3 Data Visualization</a></li>
+<li><a href="#dashboard">4.4 Dashboard</a></li>
+</ul></li>
+<li><a href="#final-visualization">5. Final Visualization</a></li>
 </ul>
 </nav>
 </div>
@@ -1501,40 +1507,71 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>For many countries, Singapore serves as an important port for trades and also heavily rely on imported goods for the country’s usage. Trades primarily consist of imports and exports, where imports refer to goods brought into Singapore irrespective of the uses, while exports refer to goods brought out of the country. In order to understand the movement of goods in Singapore, data visualization is important to help us discover meaningful insights that could potentially drive better decision-making and improvement of Singapore’s trades.</p>
 <p>In this post, the original visualization chart of Singapore’s Merchandise Trade from <a href="https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data"><em>SingStat</em></a> will be critically reviewed and an improved alternative design will be proposed.</p>
 <h2 id="evaluation">2. Evaluation</h2>
-<p>The original chart is as shown below, and it mainly consists of 6 main countries between a time period of 2019-2021.</p>
-<p><img src="img/originalchart.png" /></p>
-<h3 id="clarity">2.1 Clarity</h3>
-<h4 id="things-to-keep">Things to Keep:</h4>
+<p>The original chart is as shown below, and it mainly consists of top 6 trading countries between a time period of 2019-2021. The graphs were plotted based on their exports and imports across the time period.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-1"></span>
+<img src="img/originalchart.png" alt="Original Chart" width="25%" />
+<p class="caption">
+Figure 1: Original Chart
+</p>
+</div>
+</div>
+<p>Before evaluating the chart, primary research on the visualization was conducted in order to understand what are the purposes of this graph as well as key takeaways for the readers.</p>
 <ul>
-<li>item 2
-<ul>
-<li>sub-item 1</li>
-<li>sub-item 2</li>
-</ul></li>
+<li><strong>Audience:</strong> Government Agencies, policy-makers, businesses and individuals</li>
+<li><strong>Purpose:</strong> To have a clear overview on changes in trade volume (between exports and imports) of Singapore and its top 6 countries between 2019 to 2021, especially since it was during the Covid-19 pandemic.</li>
 </ul>
+<h3 id="clarity">2.1 Clarity</h3>
 <table>
 <thead>
 <tr class="header">
-<th>Table Header</th>
-<th>Second Header</th>
+<th>S/N</th>
+<th>Critique</th>
+<th>Approach</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Table Cell</td>
-<td>Cell 2</td>
+<td>1</td>
+<td>Cell 3</td>
+<td></td>
 </tr>
 <tr class="even">
-<td>Cell 3</td>
+<td>2</td>
 <td>Cell 4</td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <h3 id="aesthetics">2.2 Aesthetics</h3>
 <h2 id="proposed-visualization-design">3. Proposed Visualization Design</h2>
-<h3 id="data-preparation">3.1 Data Preparation</h3>
+<h3 id="sketched-design">3.1 Sketched Design</h3>
+<h3 id="advantages-of-new-design">3.2 Advantages of New Design</h3>
 <h2 id="step-by-step-methodology">4. Step-by-Step Methodology</h2>
-<h2 id="major-observations">5. Major Observations</h2>
+<h3 id="data-source">4.1 Data Source</h3>
+<p>The raw excel data was downloaded from SingStat, and a preview of how the data looks like is shown below.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-2"></span>
+<img src="img/exports_excel.png" alt="Singapore Exports from 1976" width="25%" />
+<p class="caption">
+Figure 2: Singapore Exports from 1976
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-3"></span>
+<img src="img/imports_excel.png" alt="Singapore Imports from 1976" width="15%" />
+<p class="caption">
+Figure 3: Singapore Imports from 1976
+</p>
+</div>
+</div>
+<p>As observed, the data dated back from 1976 till 2021 in monthly basis. There are also many missing data (represented by “na”) and unnecessary top few rows.</p>
+<h3 id="data-preparation">4.2 Data Preparation</h3>
+<h3 id="data-visualization">4.3 Data Visualization</h3>
+<h3 id="dashboard">4.4 Dashboard</h3>
+<h2 id="final-visualization">5. Final Visualization</h2>
+<p>3 Main Observations</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
