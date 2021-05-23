@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/exports_excel.png","img/imports_excel.png","img/originalchart.png","welcome_files/anchor-4.2.2/anchor.min.js","welcome_files/bowser-1.9.3/bowser.min.js","welcome_files/distill-2.2.21/template.v2.js","welcome_files/jquery-1.11.3/jquery.min.js","welcome_files/popper-2.6.0/popper.min.js","welcome_files/tippy-6.2.7/tippy-bundle.umd.min.js","welcome_files/tippy-6.2.7/tippy-light-border.css","welcome_files/tippy-6.2.7/tippy.css","welcome_files/tippy-6.2.7/tippy.umd.min.js","welcome_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["img/exports_excel.png","img/imports_excel.png","img/originalchart.png","img/tabprep_addData.png","img/tabprep_cleanstep1.png","img/tabprep_cleanstep2.png","img/tabprep_cleanstep3.png","img/tabprep_cleanstep4.png","img/tabprep_cleanstep5.png","img/tabprep_cleanstep6.png","img/tabprep_connectDataMerged.png","img/tabprep_output.png","img/tabprep_output2.png","img/tabprep_preview1.png","img/tabprep_preview2.png","welcome_files/anchor-4.2.2/anchor.min.js","welcome_files/bowser-1.9.3/bowser.min.js","welcome_files/distill-2.2.21/template.v2.js","welcome_files/jquery-1.11.3/jquery.min.js","welcome_files/popper-2.6.0/popper.min.js","welcome_files/tippy-6.2.7/tippy-bundle.umd.min.js","welcome_files/tippy-6.2.7/tippy-light-border.css","welcome_files/tippy-6.2.7/tippy.css","welcome_files/tippy-6.2.7/tippy.umd.min.js","welcome_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1560,14 +1560,54 @@ Figure 2: Singapore Exports from 1976
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-3"></span>
-<img src="img/imports_excel.png" alt="Singapore Imports from 1976" width="15%" />
+<img src="img/imports_excel.png" alt="Singapore Imports from 1976" width="25%" />
 <p class="caption">
 Figure 3: Singapore Imports from 1976
 </p>
 </div>
 </div>
-<p>As observed, the data dated back from 1976 till 2021 in monthly basis. There are also many missing data (represented by “na”) and unnecessary top few rows.</p>
+<p>As observed, the data was dated back from 1976 till 2021 in monthly basis. There are also many missing data (represented by “na”) and unnecessary top few rows.</p>
 <h3 id="data-preparation">4.2 Data Preparation</h3>
+<p>To facilitate ease of data preparation, the raw dataset will first be uploaded onto <strong>Tableau Prep Builder</strong> for data selection. The steps noted below are based on table T1 (Imports Table), but the same steps can be applied for table T2 (Exports Table) as well.</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>S/N</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><img src="img/tabprep_connectDataMerged.png" id="id" class="class" style="height:45.0%" /> <br/>Click on <em>“Connect data”</em>, followed by <em>“Microsoft Excel”</em> to upload the raw dataset.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><img src="img/tabprep_addData.png" id="id" class="class" style="height:40.0%" /> <br/>Drag table T1 into the empty pane.<br/><img src="img/tabprep_preview1.png" id="id" class="class" style="height:30.0%" /> <br/>Notice that Tableau did not capture the headers and variables properly, hence we can click on <em>“Use Data Interpreter”</em> at the left side of the page. <br/><img src="img/tabprep_preview2.png" id="id" class="class" style="height:30.0%" /> <br/>The final preview of the table shows the proper table inputs and field names.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Now, we can create a workflow for filtering of the data based on relevancy.<br/><img src="img/tabprep_cleanstep1.png" id="id" class="class" style="height:55.0%" /> <br/>At the top of the page, click on the “+” sign and select <em>“Clean Step”</em>.<br/> <img src="img/tabprep_cleanstep2.png" id="id" class="class" style="height:32.5%" /> <br/>The preview will now show the interpreter data table.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Since the original chart only focuses on top 6 countries, we should filter the countries accordingly too.<br/> <img src="img/tabprep_cleanstep3.png" id="id" class="class" style="height:55.0%" /> <br/>At the variables column, select the <em>“More Options”</em>, followed by <em>“Filter”</em> and <em>“Selected Values”</em>. <br/> <img src="img/tabprep_cleanstep4.png" id="id" class="class" style="height:55.0%" /> <br/>We will then select the countries accordingly (including the total trades) as shown in the diagram above.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>In addition, the data of interest ranges from 2019-2021. Hence, we will select only the fields from “2019 Jan” to “2021 Apr” and remove the rest using the <em>“Remove Fields”</em> button on top. <br/> <img src="img/tabprep_cleanstep5.png" id="id" class="class" style="height:35.0%" /> <br/>The final preview of the table is as shown below. <br/><img src="img/tabprep_cleanstep6.png" id="id" class="class" style="height:35.0%" /> <br/></td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Finally, the table shows no “null” values and thus we can save this table into an external xlsx file for further exploration on <strong>Tableau Desktop</strong>. <br/><img src="img/tabprep_output.png" id="id" class="class" style="height:65.0%" /> <br/>At the top, click on the “+” sign and select <em>“Output”</em>. <br/> <img src="img/tabprep_output2.png" id="id" class="class" style="height:60.0%" /> <br/> Select <em>“xlsx”</em> as the output type and navigate to the directory where you wish to save the file at.</td>
+</tr>
+</tbody>
+</table>
+<p>Repeat the same steps as above for the Export Table. For easier reference, we shall combine both Imports.xlsx and Exports.xlsx into one excel sheet before uploading into <strong>Tableau Desktop</strong>.</p>
 <h3 id="data-visualization">4.3 Data Visualization</h3>
 <h3 id="dashboard">4.4 Dashboard</h3>
 <h2 id="final-visualization">5. Final Visualization</h2>
