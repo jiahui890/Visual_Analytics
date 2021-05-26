@@ -96,7 +96,7 @@ To facilitate ease of data preparation, the raw dataset will first be uploaded o
 
 S/N | Description 
 ----| ---------
-1 | ![](img/tabprep_connectDataMerged.png){#id .class height=45%} <br/>Click on _"Connect data"_, followed by _"Microsoft Excel"_ to upload the raw dataset.
+1 | ![](img/tabprep_connectDataMerged.png){width=80%} <br/>Click on _"Connect data"_, followed by _"Microsoft Excel"_ to upload the raw dataset.
 2 | ![](img/tabprep_addData.png){#id .class height=40%} <br/>Drag table T1 into the empty pane.<br/>![](img/tabprep_preview1.png){#id .class height=30%} <br/>Notice that Tableau did not capture the headers and variables properly, hence we can click on _"Use Data Interpreter"_ at the left side of the page. <br/>![](img/tabprep_preview2.png){#id .class height=30%} <br/>The final preview of the table shows the proper table inputs and field names.
 3 | Now, we can create a workflow for filtering of the data based on relevancy.<br/>![](img/tabprep_cleanstep1.png){#id .class height=55%} <br/>At the top of the page, click on the "+" sign and select _"Clean Step"_.<br/> ![](img/tabprep_cleanstep2.png){#id .class height=32.5%} <br/>The preview will now show the interpreter data table.
 4 | Since the original chart only focuses on top 6 countries, we should filter the countries accordingly too.<br/> ![](img/tabprep_cleanstep3.png){#id .class height=55%} <br/>At the variables column, select the _"More Options"_, followed by _"Filter"_ and _"Selected Values"_. <br/> ![](img/tabprep_cleanstep4.png){#id .class height=55%} <br/>We will then select the countries accordingly (including the total trades) as shown in the diagram above.
@@ -104,7 +104,7 @@ S/N | Description
 6 | Finally, the table shows no "null" values and thus we can save this table into an external xlsx file for further exploration on **Tableau Desktop**. <br/>![](img/tabprep_output.png){#id .class height=65%} <br/>At the top, click on the "+" sign and select _"Output"_. <br/> ![](img/tabprep_output2.png){#id .class height=60%} <br/> Select _"xlsx"_ as the output type and navigate to the directory where you wish to save the file at.
 
 
-Repeat the same steps as above for the Export Table. For easier reference, we shall combine both Imports.xlsx and Exports.xlsx into one excel sheet before uploading into **Tableau Desktop**.
+Repeat the same steps as above for the Export Table. For easier reference, we shall combine both Imports.xlsx and Exports.xlsx into one excel worksheet before uploading into **Tableau Desktop**.
 
 
 ### 4.3 Data Visualization
