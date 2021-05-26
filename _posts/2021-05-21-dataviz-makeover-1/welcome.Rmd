@@ -94,7 +94,7 @@ As observed, the data was dated back from 1976 till 2021 in monthly basis. There
 
 To facilitate ease of data preparation, the raw dataset will first be uploaded onto **Tableau Prep Builder** for data selection. The steps noted below are based on table T1 (Imports Table), but the same steps can be applied for table T2 (Exports Table) as well.
 
-S/N | Description 
+S/N | Tableau Prep Builder Description 
 ----| ---------
 1 | ![](img/tabprep_connectDataMerged.png){width=500px} <br/>Click on _"Connect data"_, followed by _"Microsoft Excel"_ to upload the raw dataset.
 2 | ![](img/tabprep_addData.png){width=500px} <br/>Drag table T1 into the empty pane.<br/>![](img/tabprep_preview1.png){width=600px} <br/>Notice that Tableau did not capture the headers and variables properly, hence we can click on _"Use Data Interpreter"_ at the left side of the page. <br/>![](img/tabprep_preview2.png){width=600px} <br/>The final preview of the table shows the proper table inputs and field names.
@@ -107,11 +107,36 @@ S/N | Description
 Repeat the same steps as above for the Export Table. For easier reference, we shall combine both Imports.xlsx and Exports.xlsx into one excel worksheet before uploading into **Tableau Desktop**.
 
 
-### 4.3 Data Visualization
+S/N | Tableau Desktop Description 
+----| ---------
+1 | Import the dataset into Tableau Desktop and drag the tables into the empty space as shown below. <br/>![](img/tabDT_1.png){width=500px} <br/>
+2 | To facilitate cross-referencing in the graphs later, we will create a _"Relationship"_ between the 2 tables. We will first select _"Variables"_ as the relation. <br/>![](img/tabDT_2.1.png){width=600px} <br/>After creating the relation, the output will look like the diagram below. <br/>![](img/tabDT_2.2.png){width=500px} <br/>
+3 | Next, we will make the dates as rows by pivoting for both Import and Export tables. Select all the dates and right click followed by _"Pivot"_. <br/>![](img/tabDT_3.1.png){width=550px} <br/>The table will now look like this: <br/>![](img/tabDT_3.2.png){width=500px} <br/>We will then rename the column names accordingly for easier reference, as shown below. <br/>![](img/tabDT_3.3.png){width=400px} <br/>
+4 | Notice that the dates are in strings data type based on the tiny label _"Abc"_ on the top left corner at the columns. In this case, we will convert the data type into _"Date"_ format in both Export and Import. <br/>![](img/tabDT_4.1.png){width=400px} <br/>
+5 | In addition, we can see that only America is expressed in Million Dollars (SGD), hence we will convert the rest into the same units (Million Dollars) since the numbers are relatively large. Select the values column and right click on the _"Calculated Field"_ function. <br/>![](img/tabDT_5.1.png){width=400px} <br/> Based on a brief scan across the table, it shows that America values are less than 5 figures, hence we can enter the syntax as this: <br/>![](img/tabDT_5.2.png){width=600px} <br/>After applying the changes, our table values now looks better. We shall rename the column names as well as shown below <br/>![](img/tabDT_5.3.png){width=550px} <br/><br/>Repeat these steps for the other table.<br/>
+6 | Now, we will rename the variables to make it shorter and easier to read. Select the variables column and right click on _"Aliases"_.<br/>![](img/tabDT_6.1.png){width=500px} <br/>A second window will pop up, and double click on the _"Value (Alias)" to edit the names accordingly. <br/>![](img/tabDT_6.2.png){width=550px} <br/>
+7 | Since the dates have been pivoted, it will now be easier to create a relationship between the tables. Click on the line joining both tables and edit the relationship accordingly. <br/>![](img/tabDT_7.1.png){width=550px} <br/> The final overview of the tables should look something like this: <br/>![](img/tabDT_7.2.png){width=550px} <br/>
+
+
+The tables are now ready to be used for constructing of visualizations.
+
+
+### 4.3 Data Visualization (First Chart)
+
+Overall comparison between Exports and Imports
 
 
 
-### 4.4 Dashboard
+### 4.4 Data Visualization (Second Chart)
+
+
+
+
+### 4.5 Data Visualization (Third Chart)
+
+
+
+### 4.6 Dashboard
 
 
 
