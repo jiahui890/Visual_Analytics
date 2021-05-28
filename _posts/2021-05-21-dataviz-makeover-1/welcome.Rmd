@@ -111,12 +111,12 @@ S/N | Tableau Desktop Description
 ----| ---------
 1 | Import the dataset into Tableau Desktop and drag the tables into the empty space as shown below. <br/>![](img/tabDT_1.png){width=500px} <br/>
 2 | To facilitate cross-referencing in the graphs later, we will create a _"Union"_ between the 2 tables. Click on the _"New Union"_ at the side bar and drag in both Import and Export tables.<br/>![](img/tabDTnew_2.png){width=400px} <br/>Click _"ok"_ and the output will look like the diagram below, which both tables values together. <br/>![](img/tabDTnew_2.2.png){width=500px} <br/>
-3 | Next, we will make the dates as rows by pivoting for the table. Select all the dates and right click followed by _"Pivot"_. <br/>![](img/tabDTnew_3.1.png){width=500px} <br/>The table will now look like this: <br/>![](img/tabDTnew_3.2.png){width=500px} <br/>We will then rename the column names accordingly for easier reference, as shown below. <br/>![](img/tabDTnew_3.3.png){width=400px} <br/>
+3 | Next, we will make the dates as rows by pivoting for the table. Select all the dates and right click followed by _"Pivot"_. <br/>![](img/tabDTnew_3.1.png){width=500px} <br/>The table will now look like this: <br/>![](img/tabDTnew_3.2.png){width=500px} <br/>We will then rename the column names accordingly by double clicking at the headers for easier reference. <br/>
 4 | Notice that the dates are in strings data type based on the tiny label _"Abc"_ on the top left corner at the columns. In this case, we will convert the data type into _"Date"_ format in both Export and Import. <br/>![](img/tabDTnew_4.1.png){width=400px} <br/>
 5 | We can also change the data type of the Variables column from strings to country, as it might be easier for us to conduct geospatial mapping later. To do so, click on the _"Abc"_ logo again and hover on the _"Geographical role"_ to select on _"Country/Region"_. <br/>![](img/tabDTnew_4.2.png){width=400px} <br/>
-6 | In addition, we can see that only America is expressed in Million Dollars (SGD), hence we will convert the rest into the same units (Million Dollars) since the numbers are relatively large. Select the values column and right click on the _"Calculated Field"_ function. <br/>![](img/tabDTnew_6.1.png){width=400px} <br/> Based on a brief scan across the table, it shows that America values are less than 5 figures, hence we can enter the syntax as this: <br/>![](img/tabDTnew_6.2.png){width=600px} <br/>After applying the changes, our table values now looks better. We shall rename the column names as well. <br/>
+6 | In addition, we can see that only America is expressed in Million Dollars (SGD), while the rest are in Thousands. Hence, we will convert all the values into the same units (Billion Dollars) since the numbers are relatively large. Select the values column and right click on the _"Calculated Field"_ function. <br/>![](img/tabDTnew_6.1.png){width=400px} <br/> Based on a brief scan across the table, it shows that America values are less than 5 figures, hence we can enter the syntax as this: <br/>![](img/tabDTnew_6.2.1.png){width=600px} <br/>After applying the changes, our table values now looks better. We shall rename the column names as well. <br/>
 7 | Now, we will rename the variables to make it shorter and easier to read. Select the variables column and right click on _"Aliases"_.<br/>![](img/tabDTnew_7.1.png){width=500px} <br/>A second window will pop up, and double click on the _"Value (Alias)" to edit the names accordingly. <br/>![](img/tabDTnew_7.2.png){width=550px} <br/>
-8 | After all the above steps, the final overview of the tables should look something like this: <br/>![](img/tabDTnew_8.png){width=550px} <br/>
+8 | After all the above steps, the final overview of the tables should look something like this: <br/>![](img/tabDTnew_8.1.png){width=550px} <br/>
 
 
 The table is now ready to be used for constructing of visualizations.
@@ -131,6 +131,8 @@ Overall comparison between Exports and Imports
 ### 4.4 Data Visualization (Second Chart)
 
 
+
+MULTIPLY -1 IN FRONT OF IMPORTS AND PLOT ON BAR GRAPH TO GET THE DIVERGING AXIS (see dataviz1_netlify)
 
 
 
