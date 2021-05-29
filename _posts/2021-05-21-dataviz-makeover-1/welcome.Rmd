@@ -122,17 +122,53 @@ S/N | Tableau Desktop Description
 The table is now ready to be used for constructing of visualizations.
 
 
-### 4.3 Data Visualization (First Chart)
+### 4.3 Data Visualization (First Chart: Trade Volume and Balance)
 
-Overall comparison between Exports and Imports
+In this first chart, we will be creating a line and bar chart congregated onto a single axis for an easier overview in both trade volumes and balance between exports and imports.
+
+#### Setting up of Plot
+
+1. Open up the first sheet tab of Tableau, and we can see the Tables Pane like this: <br/>![](img/tabviz1_1.png){width=550px} <br/>
+
+2. Drag variables "Country", "Date" and "SGD (Billion)" into the _"Columns"_ and _"Rows"_, and you can see the plot as follows: <br/>![](img/tabviz1_2.png){width=550px} <br/> 
+
+3. Note that the date of interest is from 2019-2020, and only the top 6 countries to be selected. Hence, we will do a _"Filters"_, by dragging in "Country" and "Date" into there. We will de-select on "Total Exports" and "Total Imports" for the "Country", while de-selecting "2021" option in the Years for "Date".<br/>![](img/tabviz1_3.png){width=550px} <br/> <br/>![](img/tabviz1_3.2.png){width=550px} <br/> We will then click on _"Apply"_ and the changes will occur accordingly.
+
+4. Next, we will change the graph into a bar chart by selecting it from the _"Marks"_ pane. <br/>![](img/tabviz1_4.1.png){width=550px} <br/> We will also change the formatting for "Date" from the drop down.<br/>![](img/tabviz1_4.2.png){width=550px} <br/> Click on the "+" sign next to "Date" again to display the quarters as well. Hence, the plot becomes like this: <br/>![](img/tabviz1_4.3.png){width=550px} <br/>
+
+5. In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below: <br/>![](img/tabviz1_5.1.1.png){width=320px}<br/><br/>![](img/tabviz1_5.1.png){width=600px} <br/> We will then replace the rows from "SGD (Billion)" to the new calculated field "Balance". After that, drag the "Type" variable into the "Color" at Marks pane and we will get the diverging graph. <br/>![](img/tabviz1_5.2.png){width=60px} <br/>
+
+6. Now, we will add in the line graph that calculates the trade balance onto the same plot. Drag the "Balance" variable into the rows and change it into a line graph.<br/>![](img/tabviz1_6.1.png){width=600px} <br/>Then, right click on the botton axis and click on "Dual Axis".<br/>![](img/tabviz1_6.2.png){width=350px} <br/> We will also synchronize the axis to re-organize the chart by right clicking the axis. <br/>![](img/tabviz1_6.3.png){width=350px} <br/> In case the line graph doesn't show, we can realign the order by formatting the axis and selecting the marks to be brought forwards. <br/>![](img/tabviz1_6.4.png){width=350px} <br/>Viola! We have our combined diverging chart ready! You can change the colours of the lines/bar graph to make it more prominent. <br/>![](img/tabviz1_6.5.png){width=600px} <br/>
+
+
+#### Customization
+
+To distinguish the important features of the graph, we will change the colours or formatting to make the features more prominent and pleasing to the eye. There are 4 main features to go about: <br/>
+
+1. Editing the title of axes and adding in labels, markers:
+    + Drag the "Balance" variable into the _"Label"_ portion at the Marks for line graph. 
+    + Add in markers (under _"Color"_) to the lines for better identification.
+    + Edit the axes title by double clicking it.
+
+2. Change the colours of the bar chart to colours that are more pleasing to the eye.
+    + Add in differentiating colours for negative and positive values in the trade balance by dragging "Balance" to _"Color"_ in the Marks pane. Edit the colors into 2 steps that centered at 0, as shown below:<br/>![](img/tabviz1_7.1.png){width=300px, height=300px} <br/>
+
+3. Changing the labels on the axis to positive values:
+    + As imports are positive values originally, we will it on the axis. Firstly, right click on either axis to format it.
+    + Under the _"Axis"_ section, select the _"Numbers"_, click _"Custom"_ and enter the format as shown below: <br/>![](img/tabviz1_7.2.png){width=300px, height=300px} <br/>
+
+4. Edit the "Tooltip" to reflect the timeline, units, trade volume and balance.
+
+
+After all the steps above, the final chart is as shown below: <br/>![](img/Trade Volume and Balance.png){width=600px} <br/>
+
+
+### 4.4 Data Visualization (Second Chart: Net Trade Volume)
 
 
 
-### 4.4 Data Visualization (Second Chart)
 
-
-
-MULTIPLY -1 IN FRONT OF IMPORTS AND PLOT ON BAR GRAPH TO GET THE DIVERGING AXIS (see dataviz1_netlify)
+#### Customization
 
 
 
