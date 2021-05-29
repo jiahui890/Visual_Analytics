@@ -2114,7 +2114,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li><a href="#data-source">4.1 Data Source</a></li>
 <li><a href="#data-preparation">4.2 Data Preparation</a></li>
 <li><a href="#data-visualization-first-chart-trade-volume-and-balance">4.3 Data Visualization (First Chart: Trade Volume and Balance)</a></li>
-<li><a href="#data-visualization-second-chart">4.4 Data Visualization (Second Chart)</a></li>
+<li><a href="#data-visualization-second-chart-net-trade-volume">4.4 Data Visualization (Second Chart: Net Trade Volume)</a></li>
 <li><a href="#dashboard">4.5 Dashboard</a></li>
 </ul></li>
 <li><a href="#final-visualization">5. Final Visualization</a></li>
@@ -2284,7 +2284,7 @@ Figure 3: Singapore Imports from 1976
 <li><p>Drag variables “Country”, “Date” and “SGD (Billion)” into the <em>“Columns”</em> and <em>“Rows”</em>, and you can see the plot as follows: <br/><img src="img/tabviz1_2.png" width="550" /> <br/></p></li>
 <li><p>Note that the date of interest is from 2019-2020, and only the top 6 countries to be selected. Hence, we will do a <em>“Filters”</em>, by dragging in “Country” and “Date” into there. We will de-select on “Total Exports” and “Total Imports” for the “Country”, while de-selecting “2021” option in the Years for “Date”.<br/><img src="img/tabviz1_3.png" width="550" /> <br/> <br/><img src="img/tabviz1_3.2.png" width="550" /> <br/> We will then click on <em>“Apply”</em> and the changes will occur accordingly.</p></li>
 <li><p>Next, we will change the graph into a bar chart by selecting it from the <em>“Marks”</em> pane. <br/><img src="img/tabviz1_4.1.png" width="550" /> <br/> We will also change the formatting for “Date” from the drop down.<br/><img src="img/tabviz1_4.2.png" width="550" /> <br/> Click on the “+” sign next to “Date” again to display the quarters as well. Hence, the plot becomes like this: <br/><img src="img/tabviz1_4.3.png" width="550" /> <br/></p></li>
-<li><p>In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below: <br/><img src="img/tabviz1_5.1.1.png" width="320" /><br/><br/><img src="img/tabviz1_5.1.png" width="600" /> <br/> We will then replace the rows from “SGD (Billion)” to the new calculated field “Balance”. After that, drag the “Type” variable into the “Color” at Marks pane and we will get the diverging graph. <br/><img src="img/tabviz1_5.2.png" width="60" /> <br/></p></li>
+<li><p>In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below: <br/><img src="img/tabviz1_5.1.1.png" width="320" /><br/><br/><img src="img/tabviz1_5.1.png" width="600" /> <br/> We will then replace the rows from “SGD (Billion)” to the new calculated field “Balance”. After that, drag the “Type” variable into the “Color” at Marks pane and we will get the diverging graph. <br/><img src="img/tabviz1_5.2.png" width="600" /> <br/></p></li>
 <li><p>Now, we will add in the line graph that calculates the trade balance onto the same plot. Drag the “Balance” variable into the rows and change it into a line graph.<br/><img src="img/tabviz1_6.1.png" width="600" /> <br/>Then, right click on the botton axis and click on “Dual Axis”.<br/><img src="img/tabviz1_6.2.png" width="350" /> <br/> We will also synchronize the axis to re-organize the chart by right clicking the axis. <br/><img src="img/tabviz1_6.3.png" width="350" /> <br/> In case the line graph doesn’t show, we can realign the order by formatting the axis and selecting the marks to be brought forwards. <br/><img src="img/tabviz1_6.4.png" width="350" /> <br/>Viola! We have our combined diverging chart ready! You can change the colours of the lines/bar graph to make it more prominent. <br/><img src="img/tabviz1_6.5.png" width="600" /> <br/></p></li>
 </ol>
 <h4 id="customization">Customization</h4>
@@ -2308,8 +2308,8 @@ Figure 3: Singapore Imports from 1976
 <li>Edit the “Tooltip” to reflect the timeline, units, trade volume and balance.</li>
 </ol>
 <p>After all the steps above, the final chart is as shown below: <br/><img src="img/Trade%20Volume%20and%20Balance.png" width="600" /> <br/></p>
-<h3 id="data-visualization-second-chart">4.4 Data Visualization (Second Chart)</h3>
-<p>MULTIPLY -1 IN FRONT OF IMPORTS AND PLOT ON BAR GRAPH TO GET THE DIVERGING AXIS (see dataviz1_netlify)</p>
+<h3 id="data-visualization-second-chart-net-trade-volume">4.4 Data Visualization (Second Chart: Net Trade Volume)</h3>
+<h4 id="customization-1">Customization</h4>
 <h3 id="dashboard">4.5 Dashboard</h3>
 <h2 id="final-visualization">5. Final Visualization</h2>
 <p>3 Main Observations</p>
