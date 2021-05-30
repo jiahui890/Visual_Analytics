@@ -2357,7 +2357,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <img src="img/tabviz1_2.png" alt="" /><figcaption>Figure 4.3.2: Inputting Variables to plot</figcaption>
 </figure>
 <ol start="3" type="1">
-<li>Note that the date of interest is from 2019-2020, and only the top 6 countries to be selected. Hence, we will do a <em>“Filters”</em>, by dragging in “Country” and “Date” into there. We will de-select on “Total Exports” and “Total Imports” for the “Country”, while de-selecting “2021” option in the Years for “Date”. We will then click on <em>“Apply”</em> and the changes will occur accordingly.</li>
+<li>Note that the date of interest is from 2019-2020, and only the top 6 countries to be selected. Hence, we will do a <em>“Filters”</em>, by dragging in “Country” and “Date” into the section. We will de-select on “Total Exports” and “Total Imports” for the “Country”, while de-selecting “2021” option in the Years for “Date”. We will then click on <em>“Apply”</em> and the changes will occur accordingly.</li>
 </ol>
 <center>
 <figure>
@@ -2368,7 +2368,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </figure>
 </center>
 <ol start="4" type="1">
-<li>Next, we will change the graph into a bar chart by selecting it from the <em>“Marks”</em> pane. We will also change the formatting for “Date” from the drop down by clicking on the “+” sign next to “Date” again to display the quarters as well. Hence, the steps and plot becomes like this:</li>
+<li>Next, we will change the graph into a bar chart by selecting it from the <em>“Marks”</em> pane. We will also change the formatting for “Date” from the drop down, and als click on the “+” sign next to “Date” again to display the quarters as well. Hence, the steps and plot becomes like this:</li>
 </ol>
 <center>
 <figure>
@@ -2382,14 +2382,18 @@ document.addEventListener('DOMContentLoaded', function() {
 </figure>
 </center>
 <ol start="5" type="1">
-<li>In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below in Figure 4.3.8. We will then replace the rows from “SGD (Billion)” to the new calculated field “Balance”. After that, drag the “Type” variable into the “Color” at Marks pane and we will get the diverging graph.</li>
+<li>In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below in Figure 4.3.8.
+<ul>
+<li>We will then replace the variables in the rows, from “SGD (Billion)” to the new calculated field “Balance”.</li>
+<li>After that, drag the “Type” variable into the “Color” at Marks pane and we will get the diverging graph as seen in Figure 4.3.10.</li>
+</ul></li>
 </ol>
 <center>
 <figure>
 <img src="img/tabviz1_5.1.1.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.8: Creating calculated field</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_5.1.png" alt="" /><figcaption>Figure 4.3.9: Formula used in the calculated field</figcaption>
+<img src="img/tabviz1_5.1.png" alt="" /><figcaption>Figure 4.3.9: Formula used in the calculated field named “Balance”</figcaption>
 </figure>
 <figure>
 <img src="img/tabviz1_5.2.png" alt="" /><figcaption>Figure 4.3.10: Output after manipulation - Vertical Diverging Graph</figcaption>
@@ -2432,7 +2436,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul></li>
 <li>Change the colours of the bar chart to colours that are more pleasing to the eye.
 <ul>
-<li>Add in differentiating colours for negative and positive values in the trade balance by dragging “Balance” to <em>“Color”</em> in the Marks pane. Edit the colors into 2 steps that centered at 0, as shown below:</li>
+<li>Add in differentiating colours for negative and positive values in the trade balance by dragging “Balance” to <em>“Color”</em> in the Marks pane. Edit the colors into 2 steps that centered at 0, as shown in Figure 4.3.16.</li>
 </ul></li>
 </ol>
 <center>
@@ -2443,8 +2447,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <ol start="3" type="1">
 <li>Changing the labels on the axis to positive values:
 <ul>
-<li>As imports are positive values originally, we will it on the axis. Firstly, right click on either axis to format it.</li>
-<li>Under the <em>“Axis”</em> section, select the <em>“Numbers”</em>, click <em>“Custom”</em> and enter the format as shown below:</li>
+<li>As imports are positive values originally, we will edit it accordingly on the axis. Firstly, right click on either axis, then click <em>“Format”</em>.</li>
+<li>Under the <em>“Axis”</em> section, select the <em>“Numbers”</em>, click <em>“Custom”</em> and enter the format as shown below in Figure 4.3.17.</li>
 </ul></li>
 </ol>
 <center>
@@ -2455,7 +2459,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <ol start="4" type="1">
 <li>Edit the “Tooltip” to reflect the timeline, units, trade volume and balance.</li>
 </ol>
-<p>After all the steps above, the final chart is as shown below:</p>
+<p>After all the steps above, the final chart should look something like this:</p>
 <figure>
 <img src="img/Trade%20Volume%20and%20Balance.png" style="width:120.0%" alt="" /><figcaption>Figure 4.3.18: Final Output of First Chart - Trade Volume and Balance</figcaption>
 </figure>
@@ -2463,7 +2467,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>This chart will be a simple visualization to the net exports and imports per year across the different countries.</p>
 <h4 id="setting-up-of-plot-1">Setting up of Plot</h4>
 <ol type="1">
-<li><p>Open up an empty sheet and drag in “Country”, “Date” to columns while “Type” into the rows. Leave the dates as yearly values.</p></li>
+<li><p>Open up an empty sheet and drag in “Country”, “Date” to columns while “Type” into the rows. (Refer to top few steps if unsure) Leave the dates as yearly values.</p></li>
 <li><p>As usual, filter the years to 2019-2020 and remove both “Total Exports” and “Total Imports”.</p></li>
 <li><p>Note that a table of missing values is now created, thus we will drag in “SGD (Billion)” to the <em>“Text”</em> section in the Marks pane.</p></li>
 <li><p>To create colours in visualizing the change of net trade volume, we will be switching to a highlight table instead. On the top right corner of the page, click on <em>“Show Me”</em> and select the <em>“Highlight Table”</em> as shown in the diagram below.</p></li>
@@ -2506,7 +2510,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </figure>
 </center>
 <ol start="3" type="1">
-<li>Rename the axes and title of the chart for better understanding. After all the steps above, the final chart is shown below:</li>
+<li>Rename the axes and title of the chart for better understanding. After all the steps above, the final chart should look something like this:</li>
 </ol>
 <figure>
 <img src="img/Net%20Trade%20Volume.png" style="width:120.0%" alt="" /><figcaption>Figure 4.4.6: Final output of Second Chart - Net Trade Volume</figcaption>
@@ -2525,7 +2529,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </figure>
 </center>
 <ol start="2" type="1">
-<li>Drag in both sheets into the empty dashboard. Make sure to format the layout of all the charts as well as the legends and text into <em>“Floating”</em>. This will allow to resize and reorganize our dashboard easily.</li>
+<li>Drag in both sheets into the empty dashboard. Make sure to format the layout of all charts,legends and text into <em>“Floating”</em>. This will allow to resize and reorganize our dashboard easily to wherever we want.</li>
 </ol>
 <center>
 <figure>
@@ -2550,9 +2554,9 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>The dashboard can also be accessed <a href="https://public.tableau.com/app/profile/lim.jiahui/viz/dataviz1_for_netlify/Dashboard1"><em>HERE</em></a>.</p>
 <h3 id="main-observations">Main Observations</h3>
 <ol type="1">
-<li><p>From the graphs, we noticed that the main exporter/importer for Singapore’s Merchandise Trade in 2019-2020 is <strong>Mainland China</strong>. The net calculations of trade volume between each year shows that *America** has the steepest decline in import trades, while *Malaysia** has the steepest decline for export trades.</p></li>
+<li><p>From the graphs, we noticed that the main exporter/importer for Singapore’s Merchandise Trade in 2019-2020 is <strong>Mainland China</strong>. The net calculations of trade volume between each year shows that <strong>America</strong> has the <em>steepest decline in import trades</em>, while <strong>Malaysia</strong> has the <em>steepest decline for export trades</em>.</p></li>
 <li><p>The difference between exports and imports was also calculated, where it can be seen that <strong>Hong Kong</strong> has the largest difference between the two type of trades. The import volume is also extremely small compared to other countries.</p></li>
-<li><p>Trade balance is an economical indicator of the country’s growth, as it plays a part in influencing the value of currency in global markets as well creation of employment and economic growth. This indicator is measured by taking the exports minus imports volume. In this chart, the trade balance among the countries were plotted by the line graph across 2019-2020. With the <em>origin axis</em> as a baseline, we observe that:</p>
+<li><p>Trade balance is an economical indicator of the country’s growth, as it plays a part in influencing the value of currency in global markets as well creation of employment and economic growth. This indicator is measured by taking the <strong>exports minus imports</strong> volume. In this chart, the trade balance among the countries were plotted by the <strong>line graph</strong> across 2019-2020. With the <em>origin axis</em> as a baseline, we observe that:</p>
 <ul>
 <li><strong>Hong Kong</strong> experiences <em>Trade Surplus</em> throughout the entire time period, while <strong>Taiwan</strong> experiences a <em>Trade Deficit</em> within the same time period.</li>
 <li>Interestingly, <strong>America</strong> experiences <em>Trade Deficit</em> in 2019, but managed to overturn the situation and enter <em>Trade Surplus</em> in 2020.</li>

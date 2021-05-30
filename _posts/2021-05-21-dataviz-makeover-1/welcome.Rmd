@@ -339,7 +339,7 @@ The dashboard can also be accessed [_HERE_](https://public.tableau.com/app/profi
 
 ### Main Observations
 
-1. From the graphs, we noticed that the main exporter/importer for Singapore's Merchandise Trade in 2019-2020 is **Mainland China**. The net calculations of trade volume between each year shows that **America** has the steepest _decline in import trades_, while **Malaysia** has the _steepest decline for export trades_.
+1. From the graphs, we noticed that the main exporter/importer for Singapore's Merchandise Trade in 2019-2020 is **Mainland China**. The net calculations of trade volume between each year shows that **America** has the _steepest decline in import trades_, while **Malaysia** has the _steepest decline for export trades_.
 
 2. The difference between exports and imports was also calculated, where it can be seen that **Hong Kong** has the largest difference between the two type of trades. The import volume is also extremely small compared to other countries.
 
