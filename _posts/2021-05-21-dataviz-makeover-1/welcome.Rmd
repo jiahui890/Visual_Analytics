@@ -45,7 +45,6 @@ Before evaluating the chart, primary research on the visualization was conducted
 * **Audience:** Government Agencies, policy-makers, businesses and individuals
 * **Purpose:** To have a clear overview on changes in trade volume (between exports and imports) of Singapore and its top 6 countries between 2019 to 2021, especially since it was during the Covid-19 pandemic.
 
-
 ### 2.1 Clarity
 
 S/N | Critique | Approach
@@ -57,18 +56,13 @@ S/N | Critique | Approach
 5 | Legend title is named as "Measure Names", which is clearly misleading. | Naming of the legends need to be edited properly.
 6 | The title of each graph is just the country names, but does not annotate what the graph actually means. | Include a clear title that summarizes the whole plot.
 
-
-
 ### 2.2 Aesthetics
-
 
 S/N | Critique | Approach
 ----| ---------|----------
 1 | Size of all 6 charts are relatively small and hard to read. | This might be due to each country being plotted separately, hence we will combine all to make into a single plot of same axis.
 2 | Font size used in the Chart Header is almost as big (or smaller) as the headings for each graph. | Bold the chart header and use a bigger font size to represent the main objective of the graph.
 3 | Many blank areas and chart design is too "empty". | Fill in the white spaces with some descriptions/captions/annotations, and also highlight any key features for the readers to take note of (eg. using different colours to represent increase/decrease)
-
-
 
 ## 3. Proposed Visualization Design
 
@@ -88,7 +82,6 @@ S/N | Critique | Approach
 
 * The use of colours will be introduced into the chart to highlight certain areas as well as showing of notable features.
 
-
 ## 4. Step-by-Step Methodology
 
 ### 4.1 Data Source
@@ -107,12 +100,12 @@ To facilitate ease of data preparation, the raw dataset will first be uploaded o
 
 S/N | Tableau Prep Builder Description 
 ----| ---------
-1 | ![](img/tabprep_connectDataMerged.png){width=500px} <br/>Click on _"Connect data"_, followed by _"Microsoft Excel"_ to upload the raw dataset.
-2 | ![](img/tabprep_addData.png){width=500px} <br/>Drag table T1 into the empty pane.<br/>![](img/tabprep_preview1.png){width=600px} <br/>Notice that Tableau did not capture the headers and variables properly, hence we can click on _"Use Data Interpreter"_ at the left side of the page. <br/>![](img/tabprep_preview2.png){width=600px} <br/>The final preview of the table shows the proper table inputs and field names.
-3 | Now, we can create a workflow for filtering of the data based on relevancy.<br/>![](img/tabprep_cleanstep1.png){width=400px} <br/>At the top of the page, click on the "+" sign and select _"Clean Step"_.<br/> ![](img/tabprep_cleanstep2.png){width=600px} <br/>The preview will now show the interpreter data table.
-4 | Since the original chart only focuses on top 6 countries, we should filter the countries accordingly too.<br/> ![](img/tabprep_cleanstep3.png){width=500px} <br/>At the variables column, select the _"More Options"_, followed by _"Filter"_ and _"Selected Values"_. <br/> ![](img/tabprep_cleanstep4.png){width=500px} <br/>We will then select the countries accordingly (including the total trades) as shown in the diagram above.
-5 | In addition, the data of interest ranges from 2019 onwards. Hence, we will select only the fields from "2019 Jan" to "2021 Apr" and remove the rest using the _"Remove Fields"_ button on top. <br/> ![](img/tabprep_cleanstep5.png){width=600px} <br/>The final preview of the table is as shown below. <br/>![](img/tabprep_cleanstep6.png){width=600px} <br/>
-6 | Finally, the table shows no "null" values and thus we can save this table into an external xlsx file for further exploration on **Tableau Desktop**. <br/>![](img/tabprep_output.png){width=500px} <br/>At the top, click on the "+" sign and select _"Output"_. <br/> ![](img/tabprep_output2.png){width=500px} <br/> Select _"xlsx"_ as the output type and navigate to the directory where you wish to save the file at.
+1 | ![](img/tabprep_connectDataMerged.png){width=500px}<br/>Click on _"Connect data"_, followed by _"Microsoft Excel"_ to upload the raw dataset.
+2 | ![](img/tabprep_addData.png){width=500px}<br/>Drag table T1 into the empty pane.<br/>![](img/tabprep_preview1.png){width=600px}<br/>Notice that Tableau did not capture the headers and variables properly, hence we can click on _"Use Data Interpreter"_ at the left side of the page. <br/>![](img/tabprep_preview2.png){width=600px}<br/>The final preview of the table shows the proper table inputs and field names.
+3 | Now, we can create a workflow for filtering of the data based on relevancy.<br/>![](img/tabprep_cleanstep1.png){width=400px}<br/>At the top of the page, click on the "+" sign and select _"Clean Step"_.<br/>![](img/tabprep_cleanstep2.png){width=600px}<br/>The preview will now show the interpreter data table.
+4 | Since the original chart only focuses on top 6 countries, we should filter the countries accordingly too.<br/> ![](img/tabprep_cleanstep3.png){width=500px}<br/>At the variables column, select the _"More Options"_, followed by _"Filter"_ and _"Selected Values"_. <br/>![](img/tabprep_cleanstep4.png){width=500px}<br/>We will then select the countries accordingly (including the total trades) as shown in the diagram above.
+5 | In addition, the data of interest ranges from 2019 onwards. Hence, we will select only the fields from "2019 Jan" to "2021 Apr" and remove the rest using the _"Remove Fields"_ button on top. <br/>![](img/tabprep_cleanstep5.png){width=600px} <br/>The final preview of the table is as shown below. <br/>![](img/tabprep_cleanstep6.png){width=600px} <br/>
+6 | Finally, the table shows no "null" values and thus we can save this table into an external xlsx file for further exploration on **Tableau Desktop**. <br/>![](img/tabprep_output.png){width=500px}<br/>At the top, click on the "+" sign and select _"Output"_. <br/> ![](img/tabprep_output2.png){width=500px} <br/> Select _"xlsx"_ as the output type and navigate to the directory where you wish to save the file at.
 
 <center>
 
@@ -120,20 +113,18 @@ S/N | Tableau Prep Builder Description
 
 </center>
 
-
 Repeat the same steps as above for the Export Table. For easier reference, we shall combine both Imports.xlsx and Exports.xlsx into one excel worksheet before uploading into **Tableau Desktop**.
-
 
 S/N | Tableau Desktop Description 
 ----| ---------
 1 | Import the dataset into Tableau Desktop and drag the tables into the empty space as shown below.<br/>![Figure](img/tabDT_1.png){width=500px}<br/>
-2 | To facilitate cross-referencing in the graphs later, we will create a _"Union"_ between the 2 tables. Click on the _"New Union"_ at the side bar and drag in both Import and Export tables.<br/>![](img/tabDTnew_2.png){width=400px} <br/>Click _"ok"_ and the output will look like the diagram below, which both tables values together. <br/>![](img/tabDTnew_2.2.png){width=500px} <br/>
+2 | To facilitate cross-referencing in the graphs later, we will create a _"Union"_ between the 2 tables. Click on the _"New Union"_ at the side bar and drag in both Import and Export tables.<br/>![](img/tabDTnew_2.png){width=400px} <br/>Click _"ok"_ and the output will look like the diagram below, which both tables values together. <br/>![](img/tabDTnew_2.2.png){width=600px} <br/>
 3 | Next, we will make the dates as rows by pivoting for the table. Select all the dates and right click followed by _"Pivot"_. <br/>![](img/tabDTnew_3.1.png){width=500px} <br/>The table will now look like this: <br/>![](img/tabDTnew_3.2.png){width=500px} <br/>We will then rename the column names accordingly by double clicking at the headers for easier reference. <br/>
-4 | Notice that the dates are in strings data type based on the tiny label _"Abc"_ on the top left corner at the columns. In this case, we will convert the data type into _"Date"_ format in both Export and Import. <br/>![](img/tabDTnew_4.1.png){width=400px} <br/>
+4 | Notice that the dates are in strings data type based on the tiny label _"Abc"_ on the top left corner at the columns. In this case, we will convert the data type into _"Date"_ format in both Export and Import. <br/>![](img/tabDTnew_4.1.png){width=300px} <br/>
 5 | We can also change the data type of the Variables column from strings to country, as it might be easier for us to conduct geospatial mapping later. To do so, click on the _"Abc"_ logo again and hover on the _"Geographical role"_ to select on _"Country/Region"_. <br/>![](img/tabDTnew_4.2.png){width=400px} <br/>
 6 | In addition, we can see that only America is expressed in Million Dollars (SGD), while the rest are in Thousands. Hence, we will convert all the values into the same units (Billion Dollars) since the numbers are relatively large. Select the values column and right click on the _"Calculated Field"_ function. <br/>![](img/tabDTnew_6.1.png){width=400px} <br/> Based on a brief scan across the table, it shows that America values are less than 5 figures, hence we can enter the syntax as this: <br/>![](img/tabDTnew_6.2.1.png){width=600px} <br/>After applying the changes, our table values now looks better. We shall rename the column names as well. <br/>
-7 | Now, we will rename the variables to make it shorter and easier to read. Select the variables column and right click on _"Aliases"_.<br/>![](img/tabDTnew_7.1.png){width=500px} <br/>A second window will pop up, and double click on the _"Value (Alias)" to edit the names accordingly. <br/>![](img/tabDTnew_7.2.png){width=550px} <br/>
-8 | After all the above steps, the final overview of the tables should look something like this: <br/>![](img/tabDTnew_8.1.png){width=550px} <br/>
+7 | Now, we will rename the variables to make it shorter and easier to read. Select the variables column and right click on _"Aliases"_.<br/>![](img/tabDTnew_7.1.png){width=450px} <br/>A second window will pop up, and double click on the _"Value (Alias)" to edit the names accordingly. <br/>![](img/tabDTnew_7.2.png){width=550px} <br/>
+8 | After all the above steps, the final overview of the tables should look something like this: <br/>![](img/tabDTnew_8.1.png){width=600px} <br/>
 
 <center>
 
@@ -142,7 +133,6 @@ S/N | Tableau Desktop Description
 </center>
 
 The table is now ready to be used for constructing of visualizations.
-
 
 ### 4.3 Data Visualization (First Chart: Trade Volume and Balance)
 
@@ -162,17 +152,17 @@ In this first chart, we will be creating a line and bar chart congregated onto a
 
 ![Figure 4.3.2: Inputting Variables to plot](img/tabviz1_2.png)
 
-3. Note that the date of interest is from 2019-2020, and only the top 6 countries to be selected. Hence, we will do a _"Filters"_, by dragging in "Country" and "Date" into there. We will de-select on "Total Exports" and "Total Imports" for the "Country", while de-selecting "2021" option in the Years for "Date". We will then click on _"Apply"_ and the changes will occur accordingly.
+3. Note that the date of interest is from 2019-2020, and only the top 6 countries to be selected. Hence, we will do a _"Filters"_, by dragging in "Country" and "Date" into the section. We will de-select on "Total Exports" and "Total Imports" for the "Country", while de-selecting "2021" option in the Years for "Date". We will then click on _"Apply"_ and the changes will occur accordingly.
 
 <center>
 
-![Figure 4.3.3: Filtering Variables](img/tabviz1_3.png){width=55%}
+![Figure 4.3.3: Filtering Variables](img/tabviz1_3.png){width=60%}
 
-![Figure 4.3.4: Filtering Timeline](img/tabviz1_3.2.png){width=55%}
+![Figure 4.3.4: Filtering Timeline](img/tabviz1_3.2.png){width=60%}
 
 </center>
 
-4. Next, we will change the graph into a bar chart by selecting it from the _"Marks"_ pane. We will also change the formatting for "Date" from the drop down by clicking on the "+" sign next to "Date" again to display the quarters as well. Hence, the steps and plot becomes like this: 
+4. Next, we will change the graph into a bar chart by selecting it from the _"Marks"_ pane. We will also change the formatting for "Date" from the drop down, and als click on the "+" sign next to "Date" again to display the quarters as well. Hence, the steps and plot becomes like this: 
 
 <center>
 
@@ -180,18 +170,19 @@ In this first chart, we will be creating a line and bar chart congregated onto a
 
 ![Figure 4.3.6: Altering the timeline](img/tabviz1_4.2.png){width=60%} 
 
-![Figure 4.3.7: Output of Bar Chart after changes to timeline](img/tabviz1_4.3.png){width=60%} 
+![Figure 4.3.7: Output of Bar Chart after changes to timeline](img/tabviz1_4.3.png){width=80%} 
 
 </center>
 
-
-5. In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below in Figure 4.3.8. We will then replace the rows from "SGD (Billion)" to the new calculated field "Balance". After that, drag the "Type" variable into the "Color" at Marks pane and we will get the diverging graph.
+5. In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below in Figure 4.3.8. 
+    + We will then replace the variables in the rows, from "SGD (Billion)" to the new calculated field "Balance".
+    + After that, drag the "Type" variable into the "Color" at Marks pane and we will get the diverging graph as seen in Figure 4.3.10.
 
 <center>
 
 ![Figure 4.3.8: Creating calculated field](img/tabviz1_5.1.1.png){width=50%}
 
-![Figure 4.3.9: Formula used in the calculated field](img/tabviz1_5.1.png) 
+![Figure 4.3.9: Formula used in the calculated field named "Balance"](img/tabviz1_5.1.png) 
 
 ![Figure 4.3.10: Output after manipulation - Vertical Diverging Graph](img/tabviz1_5.2.png)
 
@@ -227,7 +218,7 @@ To distinguish the important features of the graph, we will change the colours o
     + Edit the axes title by double clicking it.
 
 2. Change the colours of the bar chart to colours that are more pleasing to the eye.
-    + Add in differentiating colours for negative and positive values in the trade balance by dragging "Balance" to _"Color"_ in the Marks pane. Edit the colors into 2 steps that centered at 0, as shown below:
+    + Add in differentiating colours for negative and positive values in the trade balance by dragging "Balance" to _"Color"_ in the Marks pane. Edit the colors into 2 steps that centered at 0, as shown in Figure 4.3.16.
 
 <center>
 
@@ -236,8 +227,8 @@ To distinguish the important features of the graph, we will change the colours o
 </center>
 
 3. Changing the labels on the axis to positive values:
-    + As imports are positive values originally, we will it on the axis. Firstly, right click on either axis to format it.
-    + Under the _"Axis"_ section, select the _"Numbers"_, click _"Custom"_ and enter the format as shown below: 
+    + As imports are positive values originally, we will edit it accordingly on the axis. Firstly, right click on either axis, then click _"Format"_.
+    + Under the _"Axis"_ section, select the _"Numbers"_, click _"Custom"_ and enter the format as shown below in Figure 4.3.17.
     
 <center>
 
@@ -248,10 +239,9 @@ To distinguish the important features of the graph, we will change the colours o
 4. Edit the "Tooltip" to reflect the timeline, units, trade volume and balance.
 
 
-After all the steps above, the final chart is as shown below: 
+After all the steps above, the final chart should look something like this: 
 
-![Figure 4.3.18: Final Output of First Chart - Trade Volume and Balance](img/Trade Volume and Balance.png)
-
+![Figure 4.3.18: Final Output of First Chart - Trade Volume and Balance](img/Trade Volume and Balance.png){width=120%}
 
 ### 4.4 Data Visualization (Second Chart: Net Trade Volume)
 
@@ -259,7 +249,7 @@ This chart will be a simple visualization to the net exports and imports per yea
 
 #### Setting up of Plot
 
-1. Open up an empty sheet and drag in "Country", "Date" to columns while "Type" into the rows. Leave the dates as yearly values.
+1. Open up an empty sheet and drag in "Country", "Date" to columns while "Type" into the rows. (Refer to top few steps if unsure) Leave the dates as yearly values.
 
 2. As usual, filter the years to 2019-2020 and remove both "Total Exports" and "Total Imports".
 
@@ -294,21 +284,18 @@ Similar to the first chart, we would like our visuals to highlight the key featu
 
 </center>
 
-
 2. Adding in Subtotals and Grand Totals
     + To show the overall values, we can add in the totals by clicking onto the tab _"Analysis"_, followed by _"Totals"_ and selecting the _"Add All Subtotals"_ as well as _"Show Row Grand Totals"_.
 
 <center>
 
-![Figure 4.4.5: Addition of Subtotals and Grand Totals to the Table](img/tabviz2_5.png){width=50%}
+![Figure 4.4.5: Addition of Subtotals and Grand Totals to the Table](img/tabviz2_5.png){width=60%}
 
 </center>
 
+3. Rename the axes and title of the chart for better understanding. After all the steps above, the final chart should look something like this:
 
-3. Rename the axes and title of the chart for better understanding. After all the steps above, the final chart is shown below:
-
-![Figure 4.4.6: Final output of Second Chart - Net Trade Volume](img/Net Trade Volume.png)
-
+![Figure 4.4.6: Final output of Second Chart - Net Trade Volume](img/Net Trade Volume.png){width=120%}
 
 ### 4.5 Dashboard
 
@@ -318,14 +305,13 @@ Finally, we can compile all the charts into the dashboard.
 
 <center>
 
-![Figure 4.5.1: Empty New Dashboard page](img/tabviz3_1.png){width=55%}
+![Figure 4.5.1: Empty New Dashboard page](img/tabviz3_1.png){width=70%}
 
-![Figure 4.5.2: Setting the size of Dashboard](img/tabviz3_2.png){width=40%}
+![Figure 4.5.2: Setting the size of Dashboard](img/tabviz3_2.png){width=50%}
 
 </center>
 
-
-2. Drag in both sheets into the empty dashboard. Make sure to format the layout of all the charts as well as the legends and text into _"Floating"_. This will allow to resize and reorganize our dashboard easily.
+2. Drag in both sheets into the empty dashboard. Make sure to format the layout of all charts,legends and text into _"Floating"_. This will allow to resize and reorganize our dashboard easily to wherever we want.
 
 <center>
 
@@ -339,27 +325,25 @@ Finally, we can compile all the charts into the dashboard.
 
 ![Figure 4.5.4: Including Dashboard Header](img/tabviz3_4.png){width=30%}
 
-
 </center>
 
 4. Include captions, text or description. To do so, drag the _"Text"_ object into the dashboard and format it to _"Floating"_. Edit the text accordingly to information or findings from the chart. 
 
 
-
 ## 5. Final Visualization
 
-![Figure 5.1: Singapore Merchandise Trade with Top Six Countries, 2019-2020](img/Dashboard 1.png)
+![Figure 5.1: Singapore Merchandise Trade with Top Six Countries, 2019-2020](img/Dashboard 1.png){width=120%}
 
 The dashboard can also be accessed [_HERE_](https://public.tableau.com/app/profile/lim.jiahui/viz/dataviz1_for_netlify/Dashboard1).
 
 
 ### Main Observations
 
-1. From the graphs, we noticed that the main exporter/importer for Singapore's Merchandise Trade in 2019-2020 is **Mainland China**. The net calculations of trade volume between each year shows that *America** has the steepest decline in import trades, while *Malaysia** has the steepest decline for export trades.
+1. From the graphs, we noticed that the main exporter/importer for Singapore's Merchandise Trade in 2019-2020 is **Mainland China**. The net calculations of trade volume between each year shows that **America** has the steepest _decline in import trades_, while **Malaysia** has the _steepest decline for export trades_.
 
 2. The difference between exports and imports was also calculated, where it can be seen that **Hong Kong** has the largest difference between the two type of trades. The import volume is also extremely small compared to other countries.
 
-3. Trade balance is an economical indicator of the country's growth, as it plays a part in influencing the value of currency in global markets as well creation of employment and economic growth. This indicator is measured by taking the exports minus imports volume. In this chart, the trade balance among the countries were plotted by the line graph across 2019-2020. With the _origin axis_ as a baseline, we observe that:
+3. Trade balance is an economical indicator of the country's growth, as it plays a part in influencing the value of currency in global markets as well creation of employment and economic growth. This indicator is measured by taking the **exports minus imports** volume. In this chart, the trade balance among the countries were plotted by the **line graph** across 2019-2020. With the _origin axis_ as a baseline, we observe that:
     + **Hong Kong** experiences _Trade Surplus_ throughout the entire time period, while **Taiwan** experiences a _Trade Deficit_ within the same time period.
     + Interestingly, **America** experiences _Trade Deficit_ in 2019, but managed to overturn the situation and enter _Trade Surplus_ in 2020. 
 
@@ -367,7 +351,7 @@ The dashboard can also be accessed [_HERE_](https://public.tableau.com/app/profi
 ---
 <center>
 
-That's all for my dataviz makeover post! Thanks for reading :)
+That's all for my dataviz makeover #1 post! Thanks for reading :)
 
 </center>
 
