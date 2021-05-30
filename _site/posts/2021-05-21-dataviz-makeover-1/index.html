@@ -2141,6 +2141,11 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 <h3 id="clarity">2.1 Clarity</h3>
 <table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 39%" />
+<col style="width: 43%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>S/N</th>
@@ -2151,18 +2156,43 @@ document.addEventListener('DOMContentLoaded', function() {
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>Cell 3</td>
-<td></td>
+<td>Wrong choice of graph type (original chart uses area graph), as this causes overlapping and makes it difficult to read the values</td>
+<td>Change the graph type to either bar chart or line chart to show distinct changes. Additionally, plot the imports and exports separately so as to have a clearer view for each type of trade.</td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td>Cell 4</td>
-<td></td>
+<td>The overlapping of area graph introduces a new color, which is also not included in the legend properly.</td>
+<td>Ensure all variables are labeled/annotated/represented properly in the chart.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Values in Axes on both ends have different units, thus making it hard to read</td>
+<td>Synchronize the axis and convert all values for imports and exports to the same units.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Inconsistent representation of the time period among all countries. Japan has only time period of 2020, while the rest consists of trades from 2019-2020. This reduced the accuracy in the comparison between all 6 countries.</td>
+<td>Clean up data and re-organize it to make sure ALL countries’ data are included.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Legend title is named as “Measure Names”, which is clearly misleading.</td>
+<td>Naming of the legends need to be edited properly.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>The title of each graph is just the country names, but does not annotate what the graph actually means.</td>
+<td>Include a clear title that summarizes the whole plot.</td>
 </tr>
 </tbody>
 </table>
 <h3 id="aesthetics">2.2 Aesthetics</h3>
 <table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 39%" />
+<col style="width: 43%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>S/N</th>
@@ -2173,13 +2203,18 @@ document.addEventListener('DOMContentLoaded', function() {
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>Cell 3</td>
-<td></td>
+<td>Size of all 6 charts are relatively small and hard to read.</td>
+<td>This might be due to each country being plotted separately, hence we will combine all to make into a single plot of same axis.</td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td>Cell 4</td>
-<td></td>
+<td>Font size used in the Chart Header is almost as big (or smaller) as the headings for each graph.</td>
+<td>Bold the chart header and use a bigger font size to represent the main objective of the graph.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Many blank areas and chart design is too “empty”.</td>
+<td>Fill in the white spaces with some descriptions/captions/annotations, and also highlight any key features for the readers to take note of (eg. using different colours to represent increase/decrease)</td>
 </tr>
 </tbody>
 </table>
@@ -2190,7 +2225,11 @@ document.addEventListener('DOMContentLoaded', function() {
 </figure>
 <h3 id="advantages-of-new-design">3.2 Advantages of New Design</h3>
 <ul>
-<li>Able to see the distinct changes in exports and imports trade volume per country</li>
+<li><p>There will be a clear title for the overall chart, including the 2 plots as well. Axes and legends will also be labeled properly. This will thus let the readers have a clearer understanding of the plots.</p></li>
+<li><p>There will also be a few short captions/descriptions for the charts. This will thus provide more context to the overall plots.</p></li>
+<li><p>In this new design, we will be able to see the distinct changes in exports and imports trade volume per country on the same plot. There won’t be any overlaps and thus making it easy to read.</p></li>
+<li><p>As the imports and exports are all on the same chart, the timeline used will also be consistent for fair comparison. The axes will also be synchronized across all countries and converted to a better unit of measurement (SGD Billion) so that the numbers will not be too big for reading.</p></li>
+<li><p>The use of colours will be introduced into the chart to highlight certain areas as well as showing of notable features.</p></li>
 </ul>
 <h2 id="step-by-step-methodology">4. Step-by-Step Methodology</h2>
 <h3 id="data-source">4.1 Data Source</h3>
@@ -2306,9 +2345,11 @@ document.addEventListener('DOMContentLoaded', function() {
 <ol type="1">
 <li>Open up the first sheet tab of Tableau, and we can see the Tables Pane like this:</li>
 </ol>
+<center>
 <figure>
 <img src="img/tabviz1_1.png" style="width:70.0%" alt="" /><figcaption>Figure 4.3.1: Setting up worksheet in Tableau</figcaption>
 </figure>
+</center>
 <ol start="2" type="1">
 <li>Drag variables “Country”, “Date” and “SGD (Billion)” into the <em>“Columns”</em> and <em>“Rows”</em>, and you can see the plot as follows:</li>
 </ol>
@@ -2320,10 +2361,10 @@ document.addEventListener('DOMContentLoaded', function() {
 </ol>
 <center>
 <figure>
-<img src="img/tabviz1_3.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.3: Filtering Variables</figcaption>
+<img src="img/tabviz1_3.png" style="width:55.0%" alt="" /><figcaption>Figure 4.3.3: Filtering Variables</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_3.2.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.4: Filtering Timeline</figcaption>
+<img src="img/tabviz1_3.2.png" style="width:55.0%" alt="" /><figcaption>Figure 4.3.4: Filtering Timeline</figcaption>
 </figure>
 </center>
 <ol start="4" type="1">
@@ -2334,24 +2375,24 @@ document.addEventListener('DOMContentLoaded', function() {
 <img src="img/tabviz1_4.1.png" style="width:60.0%" alt="" /><figcaption>Figure 4.3.5: Bar Chart</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_4.2.png" style="width:60.0%" alt="" /><figcaption>Figure 4.3.5: Altering the timeline</figcaption>
+<img src="img/tabviz1_4.2.png" style="width:60.0%" alt="" /><figcaption>Figure 4.3.6: Altering the timeline</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_4.3.png" style="width:60.0%" alt="" /><figcaption>Figure 4.3.5: Output of Bar Chart after changes to timeline</figcaption>
+<img src="img/tabviz1_4.3.png" style="width:60.0%" alt="" /><figcaption>Figure 4.3.7: Output of Bar Chart after changes to timeline</figcaption>
 </figure>
 </center>
 <ol start="5" type="1">
-<li>In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below in Figure 4.3.6. We will then replace the rows from “SGD (Billion)” to the new calculated field “Balance”. After that, drag the “Type” variable into the “Color” at Marks pane and we will get the diverging graph.</li>
+<li>In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below in Figure 4.3.8. We will then replace the rows from “SGD (Billion)” to the new calculated field “Balance”. After that, drag the “Type” variable into the “Color” at Marks pane and we will get the diverging graph.</li>
 </ol>
 <center>
 <figure>
-<img src="img/tabviz1_5.1.1.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.6: Creating calculated field</figcaption>
+<img src="img/tabviz1_5.1.1.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.8: Creating calculated field</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_5.1.png" alt="" /><figcaption>Figure 4.3.7: Formula used in the calculated field</figcaption>
+<img src="img/tabviz1_5.1.png" alt="" /><figcaption>Figure 4.3.9: Formula used in the calculated field</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_5.2.png" alt="" /><figcaption>Figure 4.3.8: Output after manipulation - Vertical Diverging Graph</figcaption>
+<img src="img/tabviz1_5.2.png" alt="" /><figcaption>Figure 4.3.10: Output after manipulation - Vertical Diverging Graph</figcaption>
 </figure>
 </center>
 <ol start="6" type="1">
@@ -2365,19 +2406,19 @@ document.addEventListener('DOMContentLoaded', function() {
 </ol>
 <center>
 <figure>
-<img src="img/tabviz1_6.1.png" alt="" /><figcaption>Figure 4.3.9: Creating Dual Axis with Line Graph #1</figcaption>
+<img src="img/tabviz1_6.1.png" alt="" /><figcaption>Figure 4.3.11: Creating Dual Axis with Line Graph #1</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_6.2.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.10: Creating Dual Axis with Line Graph #2</figcaption>
+<img src="img/tabviz1_6.2.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.12: Creating Dual Axis with Line Graph #2</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_6.3.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.11: Creating Dual Axis with Line Graph #3</figcaption>
+<img src="img/tabviz1_6.3.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.13: Creating Dual Axis with Line Graph #3</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_6.4.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.12: Creating Dual Axis with Line Graph #4</figcaption>
+<img src="img/tabviz1_6.4.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.14: Creating Dual Axis with Line Graph #4</figcaption>
 </figure>
 <figure>
-<img src="img/tabviz1_6.5.png" alt="" /><figcaption>Figure 4.3.12: Output of Line and Bar Graphs together on same axis</figcaption>
+<img src="img/tabviz1_6.5.png" alt="" /><figcaption>Figure 4.3.15: Output of Line and Bar Graphs together on same axis</figcaption>
 </figure>
 </center>
 <h4 id="customization">Customization</h4>
@@ -2396,7 +2437,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </ol>
 <center>
 <figure>
-<img src="img/tabviz1_7.1.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.13: Creating 2-stepped color</figcaption>
+<img src="img/tabviz1_7.1.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.16: Creating 2-stepped color</figcaption>
 </figure>
 </center>
 <ol start="3" type="1">
@@ -2408,7 +2449,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </ol>
 <center>
 <figure>
-<img src="img/tabviz1_7.2.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.14: Reformatting axis to become all positive</figcaption>
+<img src="img/tabviz1_7.2.png" style="width:50.0%" alt="" /><figcaption>Figure 4.3.17: Reformatting axis to become all positive</figcaption>
 </figure>
 </center>
 <ol start="4" type="1">
@@ -2416,7 +2457,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </ol>
 <p>After all the steps above, the final chart is as shown below:</p>
 <figure>
-<img src="img/Trade%20Volume%20and%20Balance.png" alt="" /><figcaption>Figure 4.3.15: Final Output of First Chart</figcaption>
+<img src="img/Trade%20Volume%20and%20Balance.png" alt="" /><figcaption>Figure 4.3.18: Final Output of First Chart - Trade Volume and Balance</figcaption>
 </figure>
 <h3 id="data-visualization-second-chart-net-trade-volume">4.4 Data Visualization (Second Chart: Net Trade Volume)</h3>
 <p>This chart will be a simple visualization to the net exports and imports per year across the different countries.</p>
@@ -2429,7 +2470,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </ol>
 <center>
 <figure>
-<img src="img/tabviz2_1.png" style="width:50.0%" alt="" /><figcaption>Figure 4.4.1: Changing chart type to Highlighted Table</figcaption>
+<img src="img/tabviz2_1.png" style="width:25.0%" alt="" /><figcaption>Figure 4.4.1: Changing chart type to Highlighted Table</figcaption>
 </figure>
 </center>
 <p>Great! Our second chart is almost done, just need to touch up on the colours and display!</p>
@@ -2468,7 +2509,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li>Rename the axes and title of the chart for better understanding. After all the steps above, the final chart is shown below:</li>
 </ol>
 <figure>
-<img src="img/Net%20Trade%20Volume.png" alt="" /><figcaption>Figure 4.4.6 Net Trade Volume</figcaption>
+<img src="img/Net%20Trade%20Volume.png" alt="" /><figcaption>Figure 4.4.6: Final output of Second Chart - Net Trade Volume</figcaption>
 </figure>
 <h3 id="dashboard">4.5 Dashboard</h3>
 <p>Finally, we can compile all the charts into the dashboard.</p>
@@ -2508,8 +2549,24 @@ document.addEventListener('DOMContentLoaded', function() {
 </figure>
 <p>The dashboard can also be accessed <a href="https://public.tableau.com/app/profile/lim.jiahui/viz/dataviz1_for_netlify/Dashboard1"><em>HERE</em></a>.</p>
 <h3 id="main-observations">Main Observations</h3>
+<ol type="1">
+<li><p>From the graphs, we noticed that the main exporter/importer for Singapore’s Merchandise Trade in 2019-2020 is <strong>Mainland China</strong>. The net calculations of trade volume between each year shows that *America** has the steepest decline in import trades, while *Malaysia** has the steepest decline for export trades.</p></li>
+<li><p>The difference between exports and imports was also calculated, where it can be seen that <strong>Hong Kong</strong> has the largest difference between the two type of trades. The import volume is also extremely small compared to other countries.</p></li>
+<li><p>Trade balance is an economical indicator of the country’s growth, as it plays a part in influencing the value of currency in global markets as well creation of employment and economic growth. This indicator is measured by taking the exports minus imports volume. In this chart, the trade balance among the countries were plotted by the line graph across 2019-2020. With the <em>origin axis</em> as a baseline, we observe that:</p>
 <ul>
-<li>Firstly,</li>
+<li><strong>Hong Kong</strong> experiences <em>Trade Surplus</em> throughout the entire time period, while *Taiwan** experiences a <em>Trade Deficit</em> within the same time period.</li>
+<li>Interestingly, <strong>America</strong> experiences <em>Trade Deficit</em> in 2019, but managed to overturn the situation and enter <em>Trade Surplus</em> in 2020.</li>
+</ul></li>
+</ol>
+<hr />
+<center>
+<p>That’s all for my dataviz makeover post! Thanks for reading :)</p>
+</center>
+<h4 id="references">References</h4>
+<ul>
+<li><a href="https://dsbb.imf.org/sdds/dqaf-base/country/SGP/category/MET00">International Monetary Fund, Singapore Merchandise Trade</a></li>
+<li><a href="https://courses.lumenlearning.com/wmopen-introbusiness/chapter/measuring-global-trade/">Economics measurement of global trade</a></li>
+<li><a href="http://wits.worldbank.org/visualization/positiveandnegativemerchandisetradebalance.html">World Integrated Trade Solution - measuring trade balance</a></li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

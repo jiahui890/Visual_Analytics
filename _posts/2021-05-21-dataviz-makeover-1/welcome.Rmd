@@ -50,8 +50,12 @@ Before evaluating the chart, primary research on the visualization was conducted
 
 S/N | Critique | Approach
 ----| ---------|----------
-1   | Cell 3   |
-2   | Cell 4   |
+1 | Wrong choice of graph type (original chart uses area graph), as this causes overlapping and makes it difficult to read the values | Change the graph type to either bar chart or line chart to show distinct changes. Additionally, plot the imports and exports separately so as to have a clearer view for each type of trade.
+2 | The overlapping of area graph introduces a new color, which is also not included in the legend properly.| Ensure all variables are labeled/annotated/represented properly in the chart.
+3 | Values in Axes on both ends have different units, thus making it hard to read | Synchronize the axis and convert all values for imports and exports to the same units.
+4 | Inconsistent representation of the time period among all countries. Japan has only time period of 2020, while the rest consists of trades from 2019-2020. This reduced the accuracy in the comparison between all 6 countries. | Clean up data and re-organize it to make sure ALL countries' data are included.
+5 | Legend title is named as "Measure Names", which is clearly misleading. | Naming of the legends need to be edited properly.
+6 | The title of each graph is just the country names, but does not annotate what the graph actually means. | Include a clear title that summarizes the whole plot.
 
 
 
@@ -60,8 +64,9 @@ S/N | Critique | Approach
 
 S/N | Critique | Approach
 ----| ---------|----------
-1   | Cell 3   |
-2   | Cell 4   |
+1 | Size of all 6 charts are relatively small and hard to read. | This might be due to each country being plotted separately, hence we will combine all to make into a single plot of same axis.
+2 | Font size used in the Chart Header is almost as big (or smaller) as the headings for each graph. | Bold the chart header and use a bigger font size to represent the main objective of the graph.
+3 | Many blank areas and chart design is too "empty". | Fill in the white spaces with some descriptions/captions/annotations, and also highlight any key features for the readers to take note of (eg. using different colours to represent increase/decrease)
 
 
 
@@ -73,8 +78,15 @@ S/N | Critique | Approach
 
 ### 3.2 Advantages of New Design
 
-* Able to see the distinct changes in exports and imports trade volume per country 
+* There will be a clear title for the overall chart, including the 2 plots as well. Axes and legends will also be labeled properly. This will thus let the readers have a clearer understanding of the plots.
 
+* There will also be a few short captions/descriptions for the charts. This will thus provide more context to the overall plots.
+
+* In this new design, we will be able to see the distinct changes in exports and imports trade volume per country on the same plot. There won't be any overlaps and thus making it easy to read.
+
+* As the imports and exports are all on the same chart, the timeline used will also be consistent for fair comparison. The axes will also be synchronized across all countries and converted to a better unit of measurement (SGD Billion) so that the numbers will not be too big for reading.
+
+* The use of colours will be introduced into the chart to highlight certain areas as well as showing of notable features.
 
 
 ## 4. Step-by-Step Methodology
@@ -140,7 +152,11 @@ In this first chart, we will be creating a line and bar chart congregated onto a
 
 1. Open up the first sheet tab of Tableau, and we can see the Tables Pane like this: 
 
+<center>
+
 ![Figure 4.3.1: Setting up worksheet in Tableau](img/tabviz1_1.png){width=70%}
+
+</center>
 
 2. Drag variables "Country", "Date" and "SGD (Billion)" into the _"Columns"_ and _"Rows"_, and you can see the plot as follows: 
 
@@ -150,9 +166,9 @@ In this first chart, we will be creating a line and bar chart congregated onto a
 
 <center>
 
-![Figure 4.3.3: Filtering Variables](img/tabviz1_3.png){width=50%}
+![Figure 4.3.3: Filtering Variables](img/tabviz1_3.png){width=55%}
 
-![Figure 4.3.4: Filtering Timeline](img/tabviz1_3.2.png){width=50%}
+![Figure 4.3.4: Filtering Timeline](img/tabviz1_3.2.png){width=55%}
 
 </center>
 
@@ -162,22 +178,22 @@ In this first chart, we will be creating a line and bar chart congregated onto a
 
 ![Figure 4.3.5: Bar Chart](img/tabviz1_4.1.png){width=60%} 
 
-![Figure 4.3.5: Altering the timeline](img/tabviz1_4.2.png){width=60%} 
+![Figure 4.3.6: Altering the timeline](img/tabviz1_4.2.png){width=60%} 
 
-![Figure 4.3.5: Output of Bar Chart after changes to timeline](img/tabviz1_4.3.png){width=60%} 
+![Figure 4.3.7: Output of Bar Chart after changes to timeline](img/tabviz1_4.3.png){width=60%} 
 
 </center>
 
 
-5. In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below in Figure 4.3.6. We will then replace the rows from "SGD (Billion)" to the new calculated field "Balance". After that, drag the "Type" variable into the "Color" at Marks pane and we will get the diverging graph.
+5. In order to plot both exports and imports on the same axis, we have to create a calculated field (right click at the left pane) as shown below in Figure 4.3.8. We will then replace the rows from "SGD (Billion)" to the new calculated field "Balance". After that, drag the "Type" variable into the "Color" at Marks pane and we will get the diverging graph.
 
 <center>
 
-![Figure 4.3.6: Creating calculated field](img/tabviz1_5.1.1.png){width=50%}
+![Figure 4.3.8: Creating calculated field](img/tabviz1_5.1.1.png){width=50%}
 
-![Figure 4.3.7: Formula used in the calculated field](img/tabviz1_5.1.png) 
+![Figure 4.3.9: Formula used in the calculated field](img/tabviz1_5.1.png) 
 
-![Figure 4.3.8: Output after manipulation - Vertical Diverging Graph](img/tabviz1_5.2.png)
+![Figure 4.3.10: Output after manipulation - Vertical Diverging Graph](img/tabviz1_5.2.png)
 
 </center>
 
@@ -189,15 +205,15 @@ In this first chart, we will be creating a line and bar chart congregated onto a
 
 <center>
 
-![Figure 4.3.9: Creating Dual Axis with Line Graph #1](img/tabviz1_6.1.png) 
+![Figure 4.3.11: Creating Dual Axis with Line Graph #1](img/tabviz1_6.1.png) 
 
-![Figure 4.3.10: Creating Dual Axis with Line Graph #2](img/tabviz1_6.2.png){width=50%} 
+![Figure 4.3.12: Creating Dual Axis with Line Graph #2](img/tabviz1_6.2.png){width=50%} 
 
-![Figure 4.3.11: Creating Dual Axis with Line Graph #3](img/tabviz1_6.3.png){width=50%} 
+![Figure 4.3.13: Creating Dual Axis with Line Graph #3](img/tabviz1_6.3.png){width=50%} 
 
-![Figure 4.3.12: Creating Dual Axis with Line Graph #4](img/tabviz1_6.4.png){width=50%} 
+![Figure 4.3.14: Creating Dual Axis with Line Graph #4](img/tabviz1_6.4.png){width=50%} 
 
-![Figure 4.3.12: Output of Line and Bar Graphs together on same axis](img/tabviz1_6.5.png)
+![Figure 4.3.15: Output of Line and Bar Graphs together on same axis](img/tabviz1_6.5.png)
 
 </center>
 
@@ -215,7 +231,7 @@ To distinguish the important features of the graph, we will change the colours o
 
 <center>
 
-![Figure 4.3.13: Creating 2-stepped color](img/tabviz1_7.1.png){width=50%}
+![Figure 4.3.16: Creating 2-stepped color](img/tabviz1_7.1.png){width=50%}
 
 </center>
 
@@ -225,7 +241,7 @@ To distinguish the important features of the graph, we will change the colours o
     
 <center>
 
-![Figure 4.3.14: Reformatting axis to become all positive](img/tabviz1_7.2.png){width=50%}
+![Figure 4.3.17: Reformatting axis to become all positive](img/tabviz1_7.2.png){width=50%}
 
 </center>
 
@@ -234,7 +250,7 @@ To distinguish the important features of the graph, we will change the colours o
 
 After all the steps above, the final chart is as shown below: 
 
-![Figure 4.3.15: Final Output of First Chart](img/Trade Volume and Balance.png)
+![Figure 4.3.18: Final Output of First Chart - Trade Volume and Balance](img/Trade Volume and Balance.png)
 
 
 ### 4.4 Data Visualization (Second Chart: Net Trade Volume)
@@ -253,7 +269,7 @@ This chart will be a simple visualization to the net exports and imports per yea
 
 <center>
 
-![Figure 4.4.1: Changing chart type to Highlighted Table](img/tabviz2_1.png){width=50%}
+![Figure 4.4.1: Changing chart type to Highlighted Table](img/tabviz2_1.png){width=25%}
 
 </center>
 
@@ -291,7 +307,7 @@ Similar to the first chart, we would like our visuals to highlight the key featu
 
 3. Rename the axes and title of the chart for better understanding. After all the steps above, the final chart is shown below:
 
-![Figure 4.4.6 Net Trade Volume](img/Net Trade Volume.png)
+![Figure 4.4.6: Final output of Second Chart - Net Trade Volume](img/Net Trade Volume.png)
 
 
 ### 4.5 Dashboard
@@ -339,8 +355,28 @@ The dashboard can also be accessed [_HERE_](https://public.tableau.com/app/profi
 
 ### Main Observations
 
-* Firstly,
+1. From the graphs, we noticed that the main exporter/importer for Singapore's Merchandise Trade in 2019-2020 is **Mainland China**. The net calculations of trade volume between each year shows that *America** has the steepest decline in import trades, while *Malaysia** has the steepest decline for export trades.
 
+2. The difference between exports and imports was also calculated, where it can be seen that **Hong Kong** has the largest difference between the two type of trades. The import volume is also extremely small compared to other countries.
+
+3. Trade balance is an economical indicator of the country's growth, as it plays a part in influencing the value of currency in global markets as well creation of employment and economic growth. This indicator is measured by taking the exports minus imports volume. In this chart, the trade balance among the countries were plotted by the line graph across 2019-2020. With the _origin axis_ as a baseline, we observe that:
+    + **Hong Kong** experiences _Trade Surplus_ throughout the entire time period, while **Taiwan** experiences a _Trade Deficit_ within the same time period.
+    + Interestingly, **America** experiences _Trade Deficit_ in 2019, but managed to overturn the situation and enter _Trade Surplus_ in 2020. 
+
+
+---
+<center>
+
+That's all for my dataviz makeover post! Thanks for reading :)
+
+</center>
+
+
+#### References
+
+* [International Monetary Fund, Singapore Merchandise Trade](https://dsbb.imf.org/sdds/dqaf-base/country/SGP/category/MET00)
+* [Economics measurement of global trade](https://courses.lumenlearning.com/wmopen-introbusiness/chapter/measuring-global-trade/)
+* [World Integrated Trade Solution - measuring trade balance](http://wits.worldbank.org/visualization/positiveandnegativemerchandisetradebalance.html)
 
 
 
