@@ -117,7 +117,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["dataviz-2_files/anchor-4.2.2/anchor.min.js","dataviz-2_files/bowser-1.9.3/bowser.min.js","dataviz-2_files/distill-2.2.21/template.v2.js","dataviz-2_files/jquery-1.11.3/jquery.min.js","dataviz-2_files/popper-2.6.0/popper.min.js","dataviz-2_files/tippy-6.2.7/tippy-bundle.umd.min.js","dataviz-2_files/tippy-6.2.7/tippy-light-border.css","dataviz-2_files/tippy-6.2.7/tippy.css","dataviz-2_files/tippy-6.2.7/tippy.umd.min.js","dataviz-2_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["dataviz-2_files/anchor-4.2.2/anchor.min.js","dataviz-2_files/bowser-1.9.3/bowser.min.js","dataviz-2_files/distill-2.2.21/template.v2.js","dataviz-2_files/jquery-1.11.3/jquery.min.js","dataviz-2_files/popper-2.6.0/popper.min.js","dataviz-2_files/tippy-6.2.7/tippy-bundle.umd.min.js","dataviz-2_files/tippy-6.2.7/tippy-light-border.css","dataviz-2_files/tippy-6.2.7/tippy.css","dataviz-2_files/tippy-6.2.7/tippy.umd.min.js","dataviz-2_files/webcomponents-2.0.0/webcomponents.js","img/download.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2207,7 +2207,7 @@ ul > li::marker {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   font-weight: 700;
 }
 
@@ -2423,7 +2423,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <a href="../../index.html">Home</a>
 <div class="nav-dropdown">
 <button class="nav-dropbtn">
-DataViz Makeovers
+DATAVIZ MAKEOVERS
  
 <span class="down-arrow">&#x25BE;</span>
 </button>
@@ -2463,7 +2463,11 @@ DataViz Makeovers
 <h3>Contents</h3>
 <ul>
 <li><a href="#introduction">1. Introduction</a></li>
-<li><a href="#evaluation">2. Evaluation</a></li>
+<li><a href="#evaluation">2. Evaluation</a><ul>
+<li><a href="#clarity">2.1 Clarity</a></li>
+<li><a href="#aesthetics">2.2 Aesthetics</a></li>
+</ul></li>
+<li><a href="#proposed-visualization-design">3. Proposed Visualization Design</a></li>
 </ul>
 </nav>
 </div>
@@ -2472,15 +2476,62 @@ DataViz Makeovers
 </blockquote>
 <h2 id="introduction">1. Introduction</h2>
 <p>For many countries, Singapore serves as an important port for trades and also heavily rely on imported goods for the country’s usage. Trades primarily consist of imports and exports, where imports refer to goods brought into Singapore irrespective of the uses, while exports refer to goods brought out of the country. In order to understand the movement of goods in Singapore, data visualization is important to help us discover meaningful insights that could potentially drive better decision-making and improvement of Singapore’s trades.</p>
-<p>In this post, the original visualization chart of Singapore’s Merchandise Trade from <a href="https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data"><em>SingStat</em></a> will be critically reviewed and an improved alternative design will be proposed.</p>
+<p>In this post, the original visualization chart of Singapore’s Merchandise Trade from <a href="https://www.singstat.gov.sg/modules/infographics/singapore-international-trade"><em>SingStat</em></a> will be critically reviewed and an improved alternative design will be proposed.</p>
 <h2 id="evaluation">2. Evaluation</h2>
-<ol type="1">
-<li>Hello
+<p>The original chart is as shown below, and it mainly consists of top 6 trading countries between a time period of 2019-2021. The graphs were plotted based on their exports and imports across the time period.</p>
+<figure>
+<img src="img/download.png" alt="" /><figcaption>Figure 2.1: Original Chart from Singstat</figcaption>
+</figure>
+<p>Before evaluating the chart, primary research on the visualization was conducted in order to understand what are the purposes of this graph as well as key takeaways for the readers.</p>
 <ul>
-<li>Welcome</li>
-<li>NICE</li>
-</ul></li>
-</ol>
+<li><strong>Audience:</strong> Government Agencies, policy-makers, businesses and individuals</li>
+<li><strong>Purpose:</strong> To have a clear overview on changes in trade volume (between exports and imports) of Singapore and its top 6 countries between 2019 to 2021, especially since it was during the Covid-19 pandemic.</li>
+</ul>
+<h3 id="clarity">2.1 Clarity</h3>
+<table>
+<thead>
+<tr class="header">
+<th>S/N</th>
+<th>Critique</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="aesthetics">2.2 Aesthetics</h3>
+<table>
+<thead>
+<tr class="header">
+<th>S/N</th>
+<th>Critique</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="proposed-visualization-design">3. Proposed Visualization Design</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
