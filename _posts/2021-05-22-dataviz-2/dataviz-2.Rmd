@@ -1,7 +1,7 @@
 ---
-title: "DataViz 2"
+title: "DataViz Makeover #2"
 description: |
-  A short description of the post.
+  A second evaluation of Singapore's Merchandize Trade over a longer timeline and more countries.
 author:
   - name: Lim Jiahui, Masters of IT in Business (Analytics)
     url: https://www.linkedin.com/in/lim-jiahui-171104151/

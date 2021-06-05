@@ -1,8 +1,8 @@
 [
   {
     "path": "posts/2021-05-22-dataviz-2/",
-    "title": "DataViz 2",
-    "description": "A short description of the post.",
+    "title": "DataViz Makeover #2",
+    "description": "A second evaluation of Singapore's Merchandize Trade over a longer timeline and more countries.",
     "author": [
       {
         "name": "Lim Jiahui, Masters of IT in Business (Analytics)",
@@ -13,7 +13,7 @@
     "categories": [],
     "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-05-22T11:23:55+08:00",
+    "last_modified": "2021-06-06T01:08:22+08:00",
     "input_file": {}
   },
   {
