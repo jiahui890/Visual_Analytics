@@ -3,12 +3,19 @@ title: "DataViz Makeover #2"
 description: |
   A second evaluation of Singapore's Merchandize Trade over a longer timeline and more countries.
 author:
-  - name: Lim Jiahui, Masters of IT in Business (Analytics)
+  - name: Lim Jiahui, Masters of IT in Business (Analytics) 
     url: https://www.linkedin.com/in/lim-jiahui-171104151/
-date: 05-22-2021
+    affiliation: School of Computing and Information Systems, Singapore Management University
+    affiliation_url: https://scis.smu.edu.sg/
+date: 06-06-2021
 output:
   distill::distill_article:
     self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: true
+    
 ---
 
 
@@ -16,8 +23,16 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
+>This post was written as part of requirements for Visual Analytics course in MITB.
 
-Learn more about using Distill at <https://rstudio.github.io/distill>.
+## 1. Introduction
+For many countries, Singapore serves as an important port for trades and also heavily rely on imported goods for the country's usage. Trades primarily consist of imports and exports, where imports refer to goods brought into Singapore irrespective of the uses, while exports refer to goods brought out of the country. In order to understand the movement of goods in Singapore, data visualization is important to help us discover meaningful insights that could potentially drive better decision-making and improvement of Singapore's trades.
+
+In this post, the original visualization chart of Singapore's Merchandise Trade from [_SingStat_](https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data) will be critically reviewed and an improved alternative design will be proposed.
+
+## 2. Evaluation
+1. Hello
+    + Welcome
+    + NICE
 
 

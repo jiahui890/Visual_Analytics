@@ -78,7 +78,7 @@ d-appendix {
 /*-- Additional custom styles --*/
 
 ul > li::marker {
-  color: #ca225e;
+  color: #5D6D7E;
 }
 
 .distill-site-header { 
@@ -103,7 +103,7 @@ d-title h1,
 d-article h2,
 .posts-list .description h2,
 .posts-list > h1 {
-    font-weight: 300;
+    font-weight: 500;
 }
 
 d-appendix {

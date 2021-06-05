@@ -8,6 +8,14 @@ navbar:
   right:
     - text: "Home"
       href: index.html
-    - text: "About"
+    - text: "DataViz Makeovers"
+      menu:
+        - text: "DataViz #1"
+          href: welcome.html
+        - text: "DataViz #2"
+          href: dataviz-2.html
+    - text: "About Me"
       href: about.html
+    - icon: fab fa-github
+      href: https://github.com/jiahui890
 output: distill::distill_article
