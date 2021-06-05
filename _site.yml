@@ -11,9 +11,9 @@ navbar:
     - text: "DataViz Makeovers"
       menu:
         - text: "DataViz #1"
-          href: 2021-05-21-dataviz-makeover-1.html
+          href: https://limjiahui.netlify.app/posts/2021-05-21-dataviz-makeover-1/
         - text: "DataViz #2"
-          href: dataviz-2.html
+          href: https://limjiahui.netlify.app/posts/2021-05-22-dataviz-2/
     - text: "About Me"
       href: about.html
     - icon: fab fa-github
