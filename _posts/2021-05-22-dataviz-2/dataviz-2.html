@@ -1434,8 +1434,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="dataviz-2_files/kePrint-0.0.1/kePrint.js"></script>
-  <link href="dataviz-2_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
   <script src="dataviz-2_files/jquery-1.11.3/jquery.min.js"></script>
   <script src="dataviz-2_files/popper-2.6.0/popper.min.js"></script>
   <link href="dataviz-2_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1570,6 +1568,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>We will be using the same datasets of “import.csv” and “export.csv” as <a href="https://limjiahui.netlify.app/posts/2021-05-21-dataviz-makeover-1/">DataViz Makeover #1</a>.</p>
 <h3 id="data-preparation">4.2 Data Preparation</h3>
 <p>As the raw dataset consists of multiple unwanted rows, columns and ‘NA’ values, we will be doing some pre-processing on <strong>Tableau Desktop</strong>.</p>
+<center>
 <table>
 <colgroup>
 <col style="width: 30%" />
@@ -1592,54 +1591,31 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </tr>
 </tbody>
 </table>
+</center>
 <div class="layout-chunk" data-layout="l-body">
-<table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
 <thead>
-<tr>
-<th style="text-align:left;">
-Description
-</th>
-<th style="text-align:left;">
-Screenshots
-</th>
+<tr class="header">
+<th>S/N</th>
+<th style="text-align: center;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - T1 and T2.
-</td>
-<td style="text-align:left;">
-<html>
-<body>
-<img src="img/4.2.1.png">
-</body>
-</html>
-</td>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - T1 and T2.<br/><img src="img/4.2.1.png" style="width:50.0%" alt="Figure" /><img src="img/4.2.2.png" style="width:50.0%" alt="Figure" /><br/>Click on <em>New Union</em> and drag both T1 and T2 and select <em>Apply</em>.</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Click on <em>New Union</em> and drag both T1 and T2 and select <em>Apply</em>.
-</td>
-<td style="text-align:left;">
-<html>
-<body>
-<img src="img/4.2.2.png">
-</body>
-</html>
-</td>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">The data table will be stacked and it should look something like this: <br/><img src="img/4.2.3.png" style="width:100.0%" alt="Figure" /><br/> Notice that the structure of the table is wrong, thus we can click on <em>Cleaned with Data Interpreter</em> at the side pane and it will automatically detect the exact table structure.<br/><img src="img/4.2.4.png" style="width:50.0%" alt="Figure" /><br/><br/><img src="img/4.2.5.png" style="width:120.0%" alt="Figure" /><br/></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-The data table will be stacked and it should look something like this:
-</td>
-<td style="text-align:left;">
-<html>
-<body>
-<img src="img/4.2.3.png">
-</body>
-</html>
-</td>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">are neat</td>
 </tr>
 </tbody>
 </table>

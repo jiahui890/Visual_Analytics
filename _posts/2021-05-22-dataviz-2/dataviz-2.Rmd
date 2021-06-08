@@ -77,30 +77,31 @@ We will be using the same datasets of "import.csv" and "export.csv" as [DataViz 
 
 As the raw dataset consists of multiple unwanted rows, columns and 'NA' values, we will be doing some pre-processing on **Tableau Desktop**.
 
+<center>
+
 S/N | Tableau Desktop Description 
 ----| ---------
 1 | Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - "T1" and "T2".<br/>![Figure](img/4.2.1.png){width=50%}![Figure](img/4.2.2.png){width=50%}<br/>Click on _"New Union"_ and drag both "T1" and "T2" and select _"Apply"_.
 2 | The data table will be stacked and it should look something like this: <br/>![Figure](img/4.2.3.png){width=100%}<br/> Notice that the structure of the table is wrong, thus we can click on _"Cleaned with Data Interpreter"_ at the side pane and it will automatically detect the exact table structure.<br/>![Figure](img/4.2.4.png){width=50%}<br/><br/>![Figure](img/4.2.5.png){width=120%}<br/>
 
+</center>
 
 
-```{r echo=FALSE, results='asis'}
-library(kableExtra)
+```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+tabl <- "
+| S/N | Description   | 
+|-----|:-------------:|
+| 1 | Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - T1 and T2.<br/>![Figure](img/4.2.1.png){width=50%}![Figure](img/4.2.2.png){width=50%}<br/>Click on _New Union_ and drag both T1 and T2 and select _Apply_. |
+| 2 | The data table will be stacked and it should look something like this: <br/>![Figure](img/4.2.3.png){width=100%}<br/> Notice that the structure of the table is wrong, thus we can click on _Cleaned with Data Interpreter_ at the side pane and it will automatically detect the exact table structure.<br/>![Figure](img/4.2.4.png){width=50%}<br/><br/>![Figure](img/4.2.5.png){width=120%}<br/> | 
+| 3 | are neat      | 
+"
 
-words <- c("Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - T1 and T2.", "Click on _New Union_ and drag both T1 and T2 and select _Apply_.","The data table will be stacked and it should look something like this:")
-imgs <- c("img/4.2.1.png","img/4.2.2.png","img/4.2.3.png")
-
-
-tbl_img <- data.frame(
-  Description = words,
-  Screenshots = ""
-)
-tbl_img %>%
-  kbl(booktabs = T) %>%
-  kable_paper(full_width = F) %>%
-  column_spec(2, image = imgs)
-
+cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
 ```
+
+
+
+
 
 
 
