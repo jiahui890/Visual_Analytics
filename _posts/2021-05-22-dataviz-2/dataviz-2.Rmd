@@ -33,14 +33,14 @@ In this post, the original visualization chart of Singapore's Merchandise Trade 
 
 ## 2. Evaluation
 
-The original chart is as shown below, and it mainly consists of top 6 trading countries between a time period of 2019-2021. The graphs were plotted based on their exports and imports across the time period.
+The original chart is as shown below, where it consists of 10 trading regions (China, Malaysia, United States, European Union, Taiwan, Korea, Japan, Indonesia, Thailand and Hong Kong) between a time period of January 2011 to December 2020.
 
 ![Figure 2.1: Original Chart from Singstat](img/download.png)
 
 Before evaluating the chart, primary research on the visualization was conducted in order to understand what are the purposes of this graph as well as key takeaways for the readers.
 
 * **Audience:** Government Agencies, policy-makers, businesses and individuals
-* **Purpose:** To have a clear overview on changes in trade volume (between exports and imports) of Singapore and its top 6 countries between 2019 to 2021, especially since it was during the Covid-19 pandemic.
+* **Purpose:** To have a clear overview on the trade volume comparison between imports and exports of Singapore and the 10 countries between a fixed time period of 2011 to 2020.
 
 
 
@@ -59,4 +59,88 @@ S/N | Critique | Approach
 2 |  |
 
 ## 3. Proposed Visualization Design
+
+
+### 3.2 Advantages of New Design
+
+
+
+
+## 4. Step-by-Step Methodology
+
+### 4.1 Data Source
+
+We will be using the same datasets of "import.csv" and "export.csv" as [DataViz Makeover #1](https://limjiahui.netlify.app/posts/2021-05-21-dataviz-makeover-1/). 
+
+
+### 4.2 Data Preparation
+
+As the raw dataset consists of multiple unwanted rows, columns and 'NA' values, we will be doing some pre-processing on **Tableau Desktop**.
+
+S/N | Tableau Desktop Description 
+----| ---------
+1 | Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - "T1" and "T2".<br/>![Figure](img/4.2.1.png){width=50%}![Figure](img/4.2.2.png){width=50%}<br/>Click on _"New Union"_ and drag both "T1" and "T2" and select _"Apply"_.
+2 | The data table will be stacked and it should look something like this: <br/>![Figure](img/4.2.3.png){width=100%}<br/> Notice that the structure of the table is wrong, thus we can click on _"Cleaned with Data Interpreter"_ at the side pane and it will automatically detect the exact table structure.<br/>![Figure](img/4.2.4.png){width=50%}<br/><br/>![Figure](img/4.2.5.png){width=120%}<br/>
+
+
+
+```{r echo=FALSE, results='asis'}
+library(kableExtra)
+
+words <- c("Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - T1 and T2.", "Click on _New Union_ and drag both T1 and T2 and select _Apply_.","The data table will be stacked and it should look something like this:")
+imgs <- c("img/4.2.1.png","img/4.2.2.png","img/4.2.3.png")
+
+
+tbl_img <- data.frame(
+  Description = words,
+  Screenshots = ""
+)
+tbl_img %>%
+  kbl(booktabs = T) %>%
+  kable_paper(full_width = F) %>%
+  column_spec(2, image = imgs)
+
+```
+
+
+
+
+### 4.3 Data Visualization (First Chart)
+
+
+
+
+### 4.5 Dashboard
+
+
+
+## 5. Final Visualization
+
+
+
+### Main Observations
+
+
+
+
+
+
+---
+<center>
+
+That's all for my dataviz makeover #2 post! Thanks for reading :)
+
+</center>
+
+
+#### References
+
+* [International Monetary Fund, Singapore Merchandise Trade](https://dsbb.imf.org/sdds/dqaf-base/country/SGP/category/MET00)
+* [Economics measurement of global trade](https://courses.lumenlearning.com/wmopen-introbusiness/chapter/measuring-global-trade/)
+* [World Integrated Trade Solution - measuring trade balance](http://wits.worldbank.org/visualization/positiveandnegativemerchandisetradebalance.html)
+
+
+
+
+
 
