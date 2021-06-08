@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["dataviz-2_files/anchor-4.2.2/anchor.min.js","dataviz-2_files/bowser-1.9.3/bowser.min.js","dataviz-2_files/distill-2.2.21/template.v2.js","dataviz-2_files/jquery-1.11.3/jquery.min.js","dataviz-2_files/kePrint-0.0.1/kePrint.js","dataviz-2_files/lightable-0.0.1/lightable.css","dataviz-2_files/popper-2.6.0/popper.min.js","dataviz-2_files/tippy-6.2.7/tippy-bundle.umd.min.js","dataviz-2_files/tippy-6.2.7/tippy-light-border.css","dataviz-2_files/tippy-6.2.7/tippy.css","dataviz-2_files/tippy-6.2.7/tippy.umd.min.js","dataviz-2_files/webcomponents-2.0.0/webcomponents.js","img/4.2.1.png","img/4.2.2.png","img/4.2.3.png","img/4.2.4.png","img/4.2.5.png","img/download.png"]}
+  {"type":"character","attributes":{},"value":["dataviz-2_files/anchor-4.2.2/anchor.min.js","dataviz-2_files/bowser-1.9.3/bowser.min.js","dataviz-2_files/distill-2.2.21/template.v2.js","dataviz-2_files/jquery-1.11.3/jquery.min.js","dataviz-2_files/kePrint-0.0.1/kePrint.js","dataviz-2_files/lightable-0.0.1/lightable.css","dataviz-2_files/popper-2.6.0/popper.min.js","dataviz-2_files/tippy-6.2.7/tippy-bundle.umd.min.js","dataviz-2_files/tippy-6.2.7/tippy-light-border.css","dataviz-2_files/tippy-6.2.7/tippy.css","dataviz-2_files/tippy-6.2.7/tippy.umd.min.js","dataviz-2_files/webcomponents-2.0.0/webcomponents.js","img/4.2.1.png","img/4.2.10.png","img/4.2.11.png","img/4.2.12.png","img/4.2.13.png","img/4.2.14.png","img/4.2.15.png","img/4.2.2.png","img/4.2.3.png","img/4.2.4.png","img/4.2.5.png","img/4.2.6.png","img/4.2.7.png","img/4.2.8.png","img/4.2.9.png","img/download.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1568,30 +1568,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>We will be using the same datasets of “import.csv” and “export.csv” as <a href="https://limjiahui.netlify.app/posts/2021-05-21-dataviz-makeover-1/">DataViz Makeover #1</a>.</p>
 <h3 id="data-preparation">4.2 Data Preparation</h3>
 <p>As the raw dataset consists of multiple unwanted rows, columns and ‘NA’ values, we will be doing some pre-processing on <strong>Tableau Desktop</strong>.</p>
-<center>
-<table>
-<colgroup>
-<col style="width: 30%" />
-<col style="width: 69%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>S/N</th>
-<th>Tableau Desktop Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - “T1” and “T2”.<br/><img src="img/4.2.1.png" style="width:50.0%" alt="Figure" /><img src="img/4.2.2.png" style="width:50.0%" alt="Figure" /><br/>Click on <em>“New Union”</em> and drag both “T1” and “T2” and select <em>“Apply”</em>.</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>The data table will be stacked and it should look something like this: <br/><img src="img/4.2.3.png" style="width:100.0%" alt="Figure" /><br/> Notice that the structure of the table is wrong, thus we can click on <em>“Cleaned with Data Interpreter”</em> at the side pane and it will automatically detect the exact table structure.<br/><img src="img/4.2.4.png" style="width:50.0%" alt="Figure" /><br/><br/><img src="img/4.2.5.png" style="width:120.0%" alt="Figure" /><br/></td>
-</tr>
-</tbody>
-</table>
-</center>
 <div class="layout-chunk" data-layout="l-body">
 <table>
 <colgroup>
@@ -1600,7 +1576,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </colgroup>
 <thead>
 <tr class="header">
-<th>S/N</th>
+<th>Steps</th>
 <th style="text-align: center;">Description</th>
 </tr>
 </thead>
@@ -1611,15 +1587,36 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </tr>
 <tr class="even">
 <td>2</td>
-<td style="text-align: center;">The data table will be stacked and it should look something like this: <br/><img src="img/4.2.3.png" style="width:100.0%" alt="Figure" /><br/> Notice that the structure of the table is wrong, thus we can click on <em>Cleaned with Data Interpreter</em> at the side pane and it will automatically detect the exact table structure.<br/><img src="img/4.2.4.png" style="width:50.0%" alt="Figure" /><br/><br/><img src="img/4.2.5.png" style="width:120.0%" alt="Figure" /><br/></td>
+<td style="text-align: center;">The data table will be stacked and it should look something like this: <br/><img src="img/4.2.3.png" style="width:100.0%" alt="Figure" /><br/> Notice that the structure of the table is wrong, thus we can click on <em>Cleaned with Data Interpreter</em> at the side pane and it will automatically detect the exact table structure.<br/><img src="img/4.2.4.png" style="width:50.0%" alt="Figure" /><br/>The data table should now look like this:<br/><img src="img/4.2.5.png" alt="Figure" /><br/></td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td style="text-align: center;">are neat</td>
+<td style="text-align: center;">Next, we will filter the countries from <em>Variables</em> table to the 10 countries of interest. At the top right hand corner of the page, click on the <em>Add</em> Filter.<br/><img src="img/4.2.6.png" style="width:70.0%" alt="Figure" /><br/> Then, we will add the filter for <em>Variables</em> and select the countries (including the total exports and imports) accordingly. <br/><img src="img/4.2.7.png" style="width:70.0%" alt="Figure" /><br/></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">We will now filter the dates to January 2011 to December 2020. Shift and hold to select all unwanted columns, right click and select <em>Hide</em>. <br/><img src="img/4.2.8.png" style="width:60.0%" alt="Figure" /><br/></td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">To convert the date columns to rows, we will use the <em>Pivot</em> function by right clicking the selected columns. <br/><img src="img/4.2.9.png" style="width:70.0%" alt="Figure" /><br/> We can then rename the pivoted columns accordingly.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td style="text-align: center;">Then, we shall rename the variables to shorter words. At the top right hand of the column, click on the tiny triangle and select <em>Aliases</em>. <br/><img src="img/4.2.10.png" style="width:60.0%" alt="Figure" /><br/> We can then edit the names accordingly as shown below.<br/><img src="img/4.2.11.png" style="width:80.0%" alt="Figure" /><br/> We can also rename the <em>Table Name</em> to Exports and Imports accordingly.<br/><img src="img/4.2.12.png" style="width:80.0%" alt="Figure" /><br/></td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td style="text-align: center;">Note that only European Union is in SGD Millon Dollars, while the rest are in SGD Thousands. As the numbers are all big, we will standardize across all values to SGD Billion Dollars. Create a <em>Calculated Field</em> from the mini triangle again. <br/><img src="img/4.2.13.png" style="width:60.0%" alt="Figure" /><br/> Enter the following formula to the field and click <em>Apply</em>. <br/><img src="img/4.2.14.png" style="width:90.0%" alt="Figure" /><br/></td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td style="text-align: center;">Lastly, we shall change the Data type for the Date, from strings to Datetime format. <br/><img src="img/4.2.15.png" style="width:50.0%" alt="Figure" /><br/></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>Viola! Our data is well-prepped and ready to be used for visual constructions.</p>
 <h3 id="data-visualization-first-chart">4.3 Data Visualization (First Chart)</h3>
 <h3 id="dashboard">4.5 Dashboard</h3>
 <h2 id="final-visualization">5. Final Visualization</h2>
