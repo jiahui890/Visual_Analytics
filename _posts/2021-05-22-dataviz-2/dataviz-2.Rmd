@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ## 1. Introduction
 For many countries, Singapore serves as an important port for trades and also heavily rely on imported goods for the country's usage. Trades primarily consist of imports and exports, where imports refer to goods brought into Singapore irrespective of the uses, while exports refer to goods brought out of the country. In order to understand the movement of goods in Singapore, data visualization is important to help us discover meaningful insights that could potentially drive better decision-making and improvement of Singapore's trades.
 
-In this post, the original visualization chart of Singapore's Merchandise Trade from [_SingStat_](https://www.singstat.gov.sg/modules/infographics/singapore-international-trade) will be critically reviewed and an improved alternative design will be proposed.
+In this post, the original visualization chart of Singapore's Merchandise Trade from [_SingStat_](https://www.singstat.gov.sg/modules/infographics/singapore-international-trade) will be critically reviewed and an improved  alternate `interactive` design will be proposed.
 
 
 ## 2. Evaluation
@@ -40,7 +40,7 @@ The original chart is as shown below, where it consists of 10 trading regions (C
 Before evaluating the chart, primary research on the visualization was conducted in order to understand what are the purposes of this graph as well as key takeaways for the readers.
 
 * **Audience:** Government Agencies, policy-makers, businesses and individuals
-* **Purpose:** To have a clear overview on the trade volume comparison between imports and exports of Singapore and the 10 countries between a fixed time period of 2011 to 2020.
+* **Purpose:** To have a clear overview on the trade volume comparison between imports and exports of Singapore and the 10 trading partners between a fixed time period of 2011 to 2020.
 
 
 
@@ -98,12 +98,48 @@ cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
 Viola! Our data is well-prepped and ready to be used for visual constructions.
 
 
-### 4.3 Data Visualization (First Chart)
+### 4.3 Data Visualization (1st Chart)
 
+For this first chart, we will be examining the net exports and imports trade value based on each individual countries, using a diverging lollipop chart.
+
+1. Open up a fresh empty worksheet, and drag _Variables_ into _Rows_ and _Filters_ pane. Because the data source includes the total exports and imports by all global regions, we will filter it out to only visualize the 10 trading markets. Unselect the total exports and imports before clicking on _Apply_.
+
+<center>
+
+![Figure 4.3.1: Filtering Variables](img/4.3.1.png){width=50%}
+
+</center>
+
+2. Next, we will create a calculated field to show the net trade values. Right-click onto the Data pane and click on _Create Calculated Field_. We will use an if-else function to multiply the SGD value to negative if it its imports (aka sheet = 'T1'). Hence, we can apply the formula as shown in Fig 4.3.3 and rename it to "Trade Value Indicator".
+
+
+<center>
+
+![Figure 4.3.2: Filtering Variables](img/4.3.2.png){width=50%}
+
+![Figure 4.3.3: Filtering Variables](img/4.3.3.png){width=75%}
+
+</center>
+
+
+
+
+
+
+
+
+
+
+
+### 4.4 Data Visualization (2nd Chart)
+
+Bar graph + 2 line charts
 
 
 
 ### 4.5 Dashboard
+
+Highlighting
 
 
 
