@@ -33,14 +33,14 @@ In this post, the original visualization chart of Singapore's Merchandise Trade 
 
 ## 2. Evaluation
 
-The original chart is as shown below, where it consists of 10 trading regions (China, Malaysia, United States, European Union, Taiwan, Korea, Japan, Indonesia, Thailand and Hong Kong) between a time period of January 2011 to December 2020.
+The original chart is as shown below, where it consists of major trading regions (in picture shows top 10: China, Malaysia, United States, European Union, Taiwan, Korea, Japan, Indonesia, Thailand and Hong Kong) between a time period of January 2011 to December 2020.
 
 ![Figure 2.1: Original Chart from Singstat](img/download.png)
 
 Before evaluating the chart, primary research on the visualization was conducted in order to understand what are the purposes of this graph as well as key takeaways for the readers.
 
 * **Audience:** Government Agencies, policy-makers, businesses and individuals
-* **Purpose:** To have a clear overview on the trade volume comparison between imports and exports of Singapore and the 10 trading partners between a fixed time period of 2011 to 2020.
+* **Purpose:** To have a clear overview on the trade volume comparison between imports and exports of Singapore and its major trading partners between a fixed time period of 2011 to 2020.The visualization will be made interactive for selected views.
 
 
 
@@ -75,7 +75,7 @@ We will be using the same datasets of "import.csv" and "export.csv" as [DataViz 
 
 ### 4.2 Data Preparation
 
-As the raw dataset consists of multiple unwanted rows, columns and 'NA' values, we will be doing some pre-processing on **Tableau Desktop**.
+As the raw dataset consists of multiple unwanted rows, columns and 'NA' values, we will be doing some pre-processing on **Tableau Desktop**. For the purpose of this interactive visualization, we will be using all trading markets in the dataset.
 
 
 ```{r table2, echo=FALSE, message=FALSE, results='asis', warnings=FALSE}
@@ -84,18 +84,28 @@ tabl <- "
 |-----|:-------------:|
 | 1 | Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - T1 and T2.<br/>![Figure](img/4.2.1.png){width=50%}![Figure](img/4.2.2.png){width=50%}<br/>Click on _New Union_ and drag both T1 and T2 and select _Apply_. |
 | 2 | The data table will be stacked and it should look something like this: <br/>![Figure](img/4.2.3.png){width=100%}<br/> Notice that the structure of the table is wrong, thus we can click on _Cleaned with Data Interpreter_ at the side pane and it will automatically detect the exact table structure.<br/>![Figure](img/4.2.4.png){width=50%}<br/>The data table should now look like this:<br/>![Figure](img/4.2.5.png)<br/> | 
-| 3 | Next, we will filter the countries from _Variables_ table to the 10 countries of interest. At the top right hand corner of the page, click on the _Add_ Filter.<br/>![Figure](img/4.2.6.png){width=70%}<br/> Then, we will add the filter for _Variables_ and select the countries (including the total exports and imports) accordingly. <br/>![Figure](img/4.2.7.png){width=70%}<br/> | 
-| 4 | We will now filter the dates to January 2011 to December 2020. Shift and hold to select all unwanted columns, right click and select _Hide_. <br/>![Figure](img/4.2.8.png){width=60%}<br/> |
-| 5 |  To convert the date columns to rows, we will use the _Pivot_ function by right clicking the selected columns. <br/>![Figure](img/4.2.9.png){width=70%}<br/> We can then rename the pivoted columns accordingly. |
-| 6 |  Then, we shall rename the variables to shorter words. At the top right hand of the column, click on the tiny triangle and select _Aliases_. <br/>![Figure](img/4.2.10.png){width=60%}<br/> We can then edit the names accordingly as shown below.<br/>![Figure](img/4.2.11.png){width=80%}<br/> We can also rename the _Table Name_ to Exports and Imports accordingly.<br/>![Figure](img/4.2.12.png){width=80%}<br/> |
-| 7 |  Note that only European Union is in SGD Millon Dollars, while the rest are in SGD Thousands. As the numbers are all big, we will standardize across all values to SGD Billion Dollars. Create a _Calculated Field_ from the mini triangle again. <br/>![Figure](img/4.2.13.png){width=60%}<br/> Since the values for European Union are less than 5 digits, we can enter the following formula to the field and click _Apply_. <br/>![Figure](img/4.2.14.2.png){width=90%}<br/> |
-| 8 |  Lastly, we shall change the Data type for the Date, from strings to Datetime format. <br/>![Figure](img/4.2.15.png){width=50%}<br/> |
+| 3 | We will now filter the dates to January 2011 to December 2020. Shift and hold to select all unwanted columns, right click and select _Hide_. <br/>![Figure](img/4.2.8.png){width=60%}<br/> |
+| 4 |  To convert the date columns to rows, we will use the _Pivot_ function by right clicking the selected columns. <br/>![Figure](img/4.2.9.png){width=70%}<br/> We can then rename the pivoted columns accordingly. |
+| 5 |  Then, we shall rename the variables to shorter words for simiplicity and uniformity. Initially, the namings of the regions are very long and inconsistent as shown below.<br/>![Figure](img/4.2.11.1.png){width=80%}<br/> As there are many regions, it will take alot of time to rename all individually. Hence, we shall use the split function in Tableau. <br/>![Figure](img/4.2.11.2.png){width=80%}<br/> Great! Now tableau has automatically seperate the units and the region names. At the top right hand of the column, click on the tiny triangle and select _Aliases_. <br/>![Figure](img/4.2.10.png){width=60%}<br/> <br/>![Figure](img/4.2.11.3.png){width=90%}<br/> Now, we can check through the namings and rename those longer ones to their acronyms or shorter version. <br/>**Note:** There are few regions that requires some prior knowledge and research before renaming, eg. Commonwealth of Independent States (CIS) is a group of states together, and Democratic People's Republic of Korea is North Korea. <br/> The final names should look like this: <br/>![Figure](img/4.2.11.4.png){width=90%}<br/> We shall rename this new column as 'Markets'. |
+| 7 | Also, we can rename the _Table Name_ to 'Type' and change the aliases from T1 and T2 to Exports and Imports accordingly.<br/>![Figure](img/4.2.12.png){width=80%}<br/> |
+| 8 | After _split_ function above, notice that the 2nd variable columns becomes like this: <br/>![Figure](img/4.2.16.png){width=80%}<br/> Hence, we shall filter those out to tidy up our table. At the top right corner of the page, click on _Add_ under _Filter_. <br/>![Figure](img/4.2.17.png){width=70%}<br/> Select _Variables Split 2_ and check on the Million and Thousand only. <br/>![Figure](img/4.2.18.png){width=70%}<br/> After that, click on Ok to apply. |
+| 9 |  Note that the SGD values recorded are not consistent, where some are in SGD Millon Dollars, while the rest are in SGD Thousands. As the numbers are all big, we will standardize across all values to SGD Billion Dollars. Create a _Calculated Field_ from the mini triangle again. <br/>![Figure](img/4.2.13.png){width=60%}<br/> We can enter the following formula to the field using if-else function and click _Apply_. <br/>![Figure](img/4.2.19.png){width=90%}<br/> |
+| 10 |  Lastly, we shall change the Data type for the Date, from strings to Datetime format. <br/>![Figure](img/4.2.15.png){width=50%}<br/> |
 "
 
 cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
 ```
 
 Viola! Our data is well-prepped and ready to be used for visual constructions.
+
+
+
+
+
+# REDO
+
+
+
 
 
 ### 4.3 Data Visualization (1st Chart)
@@ -115,9 +125,9 @@ For this first chart, we will be examining the net exports and imports trade val
 
 <center>
 
-![Figure 4.3.2: Filtering Variables](img/4.3.2.png){width=50%}
+![Figure 4.3.2: Creating Calculated Field](img/4.3.2.png){width=50%}
 
-![Figure 4.3.3: Filtering Variables](img/4.3.3.png){width=75%}
+![Figure 4.3.3: Inputting if-else functions](img/4.3.3.png){width=75%}
 
 </center>
 
