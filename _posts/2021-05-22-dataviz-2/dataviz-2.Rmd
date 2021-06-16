@@ -40,7 +40,7 @@ The original chart is as shown below, where it consists of major trading regions
 Before evaluating the chart, primary research on the visualization was conducted in order to understand what are the purposes of this graph as well as key takeaways for the readers.
 
 * **Audience:** Government Agencies, policy-makers, businesses and individuals
-* **Purpose:** To have a clear overview on the trade volume comparison between imports and exports of Singapore and its major trading partners between a fixed time period of 2011 to 2020.The visualization will be made interactive for selected views.
+* **Purpose:** To have a clear overview on which markets are the major net importers and exporters, as well as visualize the total trading volume with Singapore. The trade values used will be between a fixed time period of 2011 to 2020. The visualization will be made interactive for selected views.
 
 
 
@@ -100,19 +100,11 @@ Viola! Our data is well-prepped and ready to be used for visual constructions.
 
 
 
-
-
-# REDO
-
-
-
-
-
 ### 4.3 Data Visualization (1st Chart)
 
-For this first chart, we will be examining the net exports and imports trade value based on each individual countries, using a diverging lollipop chart.
+For this first chart, we will be examining the net exports and imports trade value based on each individual markets, using a horizontal diverging lollipop chart. 
 
-1. Open up a fresh empty worksheet, and drag _Variables_ into _Rows_ and _Filters_ pane. Because the data source includes the total exports and imports by all global regions, we will filter it out to only visualize the 10 trading markets. Unselect the total exports and imports before clicking on _Apply_.
+1. Open up a fresh empty worksheet, and drag _Markets_ into _Rows_ and _Filters_ pane. Because we want to compare between the markets individually, we will filter out the Total Exports and Imports, as well as the Continents (Europe, Asia, America, Oceania, Africa). The filters should look like below, and once all is selected properly, click on _Apply_.
 
 <center>
 
@@ -120,7 +112,7 @@ For this first chart, we will be examining the net exports and imports trade val
 
 </center>
 
-2. Next, we will create a calculated field to show the net trade values. Right-click onto the Data pane and click on _Create Calculated Field_. We will use an if-else function to multiply the SGD value to negative if it its imports (aka sheet = 'T1'). Hence, we can apply the formula as shown in Fig 4.3.3 and rename it to "Trade Value Indicator".
+2. Next, we will create a calculated field to show the net trade values. Right-click onto the Data pane and click on _Create Calculated Field_. We will use an if-else function to multiply the SGD value to negative if it its imports (aka sheet = 'T1'). Hence, we can apply the formula as shown in Fig 4.3.3 and rename it to "Net Trade Indicator".
 
 
 <center>
@@ -132,18 +124,100 @@ For this first chart, we will be examining the net exports and imports trade val
 </center>
 
 
+3. Now, drag the "Net Trade Indicator" into the _Columns_, and you can see a diverging bar chart already. In order to make it a lollipop shape, we have to use dual axis. Drag "Net Trade Indicator" again to columns to create this effect, but change the marks as "Circle" instead and thus it should look something like Fig 4.3.4. 
+
+<center>
+
+![Figure 4.3.4: Creating dual axis with different markings](img/4.3.4.png)
+
+</center>
 
 
+4. Now, lets join them together into one axis. Right click on the x-axis and select on _Dual Axis_. After that, remember to _Synchronize Axis_ so that the plots appear together in sync.
 
 
+<center>
+
+![Figure 4.3.5: Making into one axis](img/4.3.5.png){width=30%}
+
+![Figure 4.3.6: Synchronize Axis](img/4.3.6.png){width=30%}
+
+</center>
 
 
+5. Note that after combining them, the shapes of the chart might be different. Do make sure that one of them is a circle, while the other is a bar graph. You can make the changes under the individual Marks pane (do not change the All marks pane!).
+
+<center>
+
+![Figure 4.3.5: Making into one axis](img/4.3.7.png){width=30%}
+
+</center>
+
+
+6. Next, we shall alter the size and colour for the charts. For the lollipop shape, we need the bar graph to be very thin while the circle to be larger. We can make the necessary changes in its individual Marks pane as well, under _Size_ tab. We can also change the colours under _Color_ accordingly to make the stem and head more distinct. Once the changes has been made, we have achieved our lollipop shape!
+
+
+<center>
+
+![Figure 4.3.8: Making into one axis](img/4.3.8.png)![Figure 4.3.9: Making into one axis](img/4.3.9.png)
+
+![Figure 4.3.10: Lollipop Shape](img/4.3.10.png){width=70%}
+
+</center>
+
+
+7. As the original purpose of the graph is to see Singapore's **Major** trading partners, we shall now create a parameter called "Top N Trading Partners". This parameter can also be used as a filter to change the N value based on what the viewer wish to see.
+    + Right click at the Data Pane and select _Create Parameter_.
+    + We shall create a list with integers from 5-20 with stepsize of 5.
+    + In order to allow it to work as a filter for _Markets_ variable, we can edit the _Markets_ filter by navigating to the _Top_ tab and select the _By field_, changing it to the name of the parameter we just created.
+    + As we are interested in filtering by **Total Sum of Imports and Exports value**, we can select that condition under _by_ drop down menu as well.
+
+
+<center>
+
+![](img/4.3.12.png){width=40%}![](img/4.3.13.png){width=55%}
+
+![](img/4.3.14.png){width=50%}![](img/4.3.16.png){width=50%}
+
+![Figure 4.3.11: Steps to create a Parameter Filter for Top N Trading Partners](){width=0%}
+
+</center>
+
+
+8. Let us now tidy up our graphs but adding the directional colours, labels and filters. 
+    + Firstly, we can change the colours based on the direction by dragging in "Net Trade Indicator" into the _Color_ tab for the **Circle** graph. Click on the colour legend and change it into two-step colours.
+    + Then, we shall drag the "Net Trade Indicator" into the _Label_ tab for **Circle** graph and realign it to center.
+    + As the numbers are quite long, we shall alter them into whole numbers for easier viewing. Right-click on the x-axis and select _Format_. Under the Default, we can customize the appearance of the numbers.
+    + Lastly, we shall add our filters. Click on the parameter and select _Show Parameter_. We are also interested to see the changes across time, hence lets drag the _Date_ variable into the _Filters_ and display the years as a single value list.
+
+
+<center>
+
+![](img/4.3.17.png){width=40%}![](img/4.3.18.png){width=55%}
+
+![](img/4.3.19.png){width=30%}![](img/4.3.20.png){width=60%}
+
+![](img/4.3.21.png){width=50%}![](img/4.3.22.png){width=50%}
+
+![Figure 4.3.12: Steps to tidy up our Graph for easier visualization](){width=0%}
+
+</center>
+
+
+Annnnnnnnnnd now our first chart is done! After a few finishing touches (hiding the top axis, renaming chart title), our final diverging lollipop graph will look like this:
+
+
+![Figure 4.3.13: Final Static Lollipop Graph for Net Trade Value](img/Net Trade Value.png)
 
 
 
 ### 4.4 Data Visualization (2nd Chart)
 
 Bar graph + 2 line charts
+
+
+
+
 
 
 
