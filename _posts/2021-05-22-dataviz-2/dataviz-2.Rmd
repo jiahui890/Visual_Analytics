@@ -138,9 +138,9 @@ For this first chart, we will be examining the net exports and imports trade val
 
 <center>
 
-![Figure 4.3.5: Making into one axis](img/4.3.5.png){width=30%}
+![Figure 4.3.5: Making into one axis](img/4.3.5.png){width=30%}![Figure 4.3.6: Synchronize Axis](img/4.3.6.png){width=30%}
 
-![Figure 4.3.6: Synchronize Axis](img/4.3.6.png){width=30%}
+![Figure 4.3.5: Making into one axis and Synchronize](){width=0%}
 
 </center>
 
@@ -149,7 +149,7 @@ For this first chart, we will be examining the net exports and imports trade val
 
 <center>
 
-![Figure 4.3.5: Making into one axis](img/4.3.7.png){width=30%}
+![Figure 4.3.6: Making into one axis](img/4.3.7.png){width=30%}
 
 </center>
 
@@ -159,9 +159,11 @@ For this first chart, we will be examining the net exports and imports trade val
 
 <center>
 
-![Figure 4.3.8: Making into one axis](img/4.3.8.png)![Figure 4.3.9: Making into one axis](img/4.3.9.png)
+![](img/4.3.8.png)![](img/4.3.9.png)
 
-![Figure 4.3.10: Lollipop Shape](img/4.3.10.png){width=70%}
+![Figure 4.3.7: Changing colours and sizes](){width=0%}
+
+![Figure 4.3.8: Lollipop Shape](img/4.3.10.png){width=70%}
 
 </center>
 
@@ -177,9 +179,11 @@ For this first chart, we will be examining the net exports and imports trade val
 
 ![](img/4.3.12.png){width=40%}![](img/4.3.13.png){width=55%}
 
+![Figure 4.3.9: Creating a list parameter](){width=0%}
+
 ![](img/4.3.14.png){width=50%}![](img/4.3.16.png){width=50%}
 
-![Figure 4.3.11: Steps to create a Parameter Filter for Top N Trading Partners](){width=0%}
+![Figure 4.3.10: Adding parameter into the filter](){width=0%}
 
 </center>
 
@@ -195,35 +199,80 @@ For this first chart, we will be examining the net exports and imports trade val
 
 ![](img/4.3.17.png){width=40%}![](img/4.3.18.png){width=55%}
 
+![Figure 4.3.11: Changing of Colours and Label layout](){width=0%}
+
 ![](img/4.3.19.png){width=30%}![](img/4.3.20.png){width=60%}
 
-![](img/4.3.21.png){width=50%}![](img/4.3.22.png){width=50%}
+![Figure 4.3.12: Making the labels to whole numbers](){width=0%}
 
-![Figure 4.3.12: Steps to tidy up our Graph for easier visualization](){width=0%}
+![](img/4.3.21.png){width=40%}![](img/4.3.22.png){width=50%}
+
+![Figure 4.3.13: Adding filters](){width=0%}
 
 </center>
 
 
-Annnnnnnnnnd now our first chart is done! After a few finishing touches (hiding the top axis, renaming chart title), our final diverging lollipop graph will look like this:
+Annnnnnnnnnd now our first chart is done! After a few finishing touches (hiding the top axis, renaming chart title, sort in descending), our final static diverging lollipop graph will look like this:
 
 
-![Figure 4.3.13: Final Static Lollipop Graph for Net Trade Value](img/Net Trade Value.png)
+![Figure 4.3.14: Final Static Lollipop Graph for Net Trade Value](img/Net Trade Value.png)
 
 
 
 ### 4.4 Data Visualization (2nd Chart)
 
-Bar graph + 2 line charts
+Moving on to the second chart, this graph will visualize the overall performance of each trading partners with Singapore via a bar and line chart combined together. We will also be using the same parameter filter and year filter for this chart.
+
+1. Create an empty sheet, and drag the _Markets_ into the _Columns_ panes. Similarly, we will filter the continents as well as total exports and imports out to focus on trading partners only. We can also add in the _Date_ into _Filters_ and also show the parameter as a filter as well, similar to the above chart.
+
+2. Next, we shall generated two calculated fields, one for exports and the other for imports. We can simply divide them based on an if-else function for calculated fields as shown below.
+
+<center>
+
+![](img/4.4.1.png){width=50%}![](img/4.4.2.png){width=50%}
+
+![Figure 4.4.1: Calculations for Imports and Exports](){width=0%}
+
+</center>
+
+
+3. From here, we shall drag the _Measures Values_ straight into the _Rows_ pane. Note that there will many values, and thus we will drag all out except for the Exports and Imports. We can then change the type of graph to a line chart, and it should like something below:
+
+<center>
+
+![Figure 4.4.2: Line Graphs](img/4.4.3.png){width=100%}
+
+</center>
+
+
+4. Now, we shall add in the bar graph. Drag in _SGD (Billion)_ into the _Rows_ after the _Measure Values_. We can change the type of graph to bar chart, and also perform _Dual Axis_ and _Synchronize Axis_. 
+    + Make sure to change the colours of the graph to make it more visible. Drag _Type_ into the _Color_ tab under the line graph Marks pane to get a distinguished colour for type of trade.
+    + Additionally, sort the bar graph so that it appears in descending order. We can do so by clicking at the tiny icon beside the y-axis name of the bar chart.
+
+
+<center>
+
+![](img/4.4.4.png){width=30%}![](img/4.4.5.png){width=30%}
+
+![Figure 4.4.3: Formatting the Bar Graph into same axis](){width=0%}
+
+</center>
 
 
 
+Finally, we are done with the second chart! It is much easier as we have already generated the filters from previous chart. After some minor touch ups (renaming title, edit colours), the chart should look something like this:
 
+![Figure 4.4.4: Final Static Bar and Line Graph](img/Trade Value.png)
 
 
 
 ### 4.5 Dashboard
 
 Highlighting
+
+Annotation
+
+Smooth Animations
 
 
 
@@ -248,9 +297,9 @@ That's all for my dataviz makeover #2 post! Thanks for reading :)
 
 #### References
 
-* [International Monetary Fund, Singapore Merchandise Trade](https://dsbb.imf.org/sdds/dqaf-base/country/SGP/category/MET00)
-* [Economics measurement of global trade](https://courses.lumenlearning.com/wmopen-introbusiness/chapter/measuring-global-trade/)
-* [World Integrated Trade Solution - measuring trade balance](http://wits.worldbank.org/visualization/positiveandnegativemerchandisetradebalance.html)
+* [Statista](https://www.statista.com/chart/18356/net-importers-and-exporters/)
+* [DataViz Peer Learning](https://isss608.netlify.app/dataviz/dataviz1#peer-learning)
+
 
 
 
