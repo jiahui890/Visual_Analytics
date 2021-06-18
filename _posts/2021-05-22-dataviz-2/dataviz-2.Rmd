@@ -35,7 +35,7 @@ In this post, the original visualization chart of Singapore's Merchandise Trade 
 
 The original chart is as shown below, where it consists of major trading regions (in picture shows top 10: China, Malaysia, United States, European Union, Taiwan, Korea, Japan, Indonesia, Thailand and Hong Kong) between a time period of January 2011 to December 2020.
 
-![Figure 2.1: Original Chart from Singstat](img/download.png)
+![Figure 2.1: Original Chart from Singstat](img/download.png){width=80%}
 
 Before evaluating the chart, primary research on the visualization was conducted in order to understand what are the purposes of this graph as well as key takeaways for the readers.
 
@@ -330,22 +330,82 @@ Moving on to the second chart, this graph will visualize the overall performance
 
 #### Insert ToolTip
 
+Similarly, we would want to let our tooltips give a brief summary of the graphs.
+
+1. Click onto the tooltip for the bar chart and edit it to the style you wish for it to see. You can also edit the line chart accordingly. One sample of the final output is shown below:
+
+<center>
+
+![](img/4.4.10.png){width=50%}![](img/4.4.11.png){width=50%}
+
+![Figure 4.4.6: Creating tooltips for Bar and Line Graph accordingly](){width=0%}
+
+</center>
 
 
 #### Final Graph
 
 Finally, we are done with the second chart! It is much easier as we have already generated the filters from previous chart. After some minor touch ups (renaming title, edit colours), the chart should look something like this:
 
-![Figure 4.4.5: Final Static Bar and Line Graph](img/Trade Value.png)
+![Figure 4.4.7: Final Static Bar and Line Graph](img/Trade Value.png)
 
 
 ### 4.5 Dashboard
 
-Highlighting
+Finally, lets compile all of our charts into the dashboard and make some final adjustments to the interactive portions.
 
-Annotation
+1. Create an empty dashboard and drag in the "Trade Value" and "Net Trade Value" worksheets. For this dashboard, we will be using a fixed size of _Generic Desktop (1366 x 168)_ due to the volatility of the net trade value which will cause some compression if sizing is set to automated. We will also check the _Show Dashboard title_ and drag in _Blank_ or _Text_ objects to create spaces and captions.
 
-Smooth Animations
+<center>
+
+![](img/4.5.1.png){width=40%}![](img/4.5.2.png){width=50%}
+
+![Figure 4.5.1: Defining the sizing and dragging in tools for constructions](){width=00%}
+
+</center>
+
+
+2. After dragging the charts in and arrange them side-by-side, we would want to alter the filters to ensure that it applies to both charts together. Right click on each filter, go to _Apply to Worksheets_ and either choose _All Using This Data Source_ or select the worksheets on the dashboard.
+
+<center>
+
+![Figure 4.5.2: Formatting the filters to be applied for both charts](img/4.5.3.png){width=60%}
+
+</center>
+
+
+3. Next, let's do some **highlighting** to make the visual more interactive.
+    + First, lets make sure that the legend can be highlighted so that the bar and line graph can be shown distinctly.
+    + Next, we will create a _Highlight_ from _Actions_ using _Markets_ as selected fields for both "Trade Value" and "Net Trade Value".
+
+
+<center>
+
+![Figure 4.5.3: Highlighting of legend](img/4.5.4.png){width=45%}
+
+
+![](img/4.5.5.png){width=40%}![](img/4.5.6.png){width=40%}
+
+![Figure 4.5.4: Creating Highlighted Action](img/4.5.7.png){width=50%}
+
+</center>
+
+
+4. Notice that when we click onto the filters, the transitions are not very smooth? We can fix that by adding in _Animations_ from the _Format_ tab, followed by turning _On_ the workbook default.
+
+<center>
+
+![](img/4.5.8.png){width=40%}![](img/4.5.9.png){width=40%}
+
+
+![Figure 4.5.5: Creating Animations](){width=0%}
+
+</center>
+
+5. Next, we will add in an info icon that will display information when hovered. This is not only interactive feature, but also due to dashboard constraints, we can add in more information via the hover function.
+
+
+
 
 
 
