@@ -51,7 +51,7 @@ Before evaluating the chart, primary research on the visualization was conducted
 ### 2.1 Clarity
 
 |S/N | Critique | Approach |
-|:--:|:---------|:---------|
+|:--:|:--------------|:---------|
 |1 | _**Unclear chart title.**_ From the screenshot, the chart title is missing but upon closer examination with the actual data source, the chart title states as "Merchandize Trade Performance with Major Trading Partners, 2020". As the study period is from 2011-2020, the title is incorrect to put as 2020 only. | We will include the correct timeline of the study period, from 2011-2020. |
 |2 | _**Confusing use of circles**_ to represent size of the trade volume, as this causes lots of overlapping. In addition, the white circle in the middle cannot be used to clearly differentiate whether the region is a net importer or exporter. | We will be using distinctive bar graphs to better show the ranking in trade volume as well as differentiating net exporters and importers. |
 |3 | _**Captions/Notes are misleading**_. It is positioned at the bottom of the graph and the captions does not match the graph. We cannot tell whats the trend like in 2009 and 2006, based on the screenshot caption. | We will be using a yearly filter that allow us to see how the trend changes over the years for better comparison. |
@@ -61,7 +61,7 @@ Before evaluating the chart, primary research on the visualization was conducted
 ### 2.2 Aesthetics
 
 |S/N | Critique | Approach |
-|:--:|:---------|:---------|
+|:--:|:--------------|:---------|
 |1 | _**Wrong choice of opaque colours used for the circles.**_ Because of the overlapping circles, the opaque colours make it worse as we can't see what's behind. In addition, the diagonal reference line is also covered and hard to tell where the white circle lies. | For the makeover, we will abstain from using circles to differentiate trade volume and thus overlapping chances are very slim so this issue won't be of concern. |
 |2 | _**Small Font Size.**_ The font size for "Net Importers" and "Net Exporters" are very small and they are position right at the extreme corners of the graph, making it visually hard to read. | Instead of writing it down, we will be using a graph directly to show the regions that are net importers or net exporters. |
 |3 | _**Hard to distinguish regions by colours.**_ The colours of some circles looks very similar, for instance, Thailand and EU. This could be misleading for the viewers. | We will use as wide range of colours for more distinct outlook. |
@@ -102,7 +102,7 @@ As the raw dataset consists of multiple unwanted rows, columns and 'NA' values, 
 ```{r table2, echo=FALSE, message=FALSE, results='asis', warnings=FALSE}
 tabl <- "
 | Steps | Description   | 
-|-----|:-------------:|
+|:-:|:-----------------|
 | 1 | Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - T1 and T2.<br/>![Figure](img/4.2.1.png){width=50%}![Figure](img/4.2.2.png){width=50%}<br/>Click on _New Union_ and drag both T1 and T2 and select _Apply_. |
 | 2 | The data table will be stacked and it should look something like this: <br/>![Figure](img/4.2.3.png){width=100%}<br/> Notice that the structure of the table is wrong, thus we can click on _Cleaned with Data Interpreter_ at the side pane and it will automatically detect the exact table structure.<br/>![Figure](img/4.2.4.png){width=50%}<br/>The data table should now look like this:<br/>![Figure](img/4.2.5.png)<br/> | 
 | 3 | We will now filter the dates to January 2011 to December 2020. Shift and hold to select all unwanted columns, right click and select _Hide_. <br/>![Figure](img/4.2.8.png){width=60%}<br/> |

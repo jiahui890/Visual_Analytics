@@ -1523,9 +1523,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h3 id="clarity">2.1 Clarity</h3>
 <table>
 <colgroup>
-<col style="width: 16%" />
-<col style="width: 41%" />
-<col style="width: 41%" />
+<col style="width: 13%" />
+<col style="width: 51%" />
+<col style="width: 34%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1560,9 +1560,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h3 id="aesthetics">2.2 Aesthetics</h3>
 <table>
 <colgroup>
-<col style="width: 16%" />
-<col style="width: 41%" />
-<col style="width: 41%" />
+<col style="width: 13%" />
+<col style="width: 51%" />
+<col style="width: 34%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1600,7 +1600,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p>The new design includes many filters and highlighted features for a more interactive view. This also includes filtering the regions based on their continent. With this aspect, the viewer can see the countries of interest based on continent instead of searching through the mixture of regions.</p></li>
 <li><p>We will also be adding in descriptions and chart titles to better summarize what the plot wishes to see so that the viewer can better understand and fully interact with the plot.</p></li>
 </ul>
-<p>Click <a href=""><em>HERE</em></a> to see the screenshot of new design, as well as the link to the interactive version on Tableau Public.</p>
+<p>Click <a href="https://limjiahui.netlify.app/posts/2021-05-22-dataviz-2/#final-visualization"><em>HERE</em></a> to see the screenshot of new design, as well as the link to the interactive version on Tableau Public.</p>
 <h2 id="step-by-step-methodology">4. Step-by-Step Methodology</h2>
 <h3 id="data-source">4.1 Data Source</h3>
 <p>We will be using the same datasets of “import.csv” and “export.csv” as <a href="https://limjiahui.netlify.app/posts/2021-05-21-dataviz-makeover-1/">DataViz Makeover #1</a>.</p>
@@ -1609,51 +1609,51 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="layout-chunk" data-layout="l-body">
 <table>
 <colgroup>
-<col style="width: 25%" />
-<col style="width: 75%" />
+<col style="width: 14%" />
+<col style="width: 85%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th>Steps</th>
-<th style="text-align: center;">Description</th>
+<th style="text-align: center;">Steps</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1</td>
-<td style="text-align: center;">Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - T1 and T2.<br/><img src="img/4.2.1.png" style="width:50.0%" alt="Figure" /><img src="img/4.2.2.png" style="width:50.0%" alt="Figure" /><br/>Click on <em>New Union</em> and drag both T1 and T2 and select <em>Apply</em>.</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Import the raw dataset into Tableau Desktop. From there, we can see 2 different tables - T1 and T2.<br/><img src="img/4.2.1.png" style="width:50.0%" alt="Figure" /><img src="img/4.2.2.png" style="width:50.0%" alt="Figure" /><br/>Click on <em>New Union</em> and drag both T1 and T2 and select <em>Apply</em>.</td>
 </tr>
 <tr class="even">
-<td>2</td>
-<td style="text-align: center;">The data table will be stacked and it should look something like this: <br/><img src="img/4.2.3.png" style="width:100.0%" alt="Figure" /><br/> Notice that the structure of the table is wrong, thus we can click on <em>Cleaned with Data Interpreter</em> at the side pane and it will automatically detect the exact table structure.<br/><img src="img/4.2.4.png" style="width:50.0%" alt="Figure" /><br/>The data table should now look like this:<br/><img src="img/4.2.5.png" alt="Figure" /><br/></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">The data table will be stacked and it should look something like this: <br/><img src="img/4.2.3.png" style="width:100.0%" alt="Figure" /><br/> Notice that the structure of the table is wrong, thus we can click on <em>Cleaned with Data Interpreter</em> at the side pane and it will automatically detect the exact table structure.<br/><img src="img/4.2.4.png" style="width:50.0%" alt="Figure" /><br/>The data table should now look like this:<br/><img src="img/4.2.5.png" alt="Figure" /><br/></td>
 </tr>
 <tr class="odd">
-<td>3</td>
-<td style="text-align: center;">We will now filter the dates to January 2011 to December 2020. Shift and hold to select all unwanted columns, right click and select <em>Hide</em>. <br/><img src="img/4.2.8.png" style="width:60.0%" alt="Figure" /><br/></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">We will now filter the dates to January 2011 to December 2020. Shift and hold to select all unwanted columns, right click and select <em>Hide</em>. <br/><img src="img/4.2.8.png" style="width:60.0%" alt="Figure" /><br/></td>
 </tr>
 <tr class="even">
-<td>4</td>
-<td style="text-align: center;">To convert the date columns to rows, we will use the <em>Pivot</em> function by right clicking the selected columns. <br/><img src="img/4.2.9.png" style="width:70.0%" alt="Figure" /><br/> We can then rename the pivoted columns accordingly.</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">To convert the date columns to rows, we will use the <em>Pivot</em> function by right clicking the selected columns. <br/><img src="img/4.2.9.png" style="width:70.0%" alt="Figure" /><br/> We can then rename the pivoted columns accordingly.</td>
 </tr>
 <tr class="odd">
-<td>5</td>
-<td style="text-align: center;">Then, we shall rename the variables to shorter words for simiplicity and uniformity. Initially, the namings of the regions are very long and inconsistent as shown below.<br/><img src="img/4.2.11.1.png" style="width:80.0%" alt="Figure" /><br/> As there are many regions, it will take alot of time to rename all individually. Hence, we shall use the split function in Tableau. <br/><img src="img/4.2.11.2.png" style="width:80.0%" alt="Figure" /><br/> Great! Now tableau has automatically seperate the units and the region names. At the top right hand of the column, click on the tiny triangle and select <em>Aliases</em>. <br/><img src="img/4.2.10.png" style="width:60.0%" alt="Figure" /><br/> <br/><img src="img/4.2.11.3.png" style="width:90.0%" alt="Figure" /><br/> Now, we can check through the namings and rename those longer ones to their acronyms or shorter version. <br/><strong>Note:</strong> There are few regions that requires some prior knowledge and research before renaming, eg. Commonwealth of Independent States (CIS) is a group of states together, and Democratic People’s Republic of Korea is North Korea. <br/> The final names should look like this: <br/><img src="img/4.2.11.4.png" style="width:90.0%" alt="Figure" /><br/> We shall rename this new column as ‘Markets’.</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Then, we shall rename the variables to shorter words for simiplicity and uniformity. Initially, the namings of the regions are very long and inconsistent as shown below.<br/><img src="img/4.2.11.1.png" style="width:80.0%" alt="Figure" /><br/> As there are many regions, it will take alot of time to rename all individually. Hence, we shall use the split function in Tableau. <br/><img src="img/4.2.11.2.png" style="width:80.0%" alt="Figure" /><br/> Great! Now tableau has automatically seperate the units and the region names. At the top right hand of the column, click on the tiny triangle and select <em>Aliases</em>. <br/><img src="img/4.2.10.png" style="width:60.0%" alt="Figure" /><br/> <br/><img src="img/4.2.11.3.png" style="width:90.0%" alt="Figure" /><br/> Now, we can check through the namings and rename those longer ones to their acronyms or shorter version. <br/><strong>Note:</strong> There are few regions that requires some prior knowledge and research before renaming, eg. Commonwealth of Independent States (CIS) is a group of states together, and Democratic People’s Republic of Korea is North Korea. <br/> The final names should look like this: <br/><img src="img/4.2.11.4.png" style="width:90.0%" alt="Figure" /><br/> We shall rename this new column as ‘Markets’.</td>
 </tr>
 <tr class="even">
-<td>7</td>
-<td style="text-align: center;">Also, we can rename the <em>Table Name</em> to ‘Type’ and change the aliases from T1 and T2 to Exports and Imports accordingly.<br/><img src="img/4.2.12.png" style="width:80.0%" alt="Figure" /><br/></td>
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">Also, we can rename the <em>Table Name</em> to ‘Type’ and change the aliases from T1 and T2 to Exports and Imports accordingly.<br/><img src="img/4.2.12.png" style="width:80.0%" alt="Figure" /><br/></td>
 </tr>
 <tr class="odd">
-<td>8</td>
-<td style="text-align: center;">After <em>split</em> function above, notice that the 2nd variable columns becomes like this: <br/><img src="img/4.2.16.png" style="width:80.0%" alt="Figure" /><br/> Hence, we shall filter those out to tidy up our table. At the top right corner of the page, click on <em>Add</em> under <em>Filter</em>. <br/><img src="img/4.2.17.png" style="width:70.0%" alt="Figure" /><br/> Select <em>Variables Split 2</em> and check on the Million and Thousand only. <br/><img src="img/4.2.18.png" style="width:70.0%" alt="Figure" /><br/> After that, click on Ok to apply.</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: left;">After <em>split</em> function above, notice that the 2nd variable columns becomes like this: <br/><img src="img/4.2.16.png" style="width:80.0%" alt="Figure" /><br/> Hence, we shall filter those out to tidy up our table. At the top right corner of the page, click on <em>Add</em> under <em>Filter</em>. <br/><img src="img/4.2.17.png" style="width:70.0%" alt="Figure" /><br/> Select <em>Variables Split 2</em> and check on the Million and Thousand only. <br/><img src="img/4.2.18.png" style="width:70.0%" alt="Figure" /><br/> After that, click on Ok to apply.</td>
 </tr>
 <tr class="even">
-<td>9</td>
-<td style="text-align: center;">Note that the SGD values recorded are not consistent, where some are in SGD Millon Dollars, while the rest are in SGD Thousands. As the numbers are all big, we will standardize across all values to SGD Billion Dollars. Create a <em>Calculated Field</em> from the mini triangle again. <br/><img src="img/4.2.13.png" style="width:60.0%" alt="Figure" /><br/> We can enter the following formula to the field using if-else function and click <em>Apply</em>. <br/><img src="img/4.2.19.png" style="width:90.0%" alt="Figure" /><br/></td>
+<td style="text-align: center;">9</td>
+<td style="text-align: left;">Note that the SGD values recorded are not consistent, where some are in SGD Millon Dollars, while the rest are in SGD Thousands. As the numbers are all big, we will standardize across all values to SGD Billion Dollars. Create a <em>Calculated Field</em> from the mini triangle again. <br/><img src="img/4.2.13.png" style="width:60.0%" alt="Figure" /><br/> We can enter the following formula to the field using if-else function and click <em>Apply</em>. <br/><img src="img/4.2.19.png" style="width:90.0%" alt="Figure" /><br/></td>
 </tr>
 <tr class="odd">
-<td>10</td>
-<td style="text-align: center;">Lastly, we shall change the Data type for the Date, from strings to Datetime format. <br/><img src="img/4.2.15.png" style="width:50.0%" alt="Figure" /><br/></td>
+<td style="text-align: center;">10</td>
+<td style="text-align: left;">Lastly, we shall change the Data type for the Date, from strings to Datetime format. <br/><img src="img/4.2.15.png" style="width:50.0%" alt="Figure" /><br/></td>
 </tr>
 </tbody>
 </table>
