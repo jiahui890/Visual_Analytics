@@ -6,6 +6,8 @@ description: |
   **Name**: Lim Jiahui
   
   **Email**: jiahui.lim.2020@mitb.smu.edu.sg
+  
+  **LinkedIn**: https://www.linkedin.com/in/jiahui-lim-450/
 ---
 
 ```{r setup, include=FALSE}

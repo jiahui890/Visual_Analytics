@@ -4,10 +4,10 @@ description: |
   A second evaluation of Singapore's Merchandize Trade over a longer timeline and more countries.
 author:
   - name: Lim Jiahui, Masters of IT in Business (Analytics) 
-    url: https://www.linkedin.com/in/lim-jiahui-171104151/
+    url: https://www.linkedin.com/in/jiahui-lim-450/
     affiliation: School of Computing and Information Systems, Singapore Management University
     affiliation_url: https://scis.smu.edu.sg/
-date: 06-06-2021
+date: 06-18-2021
 output:
   distill::distill_article:
     self_contained: false
@@ -64,8 +64,11 @@ S/N | Critique | Approach
 
 ## 3. Proposed Visualization Design
 
+![Figure 3.1: Draft Design of the Proposed New Visual](img/Proposed Draft.png)
+
 
 ### 3.2 Advantages of New Design
+
 
 
 
@@ -407,14 +410,14 @@ Finally, lets compile all of our charts into the dashboard and make some final a
 </center>
 
 
-5. Next, we will add in an info icon that will display information when hovered. This is not only an interactive feature, but also due to dashboard constraints, we can add in more information via the hover function.
+5. Next, we will add in an info icon that will display useful information when hovered. This is not only an interactive feature, but also due to dashboard constraints, we can add in more information via the hover function.
     + Create an empty worksheet and rename it to "Info".
     + Create a calculated field and we will type in "Info". Apply the calculation.
     + Drag _Info_ into the _Rows_ pane. Right click on the sheet to hide away the title and header.
     + We will then change the Marks Pane to _Shape_, followed by clicking onto the _Shape_ tab to select the type of shape we want.
     + We can further format the sheet by removing the gridlines as well as changing the background colour by right-clicking select _Format_.
     + To make it hoverable with the correct information, we shall edit the _Tooltip_ accordingly.
-    + Hence, the **final** format for this icon should look something like in Fig 4.5.8.
+    + Hence, the **final** text format for this icon should look something like in Fig 4.5.8.
 
 
 <center>
@@ -431,7 +434,40 @@ Finally, lets compile all of our charts into the dashboard and make some final a
 
 </center>
 
-6. Finally, let's input this hover icon into the dashboard.
+
+6. Next, we shall include a graphical illustration into the hover information. To do so, we need to create a new graph from a new worksheet.
+    + Drag _Date_ and _Measure Values_ into the _Columns_ and _Rows_ pane respectively. 
+    + Remove unwanted measured values so that only _Exports_, _Imports_ and _Total (SGD Billion)_ are left in the graph.
+    + We shall annotate the graph, such that the lines are distinct. Drag the _Measure Names_ and _Measure Values_ into the _Label_ tab. We can also drag in _Measure Names_ to the _Color_ tab to allow colours to distinguish the different trade types.
+    + As we notice fluctuations at 2016 and 2018, we shall add in reference lines at those points. First, we change the _Date_ type to continuous and then right-click on the axis to _Add Reference Line_.
+    + Select the value to be a _Constant_ and the date to be at the beginning of the respective year (eg. 1/1/2016). We can display the label to be the constant value and format the line to dotted as well as thinner line.
+    + The final overview should look something like Fig 4.5.13.
+
+<center>
+
+![Figure 4.5.10: Constructing of Line Graphs for Exports, Imports and Total Trade](img/4.5.18.png){width=60%}
+
+![Figure 4.5.11: Annotating the Graph](img/4.5.19.png){width=30%}
+
+![](img/4.5.20.png){width=30%}![](img/4.5.21.png){width=30%}
+
+![Figure 4.5.12: Adding Reference Lines](img/4.5.22.png){width=50%}
+
+![Figure 4.5.13: Final Overview](img/4.5.23.png){width=80%}
+
+</center>
+
+
+7. After that, to include this graph into the tooltip, we shall go to the "Info" sheet's tooltip, select _Insert_, _Sheets_ and click onto the line graph.
+
+<center>
+
+![Figure 4.5.14: Adding graph into Tooltip](img/4.5.24.png){width=70%}
+
+</center>
+
+
+8. Finally, let's input this hover icon into the dashboard.
     + Drag in the "Info" sheet into the dashboard and change the format to _Floating_ so that we can position it to where we want.
     + Hide away the title of the sheet.
     + Let's also include a caption by dragging in the _Text_ object, making it floating as well and edit it accordingly.
@@ -439,6 +475,7 @@ Finally, lets compile all of our charts into the dashboard and make some final a
 <center>
 
 ![](img/4.5.16.png){width=30%}![](img/4.5.17.png){width=30%}
+
 ![Figure 4.5.9: Inserting the icon into Dashboard](){width=0%}
 
 </center>
@@ -449,11 +486,15 @@ Well done!! We are now set up for the visualization and ready to evaluate the ob
 
 ## 5. Final Visualization
 
+The final visualization screenshot is as shown below, and the interactive version can be accessed [HERE](https://public.tableau.com/app/profile/lim.jiahui/viz/dataviz2_v2/FinalDashboard)
+
+![Figure 5.1: Final Dashboard (Static Image)](img/Final Dashboard.png)
 
 
 ### Main Observations
 
-
+1. **Top Trader**:
+    + <p style="color:red">this part of which is red!</p>
 
 
 

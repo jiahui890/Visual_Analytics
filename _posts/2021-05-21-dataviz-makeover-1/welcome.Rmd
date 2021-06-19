@@ -4,7 +4,7 @@ description: |
   Changing of SingStat's Merchandize Trade Visualization using R and Tableau.
 author:
   - name: Lim Jiahui, Masters of IT in Business (Analytics) 
-    url: https://www.linkedin.com/in/lim-jiahui-171104151/
+    url: https://www.linkedin.com/in/jiahui-lim-450/
     affiliation: School of Computing and Information Systems, Singapore Management University
     affiliation_url: https://scis.smu.edu.sg/
 date: 05-21-2021
