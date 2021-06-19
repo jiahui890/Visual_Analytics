@@ -486,15 +486,37 @@ Well done!! We are now set up for the visualization and ready to evaluate the ob
 
 ## 5. Final Visualization
 
-The final visualization screenshot is as shown below, and the interactive version can be accessed [HERE](https://public.tableau.com/app/profile/lim.jiahui/viz/dataviz2_v2/FinalDashboard)
+The final visualization screenshot is as shown below, and the interactive version can be accessed [_HERE_](https://public.tableau.com/app/profile/lim.jiahui/viz/dataviz2_v2/FinalDashboard).
 
 ![Figure 5.1: Final Dashboard (Static Image)](img/Final Dashboard.png)
 
 
 ### Main Observations
 
-1. **Top Trader**:
-    + <p style="color:red">this part of which is red!</p>
+1. **Overall observations**:
+    + From 2011-2020, the top 20 trading partners are mainly located in the Asia Continent. 
+    + Overall trend in trade dips in 2016 and increases sharply in 2018. The dip might be due to [worldwide events](https://www.wto.org/english/res_e/statis_e/wts2016_e/WTO_Chapter_03_e.pdf), such as economic slowdown in China, falling oil prices and lower demand in Asia.
+    + In addition, the increase might be affiliated to the implementation of Trans-Pacific Agreement. [WTO](https://www.wto.org/english/res_e/statis_e/wts2018_e/wts2018_e.pdf) research shows that increased spending mainly from US (with reference to the agreemnt) and rising consumption rate from Japan has contributed to strong growth in trades from 2017-2018.
+    
+<center>
+
+![Figure 5.2: Overall trend in Singapore's Trade](img/5.2.png){width=80%}![](img/2011-2020.png){width=10%}
+
+</center>
+
+
+2. **Top Trading Partner(s)**: China (2013-2020), Malaysia (2011-2012)
+    + As Malaysia is Singapore's nearest neighbour, it is no surprise that the trade volume of Malaysia is generally within the Top 5 rank across the years.
+    + Malaysia was ranked 1st in 2011, but China eventually took over from 2013 onwards. The sudden increase from China might be due to the Singapore-China Free Trade Agreement (FTA) amendment in 2011 and China's ever-growing economy and demand from manufactured goods. 
+    + Interestingly, the FTA from [here](https://www.enterprisesg.gov.sg/non-financial-assistance/for-singapore-companies/free-trade-agreements/ftas/singapore-ftas/csfta) states that new benefits were added to the FTA from late 2019, which should cause the trade with China to be better, but the trade volume slightly decrease from SGD 137B in 2019 to SGD 136B in 2020. This might coincide with the outbreak of Covid-19 in Wuhan during Dec 2019 and eventually causes country-wide lockdown in China.
+
+
+3. <span style="color:green">**Top Net Exporter**</span>: Hong Kong
+    + Hong Kong has been Singapore's top exporter from 2011-2020, where the average exports volume remains stable at around SGD 50 billion. The highest trade surplus recorded was in 2018, with a surplus value of SGD 60B.  
+
+
+4. <span style="color:red">**Top Net Importer**</span>: US (from 2011-2017),Taiwan from (2018-2020)
+    + In 2011-2017, the trade deficit value of US slowly increases from SGD -20B to SGD -15B, holding the top importer position until 2018 where Taiwan took over with a trade deficit of SGD -20B. The trade deficit value of Taiwan has then been decreasing since 2018 to 2020, hitting a new low of SGD -25B in 2020.
 
 
 
