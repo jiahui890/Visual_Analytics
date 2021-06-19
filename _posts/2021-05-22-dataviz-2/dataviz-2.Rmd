@@ -161,7 +161,7 @@ For this first chart, we will be examining the net exports and imports trade val
 
 <center>
 
-![Figure 4.3.5: Making into one axis](img/4.3.5.png){width=30%}![Figure 4.3.6: Synchronize Axis](img/4.3.6.png){width=30%}
+![](img/4.3.5.png){width=30%}![](img/4.3.6.png){width=30%}
 
 ![Figure 4.3.5: Making into one axis and Synchronize](){width=0%}
 
@@ -236,15 +236,15 @@ For this first chart, we will be examining the net exports and imports trade val
 
 
 9. To make our graph visibly clearer for readers, we shall add in a reference line as well as color-coded sections.
-    + Right click onto the x-axis and select _Add Reference Line_.
+    + First, lets sort the plot in descending order by clicking the tiny bar right next to the x-axis title. Then, we can add the line by right clicking onto the x-axis and select _Add Reference Line_.
     + Edit the parameters by changing the value to a constant 0, dotted line, as well as filled colours as shown in Fig 4.3.15.
 
 
 <center>
 
-![Figure 4.3.14: Adding a reference line](img/4.3.23.png){width=40%}
+![Figure 4.3.14: Sorting graph descendingly and adding a reference line](img/4.3.23.png){width=40%}
 
-![Figure 4.3.14: Editing appearance of reference line and graph](img/4.3.24.png){width=60%}
+![Figure 4.3.15: Editing appearance of reference line and graph](img/4.3.24.png){width=80%}
 
 </center>
 
@@ -257,7 +257,7 @@ Let's now make the visual more interactive with the use of tooltips. We can edit
 
 <center>
 
-![Figure 4.3.15: Calculated field for Tooltip](img/4.3.25.png){width=70%}
+![Figure 4.3.16: Calculated field for Tooltip](img/4.3.25.png){width=70%}
 
 </center>
 
@@ -266,9 +266,9 @@ Let's now make the visual more interactive with the use of tooltips. We can edit
 
 <center>
 
-![Figure 4.3.15: Inserting fields into Tooltip](img/4.3.26.png){width=70%}
+![Figure 4.3.17: Inserting fields into Tooltip](img/4.3.26.png){width=70%}
 
-![Figure 4.3.15: Inserting fields into Tooltip](img/4.3.27.png){width=70%}
+![Figure 4.3.18: Overview of Tooltip](img/4.3.27.png){width=70%}
 
 </center>
 
@@ -279,7 +279,7 @@ Let's now make the visual more interactive with the use of tooltips. We can edit
 And now our first chart is done! After a few finishing touches (hiding the top axis, renaming chart title, sort in descending), our final static diverging lollipop graph will look like this:
 
 
-![Figure 4.3.17: Final Static Lollipop Graph for Net Trade Value](img/Net Trade Value.png)
+![Figure 4.3.19: Final Static Lollipop Graph for Net Trade Value](img/Net Trade Value.png)
 
 
 
