@@ -466,17 +466,14 @@ Finally, lets compile all of our charts into the dashboard and make some final a
 
 3. Next, let's do some **highlighting** to make the visual more interactive.
     + First, lets make sure that the legend can be highlighted so that the bar and line graph can be shown distinctly.
-    + Next, we will create a _Highlight_ from _Actions_ using _Markets_ as selected fields for both "Trade Value" and "Net Trade Value".
+    + Next, we will create a _Highlight_ from _Actions_ using _Markets_ as selected fields for both "Scatterplot" and "Net Trade Value".
 
 
 <center>
 
-![Figure 4.5.3: Highlighting of legend](img/4.5.4.png){width=45%}
-
-
 ![](img/4.5.5.png){width=40%}![](img/4.5.6.png){width=40%}
 
-![Figure 4.5.4: Creating Highlighted Action](img/4.5.7.png){width=50%}
+![Figure 4.5.3: Creating Highlighted Action](img/1.22.png){width=50%}
 
 </center>
 
@@ -569,9 +566,9 @@ Well done!! We are now set up for the visualization and ready to evaluate the ob
 
 ## 5. Final Visualization
 
-The final visualization screenshot is as shown below, and the interactive version can be accessed [_HERE_](https://public.tableau.com/app/profile/lim.jiahui/viz/dataviz2_v2/FinalDashboard).
+The final visualization screenshot is as shown below, and the interactive version can be accessed [_HERE_](https://public.tableau.com/app/profile/lim.jiahui/viz/dataviz2_v2/Dashboard2).
 
-![Figure 5.1: Final Dashboard (Static Image)](img/Final Dashboard.png)
+![Figure 5.1: Final Dashboard (Static Image)](img/Dashboard 2.png)
 
 
 ### Main Observations
