@@ -53,31 +53,31 @@ Before evaluating the chart, primary research on the visualization was conducted
 |S/N | Critique | Approach |
 |:-:|:--------------|:---------|
 |1 | _**Unclear chart title.**_ From the screenshot, the chart title is missing but upon closer examination with the actual data source, the chart title states as "Merchandize Trade Performance with Major Trading Partners, 2020". As the study period is from 2011-2020, the title is incorrect to put as 2020 only. | We will include the correct timeline of the study period, from 2011-2020. |
-|2 | _**Confusing use of circles**_ to represent size of the trade volume, as this causes lots of overlapping. In addition, the white circle in the middle cannot be used to clearly differentiate whether the region is a net importer or exporter. | We will be using distinctive bar graphs to better show the ranking in trade volume as well as differentiating net exporters and importers. |
+|2 | _**Confusing use of circles**_ to represent size of the trade volume, as this causes lots of overlapping. In addition, the white circle in the middle cannot be used to clearly differentiate whether the region is a net importer or exporter. | We will be using circles of same size and calculated fields to better show the ranking in trade volume. To differentiate net exporters and importers, we will use distinctive colours. |
 |3 | _**Captions/Notes are misleading**_. It is positioned at the bottom of the graph and the captions does not match the graph. We cannot tell whats the trend like in 2009 and 2006, based on the screenshot caption. | We will be using a yearly filter that allow us to see how the trend changes over the years for better comparison. |
-|4 | _**Unclear axis labels.**_ The position of the x- and y-axis labels are position at the origin which makes it unclear. In addition, there are missing units of the labels. | We will be positioning the labels in the center of graph, as well as adding units (in this case SGD Billion). |
+|4 | _**Unclear axis labels.**_ The position of the x- and y-axis labels are position at the origin which makes it unclear. The exports is the x-axis but in this case it appears on the y-axis side which can be misleading. In addition, there are missing units of the labels. | We will be positioning the labels in the center of graph, as well as adding units (in this case SGD Billion). |
 
 
 ### 2.2 Aesthetics
 
 |S/N | Critique | Approach |
 |:-:|:--------------|:---------|
-|1 | _**Wrong choice of opaque colours used for the circles.**_ Because of the overlapping circles, the opaque colours make it worse as we can't see what's behind. In addition, the diagonal reference line is also covered and hard to tell where the white circle lies. | For the makeover, we will abstain from using circles to differentiate trade volume and thus overlapping chances are very slim so this issue won't be of concern. |
-|2 | _**Small Font Size.**_ The font size for "Net Importers" and "Net Exporters" are very small and they are position right at the extreme corners of the graph, making it visually hard to read. | Instead of writing it down, we will be using a graph directly to show the regions that are net importers or net exporters. |
+|1 | _**Wrong choice of opaque colours used for the circles.**_ Because of the overlapping circles, the opaque colours make it worse as we can't see what's behind. In addition, the diagonal reference line is also covered and hard to tell where the white circle lies. | For the makeover, we will use circles will lower opaque-city and also input white borders to distinguish better. |
+|2 | _**Small Font Size.**_ The font size for "Net Importers" and "Net Exporters" are very small and they are position right at the extreme corners of the graph, making it visually hard to read. | Besides annotating on the graph itself, we will have a second graph to directly to show the regions that are net importers or net exporters. |
 |3 | _**Hard to distinguish regions by colours.**_ The colours of some circles looks very similar, for instance, Thailand and EU. This could be misleading for the viewers. | We will use as wide range of colours for more distinct outlook. |
 
 
 
 ## 3. Proposed Visualization Design
 
-![Figure 3.1: Draft Design of the Proposed New Visual](img/Proposed Draft.png)
+![Figure 3.1: Draft Design of the Proposed New Visual](img/newdraft.png)
 
 
 ### 3.2 Advantages of New Design
 
-- Instead of using circle plots, we will be using bar/line graph and lollipop chart. This gives better visibility to see the size of trade volume across different regions and continents. There will not be any overlapping and the sizes are sorted in order, allowing us to better see the top trading partners.
+- Instead of showing the trade volume ranking by size, we will be using calculated fields to annotate the rank directly. This gives better visibility to see the size of trade volume across different regions and continents. There will not be any overlapping, allowing us to better see all trading partners.
 
-- Instead of squeezing the net exporters and importers onto one graph with the trade volume, we will be seperating them. This will prevent any overlapping as well as better show the distinctive ranking of top regions based on the criteria we are interested in (trade volume, net exporter and net importer), since they may not be the same (eg. China is top in trade volume but neither a top exporter or importer).
+- Instead of squeezing the ranking of net exporters and importers onto one graph with the trade volume, we will be separating them. The first plot will give us general idea of who is a exporter or importer, but the ranking can be determined with another plot. This will prevent any overlapping as well as better show the distinctive ranking of top regions based on the criteria we are interested in (trade volume, net exporter and net importer), since they may not be the same (eg. China is top in trade volume but neither a top exporter or importer).
 
 - The new design includes many filters and highlighted features for a more interactive view. This also includes filtering the regions based on their continent. With this aspect, the viewer can see the countries of interest based on continent instead of searching through the mixture of regions.
 
@@ -557,6 +557,14 @@ Finally, lets compile all of our charts into the dashboard and make some final a
 ![](img/4.5.16.png){width=30%}![](img/4.5.17.png){width=30%}
 
 ![Figure 4.5.9: Inserting the icon into Dashboard](){width=0%}
+
+</center>
+
+9. For some finishing touches, we will include some captions/findings on the top of the dashboard, followed by annotation on the first chart by right-clicking onto the space, select _Annotate_ followed by _Area_. We can then type what ever information we want.
+
+<center>
+
+![Figure 4.5.10: Annotations of graph](img/1.23.png){width=30%}
 
 </center>
 
