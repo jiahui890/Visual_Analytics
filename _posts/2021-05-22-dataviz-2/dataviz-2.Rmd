@@ -215,7 +215,7 @@ For this first chart, we will be examining the net exports and imports trade val
     + Firstly, we can change the colours based on the direction by dragging in "Net Trade Indicator" into the _Color_ tab for the **Circle** graph. Click on the colour legend and change it into two-step colours.
     + Then, we shall drag the "Net Trade Indicator" into the _Label_ tab for **Circle** graph and realign it to center.
     + As the numbers are quite long, we shall alter them into whole numbers for easier viewing. Right-click on the x-axis and select _Format_. Under the Default, we can customize the appearance of the numbers.
-    + Lastly, we shall add our filters. Click on the parameter and select _Show Parameter_. We are also interested to see the changes across time, hence lets drag the _Date_ variable into the _Filters_ and display the years as a single value list.
+    + Lastly, we shall add our filters. Click on the parameter and select _Show Parameter_. We are also interested to see the changes across time, hence lets drag the _Date_ variable into the _Filters_ and display the years as a single value list while removing the "All" function.
 
 
 <center>
@@ -228,7 +228,7 @@ For this first chart, we will be examining the net exports and imports trade val
 
 ![Figure 4.3.12: Making the labels to whole numbers](){width=0%}
 
-![](img/4.3.21.png){width=40%}![](img/4.3.22.png){width=50%}
+![](img/4.3.21.png){width=30%}![](img/4.3.22.png){width=30%}![](img/4.3.28.png){width=40%}
 
 ![Figure 4.3.13: Adding filters](){width=0%}
 
@@ -285,13 +285,13 @@ And now our first chart is done! After a few finishing touches (hiding the top a
 
 ### 4.4 Data Visualization (2nd Chart)
 
-Moving on to the second chart, this graph will visualize the overall performance of each trading partners with Singapore via a bar and line chart combined together. We will also be using the same parameter filter and year filter for this chart.
+Moving on to the second chart, this graph will visualize the overall performance of each trading partners with Singapore via the same scatterplot based on the original design, but improved. We will also be using the same parameter filter and year filter for this chart.
 
 #### Setting up the Plot
 
-1. Create an empty sheet, and drag the _Markets_ into the _Columns_ panes. Similarly, we will filter the continents as well as total exports and imports out to focus on trading partners only. We can also add in the _Date_ into _Filters_ and also show the parameter as a filter as well, similar to the above chart.
+1. Create an empty worksheet. Similarly, we will filter the continents as well as total exports and imports out to focus on trading partners only. To do so, drag _Markets_ into the _Filters_ pane. We can also add in the _Date_ into _Filters_ and also show the top N parameter as a filter as well, similar to the above chart.
 
-2. Next, we shall generated two calculated fields, one for exports and the other for imports. We can simply divide them based on an if-else function for calculated fields as shown below.
+2. Create an empty worksheet. Next, we shall generate two calculated fields, one for exports and the other for imports. We can simply divide them based on an if-else function for calculated fields as shown below.
 
 <center>
 
@@ -302,30 +302,84 @@ Moving on to the second chart, this graph will visualize the overall performance
 </center>
 
 
-3. From here, we shall drag the _Measures Values_ straight into the _Rows_ pane. Note that there will many values, and thus we will drag all out except for the Exports and Imports. We can then change the type of graph to a line chart, and it should like something below:
-
-<center>
-
-![Figure 4.4.2: Line Graphs](img/4.4.3.png){width=100%}
-
-</center>
-
-
-4. Now, we shall add in the bar graph. Drag in _SGD (Billion)_ into the _Rows_ after the _Measure Values_. We can change the type of graph to bar chart, and also perform _Dual Axis_ and _Synchronize Axis_. 
-    + Make sure to change the colours of the graph to make it more visible. Drag _Type_ into the _Color_ tab under the line graph Marks pane to get a distinguished colour for type of trade.
-    + Additionally, sort the bar graph so that it appears in descending order. We can do so by clicking at the tiny icon beside the y-axis name of the bar chart.
+3. After creating the calculated fields, drag in _Exports_ to the _Columns_ and _Imports_ to the _Rows_. Noticed that only one dot appear on the chart, hence we shall drag in _Markets_ to the _Detail_ tab at the Marks Pane. The chart should finally look like something below (with the filters and parameter as well).
 
 
 <center>
 
-![](img/4.4.4.png){width=30%}![](img/4.4.5.png){width=30%}
-
-![Figure 4.4.3: Formatting the Bar Graph into same axis](){width=0%}
+![Figure 4.4.2: Scatterplot](img/1.1.png){width=80%}
 
 </center>
 
 
-5. In order to make our graph more interactive, we shall add in an additional filter (that will also be used with the above chart simultaneously) that allow the users to choose the continent. Each continent will also contain the respective countries and regions, which can be found [_HERE_](https://simple.wikipedia.org/wiki/List_of_countries_by_continents).
+4. Let's tidy up this graph. 
+    + Firstly, let's change the shape of the graph to circles by clicking at the Marks pane. We shall also add in labels of the country for the circles by dragging in the _Markets_ to _Label_ tab.
+    + Next, we would like to edit the scale of the x-axis and y-axis. We shall follow the same scale of 80 Billion based on the original graph. A quick scan through the years also validate that 80 billion for both axis suffice. We can do so by right-clicking onto either axis, select _Edit Axis_, _Fixed_ and change to 0 and 80 accordingly. Repeat the same for the other axis.
+    + Let's also edit the x- and y- axis names to include the units (SGD Billion) so that we won't have to put it into our labels. Likewise, right click to _Edit Axis_.
+
+
+<center>
+
+![](img/1.2.png){width=20%}![](img/1.3.png){width=40%}
+
+![Figure 4.4.3: Formatting Chart](){width=0%}
+
+
+![](img/1.4.png){width=20%}![](img/1.5.png){width=40%}![](img/1.6.png){width=40%}
+
+![Figure 4.4.4: Editing x- and y- axis (same methods)](){width=0%}
+
+</center>
+
+
+5. Next, we shall add in a reference line to differentiate the net exporter and net importer.
+    + Firstly, lets create a calculated field, say for the _Exports_. We shall name it _Reference Line_.
+    + Drag the _Reference Line_ into the _Rows_, next to _Imports_.
+    + Notice how they appear to be in a straight line? Let's change the shape of this to make it into a _Line_ using the Marks Pane.
+    + Next, we edit the reference line y-axis to fix it the same with our plot, 0-80.
+    + We shall then make the line extend to the origin. At any point on the line, right click, select _Trend Lines_ and _Show Trend Lines_. Then, select the one that extends and hit 0.
+    + We can also click on _Edit Trendline_ and check the _Force Intercept to 0_.
+    + After that, we can see that the original line is still in place. To remove it, we can change the opacity to 0% from the Marks pane.
+    + Good! Now let's make the line onto the same axis by using _Dual Axis_ and _Synchronize Axis_.
+
+
+<center>
+
+![](img/1.7.png){width=50%}![](img/1.8.png){width=40%}
+
+![Figure 4.4.5: Calculated Field and changing chart type](){width=0%}
+
+
+![](img/1.9.png){width=50%}![](img/1.10.png){width=30%}
+
+
+![](img/1.18.png){width=40%}![](img/1.19.png){width=60%}
+
+![Figure 4.4.6: Extending line to origin](){width=0%}
+
+
+![](img/1.11.png){width=30%}![](img/1.12.png){width=30%}
+
+![Figure 4.4.7: Putting the line onto the same graph](){width=0%}
+
+</center>
+
+
+6. Now, lets make our plot more clear in its aim. We wish to use the plot to try and show who are the net importers and exporters in general, as well as their trade volume.
+    + First, let's drag in the calculated field from the first chart, _Net Trade Indicator_, into the _Color_ tab from Marks Pane. We shall edit the colours to make it two-stepped and with the middle as 0.
+    + As we want the circles to not be opaque in the event of overlapping, we can edit the opacity in the Marks pane, as well as adding a white border to distinguish.
+
+
+<center>
+
+![Figure 4.4.8: Creating colours to indicate distinct comparison](img/1.13.png){width=40%}
+
+![Figure 4.4.9: Reducing opacity and putting white border](img/1.15.png){width=40%}
+
+</center>
+
+
+7. In order to make our graph more interactive, we shall add in an additional filter (that will also be used with the above chart simultaneously) that allow the users to choose the continent. Each continent will also contain the respective countries and regions, which can be found [_HERE_](https://simple.wikipedia.org/wiki/List_of_countries_by_continents).
     + To do so, we will need to use the _Group_ function and manually group them accordingly.
     + With reference to the link, we can group all regions into 5 continents: Asia, Africa, Europe, America and Oceania. Those that does not fit will be pushed to "-" category which we won't be touching at all.
     + Eventually, we will want to achieve something like Fig. 4.4.4.Rename the column as _Continents_.
@@ -334,17 +388,29 @@ Moving on to the second chart, this graph will visualize the overall performance
 
 ![](img/4.4.6.png){width=30%}![](img/4.4.7.png){width=50%}
 
-![Figure 4.4.4: Grouping into 5 continents](img/4.4.8.png){width=50%}
+![Figure 4.4.10: Grouping into 5 continents](img/4.4.8.png){width=50%}
 
 </center>
 
 
-6. Next, we would want to add in this grouped data as a filter. Drag _Continents_ into the _Filters_. As we want to allow _Top N Trading Partners_ filter to be used together with the _Continents_ filter, click on the mini triangle of the _Continents_ filter and select _Add to Context_. Viola!! The top N partners shown will be based on the continents selected.
+8. Next, we would want to add in this grouped data as a filter. Drag _Continents_ into the _Filters_. As we want to allow _Top N Trading Partners_ filter to be used together with the _Continents_ filter, click on the mini triangle of the _Continents_ filter and select _Add to Context_. Viola!! The top N partners shown will be based on the continents selected.
 
 
 <center>
 
-![Figure 4.4.5: Linking up both "Continents" and "Top N Trading Partners" filters](img/4.4.9.png){width=40%}
+![Figure 4.4.11: Linking up both "Continents" and "Top N Trading Partners" filters](img/4.4.9.png){width=40%}
+
+</center>
+
+9. Lastly, let's create a ranking system that shows us the total trade volume of each markets across the continents. 
+    + Firstly, we create an a calculated field using the RANK() function for our _Total (SGD Billion)_. Let name it as _Rank_.
+    + Then, we drag _Rank_ to the _Label_ tab for the circles plot. Since we want it to be ranked across markets per continent, we will go to _Edit Table Calculations_ and edit to _Select Dimensions_ by _Markets_.
+
+<center>
+
+![](img/1.16.png){width=50%}![](img/1.17.png){width=40%}
+
+![Figure 4.4.12: Creating ranking system](){width=0%}
 
 </center>
 
@@ -353,29 +419,32 @@ Moving on to the second chart, this graph will visualize the overall performance
 
 Similarly, we would want to let our tooltips give a brief summary of the graphs.
 
-1. Click onto the tooltip for the bar chart and edit it to the style you wish for it to see. You can also edit the line chart accordingly. One sample of the final output is shown below:
+1. As currently we don't see the value of total trade for each markets in the tooltip, we can do so by dragging the _Total (SGD Billion)_ into _Tooltip_ tab in the Marks pane. Then click that tab, select _Insert_ and click on _Total (SGD Billion)_.
+
+2. Click onto the tooltip for the scatterplot and edit it to the style you wish for it to see. One sample of the final output is shown below in Fig 4.4.14.
 
 <center>
 
-![](img/4.4.10.png){width=50%}![](img/4.4.11.png){width=50%}
+![](img/1.20.png){width=30%}![](img/1.21.png){width=60%}
 
-![Figure 4.4.6: Creating tooltips for Bar and Line Graph accordingly](){width=0%}
+![Figure 4.4.13: Inserting total trade value into Tooltip and editing style](){width=0%}
+
 
 </center>
 
 
 #### Final Graph
 
-Finally, we are done with the second chart! It is much easier as we have already generated the filters from previous chart. After some minor touch ups (renaming title, edit colours), the chart should look something like this:
+Finally, we are done with the second chart! After some minor touch ups (renaming title, edit colours), the chart should look something like this:
 
-![Figure 4.4.7: Final Static Bar and Line Graph](img/Trade Value.png)
+![Figure 4.4.7: Final Static Scatterplot](img/Scatterplot.png)
 
 
 ### 4.5 Dashboard
 
 Finally, lets compile all of our charts into the dashboard and make some final adjustments to the interactive portions.
 
-1. Create an empty dashboard and drag in the "Trade Value" and "Net Trade Value" worksheets. For this dashboard, we will be using a fixed size of _Generic Desktop (1366 x 168)_ due to the volatility of the net trade value which will cause some compression if sizing is set to automated. We will also check the _Show Dashboard title_ and drag in _Blank_ or _Text_ objects to create spaces and captions.
+1. Create an empty dashboard and drag in the "Scatterplot" and "Net Trade Value" worksheets. For this dashboard, we will be using a fixed size of _Generic Desktop (1366 x 168)_ due to the volatility of the net trade value which will cause some compression if sizing is set to automated. We will also check the _Show Dashboard title_ and drag in _Blank_ or _Text_ objects to create spaces and captions.
 
 <center>
 
