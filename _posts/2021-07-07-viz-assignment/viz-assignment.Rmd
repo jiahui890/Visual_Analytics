@@ -1,0 +1,259 @@
+---
+title: "Assignment - Real-Time, Streaming Social Media "
+description: |
+  VAST Challenge 2021, Mini-Challenge 3
+author:
+  - name: Lim Jiahui, Masters of IT in Business (Analytics)
+    url: https://www.linkedin.com/in/jiahui-lim-450/
+    affiliation: School of Computing and Information Systems, Singapore Management University
+    affiliation_url: https://scis.smu.edu.sg/
+date: 07-07-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      eval = TRUE,
+                      fig.retina = 3)
+```
+
+> This post was written as part of requirements for Visual Analytics course in MITB. The VAST Challenge 2021 scenario and all people, places, information are all fictitious.
+
+## 1. Introduction and Objectives
+
+In the island country of Kronos, a Tethys-based GAStech has been operating a natural gas production site on the island, producing remarkable profits and obtained strong relations with the Kronos government officials. However, GAStech's operations has affected the environmental stewardship. In January 2014, the leaders of GAStech were celebrating their new-found fortune when suddenly, in the midst of the celebration, several employees disappear. An organization known as Protectors of Kronos (POK) were suspected to be involved in the disappearance.
+
+On the day of January 23 2014, there are also multiple events happening across Abila, a town in Kronos. Social media of the public as well as communication transcripts of the emergency departments in Abila were reocrded for analysis. As a analyst for this case, the aim of the challenge is to utilize text and visual analytics and evaluate the change of risk levels as well as recommend further actions for better emergency responses.
+
+
+## 2. Literature Review
+
+### 2.1 Past Mini-Challenge 3 Approaches
+
+
+
+
+### 2.2 R Packages
+
+The table below shows the R packages that will be used in this challenge.
+
+| Package | Description |
+|:-------|:-------------|
+| tidyverse |   |
+| dplyr |  |
+| ggplot2 |   |
+| plotly |   |
+| hrbrthemes | For beautifying the plots with themes and colours |
+
+
+
+
+
+## 3. Exploratory Data Analysis and Data Wrangling
+
+### 3.1 Setting up environment
+
+The data given in this challenge consists of three csv files, each spanning across different time period (1700-1830, 1831-2000, 2001-2131). In each file, the data includes mbdata (microblog) and ccdata (call centre), which then further elaborated with details such as datetime, message and location. Geospatial and Aspatial files were also included for location tracking.
+
+
+The code chunk below dictates the installation or loading of packages.
+
+```{r echo=TRUE}
+packages = c('sf','tmap', 'lubridate','tidyverse', 'plotly','ggplot2',
+             'stringr','hrbrthemes')
+
+for (p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+
+```
+
+
+### 3.2 Data Extraction and Preparation
+
+Uploading csv data
+
+```{r}
+csv1 <- read_csv('data/csv-1700-1830.csv')
+csv2 <- read_csv('data/csv-1831-2000.csv')
+csv3 <- read_csv('data/csv-2001-2131.csv')
+
+# sample glimpse of one csv as the rest are similar
+glimpse(csv1)
+
+```
+
+Combining all into one dataframe
+
+```{r}
+data <- rbind(csv1, csv2, csv3)
+glimpse(data)
+
+```
+
+Converting time format and extracting the time
+
+```{r}
+data$datetime <- ymd_hms(data$`date(yyyyMMddHHmmss)`)
+data$time <- format(as.POSIXct(data$datetime), format = "%H:%M:%S")
+glimpse(data$datetime)
+
+```
+
+
+### 3.3 Pre-processing Analysis
+
+Preparing data by seperating call centre data and microblog data. 
+
+Create time bins
+
+```{r}
+# separating cc and mb data
+cc <- data %>% filter(type=="ccdata")
+mb <- data %>% filter(type=="mbdata")
+
+# creating time bin for analysis
+cc$timebin <- "-"
+cc[cc$time < "18:00:00", "timebin"] <- "5-6pm"
+cc[cc$time >= "18:00:00" & cc$time < "19:00:00", "timebin"] <- "6-7pm"
+cc[cc$time >= "19:00:00" & cc$time < "20:00:00", "timebin"] <- "7-8pm"
+cc[cc$time >= "20:00:00" & cc$time < "21:00:00", "timebin"] <- "8-9pm"
+cc[cc$time >= "21:00:00", "timebin"] <- "After 9pm"
+
+```
+
+Plotting call frequency received by call center wrt to time bins
+
+```{r}
+# getting call frequency from 1700-2131
+freq <- cc %>% group_by(timebin) %>%
+  summarize(num = n())
+
+#par(mar=c(5,6,4,1)+.1)
+
+# Uniform color
+bar1 <- barplot(height=freq$num, names=freq$timebin, col=c(rgb(0.3,0.1,0.4,0.6) , rgb(0.3,0.5,0.4,0.6)),
+                main="Call Frequencies per Time Interval", ylim=c(0,70))
+# Add the text 
+text(bar1, freq$num, paste("Freq: ", freq$num, sep=""), cex=1, pos=3)
+
+```
+
+
+
+Types of call received by call center
+
+```{r fig.align="center", echo = FALSE, fig.width =8, fig.height=10}
+# type of calls
+types <- unique(cc$message)
+count_type <- cc %>% group_by(message) %>% 
+  summarize(count = n()) 
+
+# setting margin
+par(mar = c(5, 5, 5, 5)) 
+
+ggplot(count_type, aes(x = count, y = message, stringr::str_wrap(count_type$message, 15))) +
+  geom_bar(stat="identity") +
+  ggtitle("Number of Calls per Message Type") +
+  theme(axis.text.x = element_text(face="bold", color="#008150",
+                                   size=8, angle=0),
+        axis.text.y = element_text(face="bold", color="#008150",
+                                   size=8, angle=0))
+
+```
+
+
+
+
+
+### 3.4 Text Pre-processing
+
+
+
+
+
+
+
+
+### 3.5 Simple Analysis
+
+
+
+
+
+
+
+
+## 4. Text Classification and Sentiment Analysis
+
+Distinguishing event reports from junk or spam
+
+
+
+
+
+
+## 5. Topic Clustering and Modeling
+
+
+
+
+Time-series Analysis
+
+ 
+
+
+
+
+## 6. Geospatial Analysis with mbdata and ccdata
+
+
+
+
+
+
+
+## 7. Conclusion and Recommendations
+
+
+
+
+---
+#### References
+
+- [VAST Challenge 2021](https://vast-challenge.github.io/2021/MC3.html)
+- [VAST Challenge 2014](http://www.vacommunity.org/VAST+Challenge+2014)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
