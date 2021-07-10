@@ -52,7 +52,7 @@ The table below shows the R packages that will be used in this challenge.
 | dplyr |  |
 | ggplot2 |   |
 | plotly |   |
-| hrbrthemes | For beautifying the plots with themes and colours |
+
 
 
 
@@ -69,7 +69,7 @@ The code chunk below dictates the installation or loading of packages.
 
 ```{r echo=TRUE}
 packages = c('sf','tmap', 'lubridate','tidyverse', 'plotly','ggplot2',
-             'stringr','hrbrthemes')
+             'tm', 'wordcloud')
 
 for (p in packages){
   if(!require(p, character.only = T)){
@@ -136,7 +136,7 @@ cc[cc$time >= "21:00:00", "timebin"] <- "After 9pm"
 
 Plotting call frequency received by call center wrt to time bins
 
-```{r}
+```{r echo=FALSE}
 # getting call frequency from 1700-2131
 freq <- cc %>% group_by(timebin) %>%
   summarize(num = n())
@@ -176,48 +176,94 @@ ggplot(count_type, aes(x = count, y = message, stringr::str_wrap(count_type$mess
 
 
 
-
-
 ### 3.4 Text Pre-processing
 
+Using text mining package to create corpus, lowercase, remove punctuations, remove stopwords and stemming
+
+```{r}
+# Build a corpus containing all the microblogs
+corpus <- VCorpus(VectorSource(mb$message))
+
+# convert the text to lowercase
+corpus <- tm_map(corpus, content_transformer(tolower))
+corpus<-tm_map(corpus, PlainTextDocument)
+
+# for debugging
+#writeLines(as.character(corpus[[5]])) # inspect doc number 5
+
+# creating own punctuation removal instead of using from tm as they do not insert blank spaces
+replacePunctuation <- content_transformer(function(x) {return (gsub("[[:punct:]]"," ", x))})
+
+# remove all punctuation from the corpus
+corpus<-tm_map(corpus, replacePunctuation)
+
+# remove all English stopwords from the corpus
+corpus<-tm_map(corpus, removeWords, stopwords("en"))
+
+# stemming the words to its root form in the corpus
+corpus<-tm_map(corpus, stemDocument)
+
+# creating document term matrix from corpus
+Doc_mat <- DocumentTermMatrix(corpus)
+Doc_mat
+
+```
 
 
+To view most frequent words (by count)
 
+```{r}
+# term matrix and get the frequency counts of each word
+dtm <- TermDocumentMatrix(corpus)
+tokens <- as.matrix(dtm)
+f <- sort(rowSums(tokens),decreasing=TRUE)
+d <- data.frame(word = names(f),freq=f)
 
+# showing top 10 words
+head(d, 10)
 
+```
 
 
 ### 3.5 Simple Analysis
 
+Showing top words on wordcloud
+
+```{r}
+set.seed(1234)
+wordcloud(words = d$word, freq = d$freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+
+```
 
 
 
 
 
 
+## 4. Unsupervised Text Classification (Q1)
 
-## 4. Text Classification and Sentiment Analysis
-
-Distinguishing event reports from junk or spam
-
+Distinguishing event reports from junk or spam using tf-idf
 
 
 
 
 
-## 5. Topic Clustering and Modeling
+
+## 5. Topic Clustering and Sentiment Analysis (Q1, Q2)
 
 
 
 
 Time-series Analysis
-
+-showing how top 10 words changes across time????
  
 
 
 
 
-## 6. Geospatial Analysis with mbdata and ccdata
+## 6. Geospatial Analysis with mbdata and ccdata (Q3)
 
 
 
@@ -235,6 +281,7 @@ Time-series Analysis
 
 - [VAST Challenge 2021](https://vast-challenge.github.io/2021/MC3.html)
 - [VAST Challenge 2014](http://www.vacommunity.org/VAST+Challenge+2014)
+- [Text Mining Package via tm](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)
 
 
 

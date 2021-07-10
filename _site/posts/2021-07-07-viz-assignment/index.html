@@ -117,7 +117,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["data/csv-1700-1830.csv","data/csv-1831-2000.csv","data/csv-2001-2131.csv","data/Geospatial/Abila.dbf","data/Geospatial/Abila.kml","data/Geospatial/Abila.prj","data/Geospatial/Abila.sbn","data/Geospatial/Abila.sbx","data/Geospatial/Abila.shp","data/Geospatial/Abila.shx","data/Geospatial/Kronos Island.kmz","data/Geospatial/Kronos_Island.dbf","data/Geospatial/Kronos_Island.prj","data/Geospatial/Kronos_Island.sbn","data/Geospatial/Kronos_Island.sbx","data/Geospatial/Kronos_Island.shp","data/Geospatial/Kronos_Island.shx","viz-assignment_files/anchor-4.2.2/anchor.min.js","viz-assignment_files/bowser-1.9.3/bowser.min.js","viz-assignment_files/distill-2.2.21/template.v2.js","viz-assignment_files/figure-html5/unnamed-chunk-5-1.png","viz-assignment_files/figure-html5/unnamed-chunk-6-1.png","viz-assignment_files/figure-html5/unnamed-chunk-7-1.png","viz-assignment_files/jquery-1.11.3/jquery.min.js","viz-assignment_files/popper-2.6.0/popper.min.js","viz-assignment_files/tippy-6.2.7/tippy-bundle.umd.min.js","viz-assignment_files/tippy-6.2.7/tippy-light-border.css","viz-assignment_files/tippy-6.2.7/tippy.css","viz-assignment_files/tippy-6.2.7/tippy.umd.min.js","viz-assignment_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["data/csv-1700-1830.csv","data/csv-1831-2000.csv","data/csv-2001-2131.csv","data/Geospatial/Abila.dbf","data/Geospatial/Abila.kml","data/Geospatial/Abila.prj","data/Geospatial/Abila.sbn","data/Geospatial/Abila.sbx","data/Geospatial/Abila.shp","data/Geospatial/Abila.shx","data/Geospatial/Kronos Island.kmz","data/Geospatial/Kronos_Island.dbf","data/Geospatial/Kronos_Island.prj","data/Geospatial/Kronos_Island.sbn","data/Geospatial/Kronos_Island.sbx","data/Geospatial/Kronos_Island.shp","data/Geospatial/Kronos_Island.shx","viz-assignment_files/anchor-4.2.2/anchor.min.js","viz-assignment_files/bowser-1.9.3/bowser.min.js","viz-assignment_files/distill-2.2.21/template.v2.js","viz-assignment_files/figure-html5/unnamed-chunk-10-1.png","viz-assignment_files/figure-html5/unnamed-chunk-5-1.png","viz-assignment_files/figure-html5/unnamed-chunk-6-1.png","viz-assignment_files/figure-html5/unnamed-chunk-7-1.png","viz-assignment_files/jquery-1.11.3/jquery.min.js","viz-assignment_files/popper-2.6.0/popper.min.js","viz-assignment_files/tippy-6.2.7/tippy-bundle.umd.min.js","viz-assignment_files/tippy-6.2.7/tippy-light-border.css","viz-assignment_files/tippy-6.2.7/tippy.css","viz-assignment_files/tippy-6.2.7/tippy.umd.min.js","viz-assignment_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2474,9 +2474,9 @@ DATAVIZ MAKEOVERS
 <li><a href="#text-pre-processing">3.4 Text Pre-processing</a></li>
 <li><a href="#simple-analysis">3.5 Simple Analysis</a></li>
 </ul></li>
-<li><a href="#text-classification-and-sentiment-analysis">4. Text Classification and Sentiment Analysis</a></li>
-<li><a href="#topic-clustering-and-modeling">5. Topic Clustering and Modeling</a></li>
-<li><a href="#geospatial-analysis-with-mbdata-and-ccdata">6. Geospatial Analysis with mbdata and ccdata</a></li>
+<li><a href="#unsupervised-text-classification-q1">4. Unsupervised Text Classification (Q1)</a></li>
+<li><a href="#topic-clustering-and-sentiment-analysis-q1-q2">5. Topic Clustering and Sentiment Analysis (Q1, Q2)</a></li>
+<li><a href="#geospatial-analysis-with-mbdata-and-ccdata-q3">6. Geospatial Analysis with mbdata and ccdata (Q3)</a></li>
 <li><a href="#conclusion-and-recommendations">7. Conclusion and Recommendations</a></li>
 </ul>
 </nav>
@@ -2515,10 +2515,6 @@ DATAVIZ MAKEOVERS
 <td style="text-align: left;">plotly</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">hrbrthemes</td>
-<td style="text-align: left;">For beautifying the plots with themes and colours</td>
-</tr>
 </tbody>
 </table>
 <h2 id="exploratory-data-analysis-and-data-wrangling">3. Exploratory Data Analysis and Data Wrangling</h2>
@@ -2528,7 +2524,7 @@ DATAVIZ MAKEOVERS
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'sf'</span>,<span class='st'>'tmap'</span>, <span class='st'>'lubridate'</span>,<span class='st'>'tidyverse'</span>, <span class='st'>'plotly'</span>,<span class='st'>'ggplot2'</span>,
-             <span class='st'>'stringr'</span>,<span class='st'>'hrbrthemes'</span><span class='op'>)</span>
+             <span class='st'>'tm'</span>, <span class='st'>'wordcloud'</span><span class='op'>)</span>
 
 <span class='kw'>for</span> <span class='op'>(</span><span class='va'>p</span> <span class='kw'>in</span> <span class='va'>packages</span><span class='op'>)</span><span class='op'>{</span>
   <span class='kw'>if</span><span class='op'>(</span><span class='op'>!</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'>p</span>, character.only <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
@@ -2609,20 +2605,6 @@ $ location               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, &quot;~
 </div>
 <p>Plotting call frequency received by call center wrt to time bins</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># getting call frequency from 1700-2131</span>
-<span class='va'>freq</span> <span class='op'>&lt;-</span> <span class='va'>cc</span> <span class='op'>%&gt;%</span> <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>timebin</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarize</span><span class='op'>(</span>num <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'>#par(mar=c(5,6,4,1)+.1)</span>
-
-<span class='co'># Uniform color</span>
-<span class='va'>bar1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/barplot.html'>barplot</a></span><span class='op'>(</span>height<span class='op'>=</span><span class='va'>freq</span><span class='op'>$</span><span class='va'>num</span>, names<span class='op'>=</span><span class='va'>freq</span><span class='op'>$</span><span class='va'>timebin</span>, col<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grDevices/rgb.html'>rgb</a></span><span class='op'>(</span><span class='fl'>0.3</span>,<span class='fl'>0.1</span>,<span class='fl'>0.4</span>,<span class='fl'>0.6</span><span class='op'>)</span> , <span class='fu'><a href='https://rdrr.io/r/grDevices/rgb.html'>rgb</a></span><span class='op'>(</span><span class='fl'>0.3</span>,<span class='fl'>0.5</span>,<span class='fl'>0.4</span>,<span class='fl'>0.6</span><span class='op'>)</span><span class='op'>)</span>,
-                main<span class='op'>=</span><span class='st'>"Call Frequencies per Time Interval"</span>, ylim<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>70</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># Add the text </span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='va'>bar1</span>, <span class='va'>freq</span><span class='op'>$</span><span class='va'>num</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"Freq: "</span>, <span class='va'>freq</span><span class='op'>$</span><span class='va'>num</span>, sep<span class='op'>=</span><span class='st'>""</span><span class='op'>)</span>, cex<span class='op'>=</span><span class='fl'>1</span>, pos<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>
-</code></pre>
-</div>
 <p><img src="viz-assignment_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
 </div>
 <p>Types of call received by call center</p>
@@ -2630,20 +2612,95 @@ $ location               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, &quot;~
 <p><img src="viz-assignment_files/figure-html5/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <h3 id="text-pre-processing">3.4 Text Pre-processing</h3>
+<p>Using text mining package to create corpus, lowercase, remove punctuations, remove stopwords and stemming</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Build a corpus containing all the microblogs</span>
+<span class='va'>corpus</span> <span class='op'>&lt;-</span> <span class='fu'>VCorpus</span><span class='op'>(</span><span class='fu'>VectorSource</span><span class='op'>(</span><span class='va'>mb</span><span class='op'>$</span><span class='va'>message</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># convert the text to lowercase</span>
+<span class='va'>corpus</span> <span class='op'>&lt;-</span> <span class='fu'>tm_map</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='fu'>content_transformer</span><span class='op'>(</span><span class='va'>tolower</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>corpus</span><span class='op'>&lt;-</span><span class='fu'>tm_map</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='va'>PlainTextDocument</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/writeLines.html'>writeLines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>corpus</span><span class='op'>[[</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># inspect doc number one</span>
+</code></pre>
+</div>
+<pre><code>pok rally set to take place in abila city park - pok leader sylvia marek has begun with opening remarks #abilapost</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># creating own punctuation removal instead of using from tm as they do not insert blank spaces</span>
+<span class='va'>replacePunctuation</span> <span class='op'>&lt;-</span> <span class='fu'>content_transformer</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span><span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='op'>(</span><span class='st'>"[[:punct:]]"</span>,<span class='st'>" "</span>, <span class='va'>x</span><span class='op'>)</span><span class='op'>)</span><span class='op'>}</span><span class='op'>)</span>
+
+<span class='co'># remove all punctuation from the corpus</span>
+<span class='va'>corpus</span><span class='op'>&lt;-</span><span class='fu'>tm_map</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='va'>replacePunctuation</span><span class='op'>)</span>
+
+<span class='co'># remove all English stopwords from the corpus</span>
+<span class='va'>corpus</span><span class='op'>&lt;-</span><span class='fu'>tm_map</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='va'>removeWords</span>, <span class='fu'>stopwords</span><span class='op'>(</span><span class='st'>"en"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># stemming the words to its root form in the corpus</span>
+<span class='va'>corpus</span><span class='op'>&lt;-</span><span class='fu'>tm_map</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='va'>stemDocument</span><span class='op'>)</span>
+
+<span class='co'># creating document term matrix from corpus</span>
+<span class='va'>Doc_mat</span> <span class='op'>&lt;-</span> <span class='fu'>DocumentTermMatrix</span><span class='op'>(</span><span class='va'>corpus</span><span class='op'>)</span>
+<span class='va'>Doc_mat</span>
+</code></pre>
+</div>
+<pre><code>&lt;&lt;DocumentTermMatrix (documents: 3872, terms: 2316)&gt;&gt;
+Non-/sparse entries: 28430/8939122
+Sparsity           : 100%
+Maximal term length: 40
+Weighting          : term frequency (tf)</code></pre>
+</div>
+<p>To view most frequent words (by count and wordcloud)</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># term matrix and get the frequency counts of each word</span>
+<span class='va'>dtm</span> <span class='op'>&lt;-</span> <span class='fu'>TermDocumentMatrix</span><span class='op'>(</span><span class='va'>corpus</span><span class='op'>)</span>
+<span class='va'>tokens</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>dtm</span><span class='op'>)</span>
+<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span><span class='op'>(</span><span class='va'>tokens</span><span class='op'>)</span>,decreasing<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>word <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>,freq<span class='op'>=</span><span class='va'>f</span><span class='op'>)</span>
+
+<span class='co'># showing top 10 words</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>d</span>, <span class='fl'>10</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>                 word freq
+pokral         pokral 1387
+kronosstar kronosstar  937
+abila           abila  551
+pok               pok  506
+fire             fire  432
+abilapost   abilapost  413
+ralli           ralli  303
+polic           polic  294
+can               can  274
+krono           krono  264</code></pre>
+</div>
+<p>Showing on wordcloud</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1234</span><span class='op'>)</span>
+<span class='fu'>wordcloud</span><span class='op'>(</span>words <span class='op'>=</span> <span class='va'>d</span><span class='op'>$</span><span class='va'>word</span>, freq <span class='op'>=</span> <span class='va'>d</span><span class='op'>$</span><span class='va'>freq</span>, min.freq <span class='op'>=</span> <span class='fl'>1</span>,
+          max.words<span class='op'>=</span><span class='fl'>200</span>, random.order<span class='op'>=</span><span class='cn'>FALSE</span>, rot.per<span class='op'>=</span><span class='fl'>0.35</span>, 
+          colors<span class='op'>=</span><span class='fu'>brewer.pal</span><span class='op'>(</span><span class='fl'>8</span>, <span class='st'>"Dark2"</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="viz-assignment_files/figure-html5/unnamed-chunk-10-1.png" width="624" /></p>
+</div>
 <h3 id="simple-analysis">3.5 Simple Analysis</h3>
-<h2 id="text-classification-and-sentiment-analysis">4. Text Classification and Sentiment Analysis</h2>
-<p>Distinguishing event reports from junk or spam</p>
-<h2 id="topic-clustering-and-modeling">5. Topic Clustering and Modeling</h2>
+<h2 id="unsupervised-text-classification-q1">4. Unsupervised Text Classification (Q1)</h2>
+<p>Distinguishing event reports from junk or spam using tf-idf</p>
+<h2 id="topic-clustering-and-sentiment-analysis-q1-q2">5. Topic Clustering and Sentiment Analysis (Q1, Q2)</h2>
 <p>Time-series Analysis</p>
-<h2 id="geospatial-analysis-with-mbdata-and-ccdata">6. Geospatial Analysis with mbdata and ccdata</h2>
+<h2 id="geospatial-analysis-with-mbdata-and-ccdata-q3">6. Geospatial Analysis with mbdata and ccdata (Q3)</h2>
 <h2 id="conclusion-and-recommendations">7. Conclusion and Recommendations</h2>
 <hr />
 <h4 id="references">References</h4>
 <ul>
 <li><a href="https://vast-challenge.github.io/2021/MC3.html">VAST Challenge 2021</a></li>
 <li><a href="http://www.vacommunity.org/VAST+Challenge+2014">VAST Challenge 2014</a></li>
+<li><a href="https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf">Text Mining Package via tm</a></li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
