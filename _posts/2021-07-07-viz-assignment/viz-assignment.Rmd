@@ -72,7 +72,7 @@ The code chunk below dictates the installation or loading of packages.
 ```{r echo=TRUE}
 packages = c('lubridate','tidyverse', 'ggplot2', 'ggraph', 'igraph', 'lsa', 'DT',
              'tm', 'wordcloud', 'tidytext', 'dplyr','textmineR', 'ggExtra', 'stringr',
-             'TSstudio')
+             'TSstudio','hrbrthemes')
 
 for (p in packages){
   if(!require(p, character.only = T)){
@@ -158,7 +158,7 @@ freq <- cc %>% group_by(timebin) %>%
 
 # Uniform color
 bar1 <- barplot(height=freq$num, names=freq$timebin, col=c(rgb(0.3,0.1,0.4,0.6) , rgb(0.3,0.5,0.4,0.6)),
-                main="Call Frequencies per Time Interval", ylim=c(0,70))
+                main="Call Frequencies per Time Interval", ylim=c(0,50))
 # Add the text 
 text(bar1, freq$num, paste("Freq: ", freq$num, sep=""), cex=1, pos=3)
 
@@ -168,40 +168,32 @@ text(bar1, freq$num, paste("Freq: ", freq$num, sep=""), cex=1, pos=3)
 
 Types of call received by call center
 
-```{r fig.align="center", echo = FALSE, fig.width =8, fig.height=10}
+```{r fig.align="center", echo = FALSE, fig.width=10, fig.height=10}
 # type of calls
 types <- unique(cc$message)
-count_type <- cc %>% group_by(message) %>% 
+count_type <- cc %>% group_by(message, timebin) %>% 
   summarize(count = n()) 
 
 # setting margin
-par(mar = c(5, 5, 5, 5)) 
+#par(mar = c(5, 5, 5, 5)) 
 
-ggplot(count_type, aes(x = count, y = message, stringr::str_wrap(count_type$message, 15))) +
-  geom_bar(stat="identity") +
-  ggtitle("Number of Calls per Message Type") +
-  theme(axis.text.x = element_text(face="bold", color="#008150",
+ggplot(count_type, aes(x = count, y = message, fill = timebin,
+                       stringr::str_wrap(count_type$message, 15))) +
+  geom_bar(position="stack",stat="identity") +
+  scale_fill_viridis(discrete = T,option = "H") +
+  theme_ipsum() +
+  ggtitle("Calls per Message and Time Interval") +
+  theme(axis.text.x = element_text(face="bold", color="#000092",
                                    size=8, angle=0),
-        axis.text.y = element_text(face="bold", color="#008150",
+        axis.text.y = element_text(face="bold", color="#000092",
                                    size=8, angle=0))
 
 ```
 
 
-Type of Calls at each time interval
-
-```{r fig.align="center", echo = FALSE, fig.width = 10, fig.height = 10}
-countcallpertime <- cc %>% group_by(timebin, message) %>% 
-  summarize(count = n()) 
-
-ggplot(countcallpertime, aes(y = count, x = message, color = timebin)) +
-  geom_point(size = 3) + coord_flip()
-
-```
-
 Number of Microblogs per time interval (interactive)
 
-```{r}
+```{r echo = FALSE}
 mb_per_time <- mb %>% group_by(as.POSIXct(datetime, format = "%H:%M:%S")) %>% summarize(no_microblogs = n())
 
 ts_plot(mb_per_time,
@@ -222,7 +214,7 @@ Using text mining package to create corpus, lowercase, remove punctuations, remo
 
 #### Considering all words
 
-```{r}
+```{r echo = FALSE}
 # Build a corpus containing all the microblogs
 corpus <- VCorpus(VectorSource(mb$message))
 
@@ -272,7 +264,7 @@ wordcloud(words = d$word, freq = d$freq, min.freq = 1,
 
 #### Showing Hashtags only
 
-```{r}
+```{r echo = FALSE}
 
 mb$hashtags <- "-"
 
@@ -306,7 +298,7 @@ wordcloud(words = HT.d$word, freq = HT.d$freq, min.freq = 1,
 
 #### Top Mentions
 
-```{r}
+```{r echo = FALSE}
 mb$mentions <- "-"
 
 for (i in 1:nrow(mb)){
@@ -346,7 +338,7 @@ wordcloud(words = MEN.d$word, freq = MEN.d$freq, min.freq = 1,
 
 Removing all hashtags, mentions and retweets
 
-```{r}
+```{r echo = FALSE}
 mb$words.only <- "-"
 
 # remove retweets too (akaa "RT @____")
@@ -414,7 +406,7 @@ To prevent unnecessary noises, we will use texts that are preprocessed and witho
 
 USING TIDY TEXT
  
-```{r}
+```{r echo = FALSE}
 text_df <- tibble(line = 1:nrow(mb), text = mb$words.only)
 
 # tokenizations and removal of stopwords, numbers and patterns
@@ -459,9 +451,9 @@ DT::datatable(tfidf, filter = 'top') %>%
               lineHeight = '25%')
 
 ```
+Getting spread of TF-IDF
 
-
-```{r}
+```{r echo = FALSE}
 # #giving word id
 # words.tfidf$word_id <- "-"
 # for (i in 1:nrow(words.tfidf)){
@@ -478,13 +470,14 @@ tfidf %>%
     #   legend.position="none",
     #   plot.title = element_text(size=11)
     # ) +
-    ggtitle("A boxplot with jitter") +
+    ggtitle("A boxplot for TF-IDF") +
     xlab("")
 
 ```
 
+Based on boxplot, filter threshold of TF-IDF > = 6
 
-```{r}
+```{r echo = FALSE}
 tfidf.cluster <- tfidf[, c('word','tf_idf')]
 
 set.seed(1234)
@@ -504,13 +497,19 @@ tfidf.cluster %>%
 
 Getting sentences of words with tf-idf >= 6
 
-```{r}
+```{r echo = FALSE}
 junk <- tfidf %>% filter(tf_idf >= 6)
 
 junk$message <- "-"
 for (i in 1:nrow(junk)){
   junk$message[i] <- mb$message[junk$line[i]]
 }
+
+DT::datatable(junk, filter = 'top', options = list(autoWidth = FALSE)) %>%
+  formatRound(columns = c('tf','idf','tf_idf'),
+              digits = 3) %>%
+  formatStyle(0,
+              target = 'row')
 
 ```
 
@@ -521,7 +520,7 @@ for (i in 1:nrow(junk)){
 
 Detecting spam index by author - lots of messages but low spam index = spam
 
-```{r}
+```{r echo=FALSE}
 author_spam <- mb %>% 
   group_by(author) %>% 
   summarize(no_messages = n(), distinct_msg = n_distinct(message)) %>% 
@@ -529,12 +528,57 @@ author_spam <- mb %>%
   arrange(spam_index)
 
 
-ggplot(author_spam)  + 
-    geom_bar(aes(x=author, y=no_messages),stat="identity", fill="tan1", colour="sienna3") +
-    geom_point(aes(x=author, y=spam_index), size=1, color="black") +
-    # geom_text(aes(label=spam_index, x=author, y=spam_index), colour="black")+
-    # geom_text(aes(label=no_messages, x=author, y=no_messages), colour="black")+
-    scale_y_continuous(sec.axis = sec_axis(~.*0.001, name="spam_index"))
+# ggplot(author_spam)  + 
+#     geom_bar(aes(x=author, y=no_messages),stat="identity", fill="tan1", colour="sienna3") +
+#     geom_point(aes(x=author, y=spam_index), size=1, color="black") +
+#     # geom_text(aes(label=spam_index, x=author, y=spam_index), colour="black")+
+#     # geom_text(aes(label=no_messages, x=author, y=no_messages), colour="black")+
+#     scale_y_continuous(sec.axis = sec_axis(~.*0.001, name="spam_index"))
+# 
+
+
+# giving authors a number
+author_spam$id <- 1:nrow(author_spam)
+
+#showing table
+DT::datatable(author_spam, filter = 'top', 
+              options = list(autoWidth = FALSE)) %>%
+  formatStyle(0,
+              target = 'row')
+
+
+
+
+## add extra space to right margin of plot within frame
+par(mar=c(5, 6, 4, 6) + 0.2)
+
+## Plot first set of data and draw its axis
+plot(author_spam$id, author_spam$no_messages, pch=16, 
+     axes=FALSE, ylim=c(0,1500), xlab="", ylab="", 
+     type="b",col="black", main="Spam Detection by Author")
+axis(2, ylim=c(0,1),col="black",las=1)  ## las=1 makes horizontal labels
+mtext("No. of messages",side=2,line=4)
+box()
+
+## Allow a second plot on the same graph
+par(new=TRUE)
+
+## Plot the second plot and put axis scale on right
+plot(author_spam$id, author_spam$spam_index, 
+     pch=15,  xlab="", ylab="", ylim=c(0,1), 
+     axes=FALSE, type="b", col="red")
+
+## a little farther out (line=4) to make room for labels
+mtext("Spam Index",side=4,col="red",line=3) 
+axis(4, ylim=c(0,7000), col="red",col.axis="red",las=1)
+
+## Draw the time axis
+axis(1,pretty(range(author_spam$id),10))
+mtext("Author's ID",side=1,col="black",line=2.5)  
+
+## Add Legend
+# legend("topright",legend=c("Beta Gal","Cell Density"),
+#   text.col=c("black","red"),pch=c(16,15),col=c("black","red"))
 
 ```
 
@@ -714,7 +758,7 @@ for (i in 1:nrow(text_df)){
 }
 
 
-distinct(topics_df)
+#distinct(topics_df)
 
 
 #topics_df %>% filter_at(!"-")
