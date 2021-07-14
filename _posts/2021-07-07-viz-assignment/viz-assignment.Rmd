@@ -72,7 +72,7 @@ The code chunk below dictates the installation or loading of packages.
 ```{r echo=TRUE}
 packages = c('lubridate','tidyverse', 'ggplot2', 'ggraph', 'igraph', 'lsa', 'DT',
              'tm', 'wordcloud', 'tidytext', 'dplyr','textmineR', 'ggExtra', 'stringr',
-             'TSstudio','hrbrthemes')
+             'TSstudio','hrbrthemes','SnowballC','plotly', 'ggjoy', 'ggridges')
 
 for (p in packages){
   if(!require(p, character.only = T)){
@@ -86,7 +86,7 @@ for (p in packages){
 
 ### 3.2 Data Extraction and Preparation
 
-Uploading csv data and combining all together
+Uploading csv data and combining all together (show glimpse of data)
 
 ```{r}
 csv1 <- read_csv('data/csv-1700-1830.csv')
@@ -128,7 +128,7 @@ Preparing data by seperating call centre data and microblog data.
 
 Create time bins
 
-```{r}
+```{r echo=FALSE}
 # separating cc and mb data
 cc <- data %>% filter(type=="ccdata")
 mb <- data %>% filter(type=="mbdata")
@@ -147,7 +147,7 @@ cc[cc$time >= "21:00:00", "timebin"] <- "9-9:30pm"
 
 ```
 
-Plotting call frequency received by call center wrt to time bins
+Create time bins and Plotting call frequency received by call center wrt to time bins
 
 ```{r echo=FALSE}
 # getting call frequency from 1700-2131
@@ -389,76 +389,183 @@ wordcloud(words = w.d$word, freq = w.d$freq, min.freq = 1,
 
 
 
-
-
-
-
 ## 4. Unsupervised Text Classification (Q1)
 
 >Using visual analytics, characterize the different types of content in the dataset. What distinguishes meaningful event reports from typical chatter from junk or spam? Please limit your answer to 8 images and 500 words.
 
+### Brief overview of events by Hashtags (interactive)
 
-Distinguishing event reports from junk or spam using tf-idf (higher tf-idf = rarer term)
+To gather some initial ideas of the content or event happening, we will be using the hashtags and plot against time. 
+
+```{r echo=FALSE}
+HT_df <- mb[, c("datetime", "time", "message", "hashtags")]
+HT_df <- unnest(HT_df)
+
+# removing symbols and converting to lowercase
+HT_df$hashtags <- lapply(HT_df$hashtags, tolower)
+HT_df$hashtags <- str_replace_all(HT_df$hashtags, "[[:punct:]]", "")
+
+HT_per_time <- HT_df %>%
+  group_by(time, hashtags) %>%
+  summarize(HT_count = n())
+  
+#length(unique(HT_per_time$hashtags))
+
+# ts_plot(HT_per_time,
+#         title = "Microblog Frequency Per Time",
+#         Xtitle = "Time",
+#         Ytitle = "Frequency",
+#         line.mode = "markers",
+#         slider = TRUE)
 
 
-To prevent unnecessary noises, we will use texts that are preprocessed and without hashtags, retweets or mentions.
+plot_ly(data = HT_per_time, 
+        x = ~time, y = ~HT_count,
+        text = ~paste("Hashtag:", hashtags,
+                      "<br>Count:", HT_count),   # how to adjust tooltip
+        mode = "markers",     # changing marker type
+        color = ~hashtags)
+
+```
+
+From analysis of the hashtags, we noticed that there are 3 main events so far - a shooting, a fire and a rally.
 
 
-USING TIDY TEXT
- 
-```{r echo = FALSE}
-text_df <- tibble(line = 1:nrow(mb), text = mb$words.only)
+### Removing Spam
+
+Detecting spam index by author - lots of messages but low spam index = spam
+
+```{r echo=FALSE}
+author_spam <- mb %>% 
+  group_by(author) %>% 
+  summarize(no_messages = n(), distinct_msg = n_distinct(message)) %>% 
+  mutate(spam_index = distinct_msg/no_messages) %>%
+  arrange(spam_index)
+
+
+# ggplot(author_spam)  + 
+#     geom_bar(aes(x=author, y=no_messages),stat="identity", fill="tan1", colour="sienna3") +
+#     geom_point(aes(x=author, y=spam_index), size=1, color="black") +
+#     # geom_text(aes(label=spam_index, x=author, y=spam_index), colour="black")+
+#     # geom_text(aes(label=no_messages, x=author, y=no_messages), colour="black")+
+#     scale_y_continuous(sec.axis = sec_axis(~.*0.001, name="spam_index"))
+# 
+
+
+# giving authors a number
+author_spam$id <- 1:nrow(author_spam)
+
+#showing table
+DT::datatable(author_spam, filter = 'top') %>%
+  formatStyle(0,
+              target = 'row')
+
+
+
+## add extra space to right margin of plot within frame
+par(mar=c(5, 6, 4, 6) + 0.2)
+
+## Plot first set of data and draw its axis
+plot(author_spam$id, author_spam$no_messages, pch=16, 
+     axes=FALSE, ylim=c(0,1500), xlab="", ylab="", 
+     type="b",col="black", main="Spam Detection by Author")
+axis(2, ylim=c(0,1),col="black",las=1)  ## las=1 makes horizontal labels
+mtext("No. of messages",side=2,line=4)
+box()
+
+## Allow a second plot on the same graph
+par(new=TRUE)
+
+## Plot the second plot and put axis scale on right
+plot(author_spam$id, author_spam$spam_index, 
+     pch=15,  xlab="", ylab="", ylim=c(0,1), 
+     axes=FALSE, type="b", col="red")
+
+## a little farther out (line=4) to make room for labels
+mtext("Spam Index",side=4,col="red",line=3) 
+axis(4, ylim=c(0,7000), col="red",col.axis="red",las=1)
+
+## Draw the time axis
+axis(1,pretty(range(author_spam$id),10))
+mtext("Author's ID",side=1,col="black",line=2.5)  
+
+## Add Legend
+# legend("topright",legend=c("Beta Gal","Cell Density"),
+#   text.col=c("black","red"),pch=c(16,15),col=c("black","red"))
+
+```
+
+
+
+As the spam index for "KronosQuoth" and "Clevvah4Evah" is very low despite the large number of messages sent during the entire time-period, they are classified as spam accounts (sending messages of same type every interval). Hence, messages from these 2 authors will be removed.
+
+
+### Removing Junk
+
+Using texts with hashtags only (removed mentions and retweets) as hashtags proved to inform readers on the events too.
+
+```{r echo=FALSE}
+
+# removal of the 2 authors
+mb2 <- mb[mb$author!="KronosQuoth" & mb$author!="Clevvah4Evah", ]
+
+
+# ======== preparing corpus to be used ========
+
+# note: we will include hashtags in as they may indicate certain events
+mb2$words.with.HT <- "-"
+  
+# remove retweets too (akaa "RT @____")
+for (i in 1:nrow(mb2)){
+  # retweets
+  mb2$words.with.HT[i] <- gsub("(RT|via|rt)((?:\\b\\W*@\\w+)+)", " ", mb2$message[i])
+  # mentions
+  mb2$words.with.HT[i] <- gsub("@\\S+", " ", mb2$words.with.HT[i])
+}
+
+
+# ========= tidytext ========
+
+text_df2 <- tibble(line = 1:nrow(mb2), text = mb2$words.with.HT)
 
 # tokenizations and removal of stopwords, numbers and patterns
-text_df <- text_df %>% 
-  mutate(text_df, text = gsub(x = text, pattern = "[0-9]+|[[:punct:]]|\\(.*\\)", 
-                              replacement = " ")) %>% unnest_tokens(word,text) %>%
+text_df2 <- text_df2 %>% 
+  mutate(text_df2, text = gsub(x = text, pattern = "[0-9]+|[[:punct:]]|\\(.*\\)", 
+                              replacement = " ")) %>% 
+  unnest_tokens(word,text) %>%
   filter(str_detect(word, "[a-z']$"),
-         !word %in% stop_words$word)
+         !word %in% stop_words$word) 
+  #mutate(word = wordStem(word))  #stemming from package "SnowballC"
+  
 
-#count_textdf <- text_df %>% count(word, sort = TRUE)
-
-## plotting word counts (those greater than the mean word count)
-# set.seed(1234)
-# count_textdf %>%
-#   filter(n > mean(count_textdf$n)) %>%
-#         graph_from_data_frame() %>%
-#         ggraph(layout = "fr") +
-#         # geom_edge_link(aes(edge_alpha = n, edge_width = n))
-#         # geom_edge_link(aes(edge_alpha = n, edge_width = n)) +
-#         geom_node_point(color = "darkslategray4", size = 3) +
-#         geom_node_text(aes(label = name), vjust = 1.8, size = 3) +
-#         labs(title = "Word Cluster: Words Frequently Occur",
-#              subtitle = "Microblog Messages ",
-#              x = "", y = "")
-
-
-text_df <- text_df %>%
+text_df2 <- text_df2 %>%
   group_by(line) %>%
   count(word, sort = TRUE) %>%
   ungroup()
 
-tfidf <- text_df %>%
+
+```
+
+
+Distinguishing event reports from junk using tf-idf (higher tf-idf = rarer term)
+
+Plotting boxplot to look at the spread of tfidf
+
+ 
+```{r echo = FALSE}
+
+tfidf <- text_df2 %>%
   bind_tf_idf(word, line, n) %>%
   arrange(desc(tf_idf))
 
 # Interactive table for TF-IDF
-DT::datatable(tfidf, filter = 'top') %>%
-  formatRound(columns = c('tf','idf','tf_idf'),
-              digits = 3) %>%
-  formatStyle(0,
-              target = 'row',
-              lineHeight = '25%')
+# DT::datatable(tfidf, filter = 'top') %>%
+#   formatRound(columns = c('tf','idf','tf_idf'),
+#               digits = 3) %>%
+#   formatStyle(0,
+#               target = 'row',
+#               lineHeight = '25%')
 
-```
-Getting spread of TF-IDF
-
-```{r echo = FALSE}
-# #giving word id
-# words.tfidf$word_id <- "-"
-# for (i in 1:nrow(words.tfidf)){
-#   words.tfidf$word_id[i] <- i
-# }
 
 tfidf %>%
   ggplot( aes(y=tf_idf)) +
@@ -502,10 +609,10 @@ junk <- tfidf %>% filter(tf_idf >= 6)
 
 junk$message <- "-"
 for (i in 1:nrow(junk)){
-  junk$message[i] <- mb$message[junk$line[i]]
+  junk$message[i] <- mb2$message[junk$line[i]]
 }
 
-DT::datatable(junk, filter = 'top', options = list(autoWidth = FALSE)) %>%
+DT::datatable(junk, filter = 'top') %>%
   formatRound(columns = c('tf','idf','tf_idf'),
               digits = 3) %>%
   formatStyle(0,
@@ -513,89 +620,31 @@ DT::datatable(junk, filter = 'top', options = list(autoWidth = FALSE)) %>%
 
 ```
 
+The higher the tf-idf, the more rare the term is and may not hold importance.
 
+Based on prior knowledge of the 3 events, we can identify some junk messages - those that does not add value to the content. Hence, we can eliminate lines 189, 600, 1252, 1266, 1496, 1580 and 2440.
 
-
-
-
-Detecting spam index by author - lots of messages but low spam index = spam
 
 ```{r echo=FALSE}
-author_spam <- mb %>% 
-  group_by(author) %>% 
-  summarize(no_messages = n(), distinct_msg = n_distinct(message)) %>% 
-  mutate(spam_index = distinct_msg/no_messages) %>%
-  arrange(spam_index)
 
+l_remove <- c(189, 600, 1252, 1266, 1496, 1580, 2440)
 
-# ggplot(author_spam)  + 
-#     geom_bar(aes(x=author, y=no_messages),stat="identity", fill="tan1", colour="sienna3") +
-#     geom_point(aes(x=author, y=spam_index), size=1, color="black") +
-#     # geom_text(aes(label=spam_index, x=author, y=spam_index), colour="black")+
-#     # geom_text(aes(label=no_messages, x=author, y=no_messages), colour="black")+
-#     scale_y_continuous(sec.axis = sec_axis(~.*0.001, name="spam_index"))
-# 
+# remove rows by putting minus sign (-) in front)
+mb3 <- mb2[-l_remove,]
 
+# ===== updated corpus =====
+text_df3 <- tibble(line = 1:nrow(mb3), text = mb3$words.with.HT)
 
-# giving authors a number
-author_spam$id <- 1:nrow(author_spam)
-
-#showing table
-DT::datatable(author_spam, filter = 'top', 
-              options = list(autoWidth = FALSE)) %>%
-  formatStyle(0,
-              target = 'row')
-
-
-
-
-## add extra space to right margin of plot within frame
-par(mar=c(5, 6, 4, 6) + 0.2)
-
-## Plot first set of data and draw its axis
-plot(author_spam$id, author_spam$no_messages, pch=16, 
-     axes=FALSE, ylim=c(0,1500), xlab="", ylab="", 
-     type="b",col="black", main="Spam Detection by Author")
-axis(2, ylim=c(0,1),col="black",las=1)  ## las=1 makes horizontal labels
-mtext("No. of messages",side=2,line=4)
-box()
-
-## Allow a second plot on the same graph
-par(new=TRUE)
-
-## Plot the second plot and put axis scale on right
-plot(author_spam$id, author_spam$spam_index, 
-     pch=15,  xlab="", ylab="", ylim=c(0,1), 
-     axes=FALSE, type="b", col="red")
-
-## a little farther out (line=4) to make room for labels
-mtext("Spam Index",side=4,col="red",line=3) 
-axis(4, ylim=c(0,7000), col="red",col.axis="red",las=1)
-
-## Draw the time axis
-axis(1,pretty(range(author_spam$id),10))
-mtext("Author's ID",side=1,col="black",line=2.5)  
-
-## Add Legend
-# legend("topright",legend=c("Beta Gal","Cell Density"),
-#   text.col=c("black","red"),pch=c(16,15),col=c("black","red"))
-
+# tokenizations and removal of stopwords, numbers and patterns
+text_df3 <- text_df3 %>% 
+  mutate(text_df3, text = gsub(x = text, pattern = "[0-9]+|[[:punct:]]|\\(.*\\)", 
+                              replacement = " ")) %>% 
+  unnest_tokens(word,text) %>%
+  filter(str_detect(word, "[a-z']$"),
+         !word %in% stop_words$word) 
+  #mutate(word = wordStem(word))  #stemming from package "SnowballC"
+  
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -627,7 +676,7 @@ Cosine Similarity close to 1 = vectors are similar
 - Word similarity are calculated based on how often certain group of words co-occur.
 - Using Walktrap algorithm to auto-generated number of topics and cluster nodes together
 
-```{r}
+```{r echo = FALSE}
 cosine_matrix <- function(tokenized_data, lower = 0, upper = 1, filt = 0) {
   
   if (!all(c("word", "line") %in% names(tokenized_data))) {
@@ -661,22 +710,19 @@ cosine_matrix <- function(tokenized_data, lower = 0, upper = 1, filt = 0) {
 }
 
 
-cos_mat <- cosine_matrix(text_df, lower = .01, upper = .80, filt = .80)
+cos_mat <- cosine_matrix(text_df3, lower = .01, upper = .80, filt = .80)
 
 
 # graph
 g <- graph_from_adjacency_matrix(cos_mat, mode = "undirected", weighted = TRUE)
 
-set.seed(1234)
-ggraph(g, layout = "nicely") +
-  geom_edge_link(aes(alpha = weight, width = weight), show.legend = FALSE) + 
-  geom_node_label(aes(label = name)) +
-  theme_void()
-
-```
+# set.seed(1234)
+# ggraph(g, layout = "nicely") +
+#   geom_edge_link(aes(alpha = weight, width = weight), show.legend = FALSE) + 
+#   geom_node_label(aes(label = name)) +
+#   theme_void()
 
 
-```{r}
 walktrap_topics <- function(g, ...) {
   wt <- igraph::cluster_walktrap(g, ...)
   
@@ -703,34 +749,26 @@ topics$membership %>%
 ```
 
 
-```{r}
+```{r echo = FALSE}
 
 V(g)$cluster <- arrange(topics$membership, word)$group
 
 set.seed(1234)
 ggraph(g, layout = "nicely") +
-  geom_edge_link(aes(alpha = weight, width = weight), show.legend = FALSE) + 
+  geom_edge_link(aes(alpha = weight, 
+                     width = weight), 
+                 show.legend = FALSE) + 
   geom_node_label(
     aes(label = name, color = factor(cluster)), 
-    show.legend = FALSE
+    show.legend = TRUE
   ) +
   theme_void()
 
 ```
 
+Finding messages that consist of the top words per topic to understand the context of each topic.
 
-
-Top Events = from the topics
-
-
-
-### Time-series Analysis of Topics
-
-Using time-bins?
-
-TF-IDF vs Time
-
-```{r}
+```{r echo=FALSE}
 # groupings <- topics$membership %>% 
 #   group_by(group) %>% 
 #   summarise(words = paste(word, collapse = ", "))
@@ -738,7 +776,7 @@ TF-IDF vs Time
 topic_words <- unique(topics$membership$word)
 groupings <- topics$membership
 
-topics_df <- data.frame(matrix(ncol=0, nrow=nrow(text_df)))
+topics_df <- data.frame(matrix(ncol=0, nrow=nrow(text_df3)))
 topics_df$line <- "-"
 topics_df$word <- "-"
 topics_df$message <- "-"
@@ -746,22 +784,89 @@ topics_df$time <- "-"
 topics_df$group <- "-"
 
 
-for (i in 1:nrow(text_df)){
-  if (text_df$word[i] %in% topic_words){
-    no <- text_df$line[i]
+for (i in 1:nrow(text_df3)){
+  if (text_df3$word[i] %in% topic_words){
+    no <- text_df3$line[i]
     topics_df$line[i] <- no
-    topics_df$message[i] <- mb$message[no]
-    topics_df$time[i] <- mb$time[no]
-    topics_df$group[i] <- groupings$group[which(groupings$word==(text_df$word[i]))]
-    topics_df$word[i] <- text_df$word[i]
+    topics_df$message[i] <- mb3$message[no]
+    topics_df$time[i] <- mb3$time[no]
+    topics_df$group[i] <- groupings$group[which(groupings$word==(text_df3$word[i]))]
+    topics_df$word[i] <- text_df3$word[i]
   }
 }
 
+topics_df <- topics_df %>%
+  filter_all(any_vars(!. %in% c("-")))
 
-#distinct(topics_df)
+```
 
 
-#topics_df %>% filter_at(!"-")
+Topics of the microblogs generated:
+
+- **Group 1:** Shooting standoff at a gelato place
+- **Group 2:** Influential figurehead or speakers
+- **Group 3:** 2 incidents - Fire at Dancing Dolphin building and a possible hit-and-run
+- **Group 4:** About Kronos
+- **Group 5:** Details of the incident(s)
+- **Group 6:** POK rally
+- **Group 7:** An incident regarding to a van and cops 
+- **Group 8:** Casualties or seriousness in the incidents
+
+
+
+There seems to be a 4th event that have overlapped with the shooting incident in group 3 --> a hit-and-run incident by a van. Hence, this brings the total major events up to 4 for the evening.
+
+
+
+### Sentiment Analysis (Risk Level)
+
+Using tidytext
+
+```{r echo=FALSE}
+
+# tokenizations and removal of stopwords, numbers and patterns
+
+text_df4 <- mb3 %>% 
+  select(datetime, time, author, words.with.HT) %>%
+  mutate(line = 1:nrow(mb3))
+
+text_df4 <- text_df4 %>% 
+  mutate(text_df4, text = gsub(x = words.with.HT, 
+                               pattern = "[0-9]+|[[:punct:]]|\\(.*\\)", 
+                               replacement = " ")) %>% 
+  unnest_tokens(word,text) %>%
+  filter(str_detect(word, "[a-z']$"),
+         !word %in% stop_words$word) 
+
+
+# getting sentiment lexicons from "nrc" --> it contains emotions
+
+nrc_words <- text_df4 %>%
+  inner_join(get_sentiments("nrc"), by = "word")
+
+count_sentiment <- nrc_words %>% 
+  group_by(sentiment) %>%
+  summarize(n = n()) %>%
+  arrange(desc(n)) %>%
+  ggplot(aes(x = sentiment, y = n)) +
+  geom_segment(aes(x = sentiment, xend = sentiment,
+                   y = 0, yend = n),
+               color="skyblue") +
+  geom_point(color="blue", size=4, alpha=0.6) +
+  theme_light() +
+  coord_flip() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.y = element_blank()
+  )
+
+count_sentiment
+```
+
+
+```{r}
+pie(count_sentiment$data$n, labels = count_sentiment$data$sentiment)
 
 ```
 
@@ -773,8 +878,89 @@ for (i in 1:nrow(text_df)){
 
 
 
+No. of people affected?
 
-### Sentiment Analysis
+
+
+
+
+
+
+
+
+
+### Time-series Analysis of Topics and Sentiment
+
+Using time-bins?
+
+
+As we have identified the 4 main events happening during the time period, we will focus on analysing the words and hashtags that describes these events.
+
+rally --> 
+
+shooting -->
+
+fire -->
+
+hit and run --> hit, run
+
+
+
+
+TF-IDF vs Time
+
+```{r}
+
+tfidf2 <- text_df4 %>%
+  select(time, line, word) %>%
+  count(time,line, word, sort = TRUE) %>%
+  bind_tf_idf(word, line, n) %>%
+  arrange(desc(tf_idf))
+
+
+rally_words <-
+
+
+
+```
+
+
+
+Event vs time
+
+
+
+
+
+
+
+Sentiment vs Time
+
+```{r}
+
+library(ggjoy)
+
+ggplot(nrc_words) +
+    geom_joy(aes(
+      x = time,
+      y = sentiment, 
+      fill = sentiment),
+      rel_min_height = 0.01,
+      alpha = 0.7,
+      scale = 3) +
+    theme_joy() +
+    labs(title = "Twitter #rstats sentiment analysis",
+         x = "Tweet Date",
+         y = "Sentiment") + 
+    scale_fill_discrete(guide=FALSE)
+
+```
+
+
+
+Number of people affected --> how many people tweeted about each event?
+
+
 
 
 
