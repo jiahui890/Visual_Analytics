@@ -10,6 +10,7 @@ author:
 date: 07-07-2021
 output:
   distill::distill_article:
+    code_folding: Click to see code
     self_contained: false
     toc: true
     toc_float: true
@@ -71,7 +72,9 @@ The code chunk below dictates the installation or loading of packages.
 ```{r echo=TRUE}
 packages = c('lubridate','tidyverse', 'ggplot2', 'ggraph', 'igraph', 'lsa', 'DT',
              'tm', 'wordcloud', 'tidytext', 'dplyr','textmineR', 'ggExtra', 'stringr',
-             'TSstudio','hrbrthemes','plotly', 'ggridges','dygraphs')
+             'TSstudio','hrbrthemes','plotly', 'ggridges','dygraphs','tokenizers',
+             'data.table')
+
 for (p in packages){
   if(!require(p, character.only = T)){
     install.packages(p)
@@ -118,12 +121,13 @@ indx
 
 Preparing data by seperating call centre data and microblog data. 
 
-Create time bins
 
 ```{r echo=FALSE}
 # separating cc and mb data
 cc <- data %>% filter(type=="ccdata")
 mb <- data %>% filter(type=="mbdata")
+
+
 # creating time bin for analysis
 cc$timebin <- "-"
 cc[cc$time < "17:30:00", "timebin"] <- "5-5:30pm"
@@ -813,7 +817,7 @@ tfidf2 %>%
 
 #### Topics vs time
 
-```{r echo=FALSE, fig.height = 8, fig.width=12}
+```{r echo=FALSE, fig.height = 8, fig.width=10}
 t_graph <- topics_df %>%
   group_by(time, group) %>%
   summarize(count = n()) %>%
@@ -889,7 +893,7 @@ for (j in 1:nrow(affected)){
 
 Note: Topic=0 means not among top topics
 
-```{r}
+```{r echo=FALSE}
 affected %>% 
   group_by(Topic) %>%
   summarize(no_authors = n_distinct(author)) %>%
@@ -907,6 +911,8 @@ affected %>%
 
 Mapping event vs time + calls received vs time
 
+
+### mbdata
 
 ```{r echo=FALSE}
 
@@ -947,7 +953,7 @@ DT::datatable(tweet_summary, filter = 'top') %>%
 ```
 
 
-```{r}
+```{r echo=FALSE}
 # plotting graph
 
 sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
@@ -969,6 +975,171 @@ loc <- ggplot() +
 ggplotly(loc)
 
 ```
+
+
+
+
+### ccdata
+
+separating street names to geocoded version to get geometry
+
+```{r echo=FALSE}
+
+cc_location <- cc %>% 
+  filter(location != "N/A")
+
+cc_location$line <- 1:nrow(cc_location)
+
+# splitting the strings from /
+cc_location <- cc_location %>%
+  mutate(location2 = strsplit(as.character(location), "/")) %>%
+  unnest(location2)
+
+# getting numbers
+cc_location <- cc_location %>%
+  mutate(num = as.integer(str_extract(location2, "[0-9]+"))) %>%
+  filter(line!=23) #removing line 23 as it is superlong + crowd-controlling only
+
+# getting single letters "N" or "S"
+cc_location <- cc_location %>%
+  mutate(dir = str_extract(location2, "[A-Z]\\.")) %>%
+  mutate(dir = str_remove(dir, "\\."))
+
+# getting the street abbrev, eg. dr, way, ave, st
+abb <- unique(sf_mpsz$FETYPE)
+abb <- abb[!is.na(abb)]
+cc_location$fetype <- "-"
+
+for (i in 1:nrow(cc_location)){
+  for (a in abb){
+    tok <- tokenize_words(cc_location$location2[i])
+    if (any(tolower(as.character(a))==tok[[1]])){
+      cc_location$fetype[i] <- a
+    }
+  }
+}
+
+
+# getting street name
+direction <- unique(cc_location$dir)
+direction <- direction[!is.na(direction)]
+
+cc_location$street <- "-"
+for (i in 1:nrow(cc_location)){
+  temp <- gsub(x = cc_location$location2[i], 
+               pattern = "[0-9]+|[[:punct:]]|\\(.*\\)", 
+               replacement = "")
+  regex <- paste0("\\s*\\b(", paste(direction, collapse="|"), ")\\b")
+  temp <- sub("^\\s+", "", gsub(regex, "", temp, ignore.case=TRUE))
+  
+  regex2 <- paste0("\\s*\\b(", paste(abb, collapse="|"), ")\\b")
+  temp <- sub("^\\s+", "", gsub(regex2, "", temp, ignore.case=TRUE))
+  
+  cc_location$street[i]<-temp
+}
+
+
+```
+
+
+
+```{r echo=FALSE}
+
+# checking if all street names are parsed correctly
+n <- c()
+for (i in 1:nrow(cc_location)){
+  l <- sapply(strsplit(as.character(cc_location$street[i]), " "), length)
+  if (l>1){
+    n <- c(n,i)
+  }
+}
+
+# editing the names
+cc_location[n,]
+cc_location[23,"fetype"]<-"St"
+cc_location[23,"street"]<-"Bairn"
+cc_location[139,"street"]<-"Schaber"
+special_cc <- 141
+
+
+```
+
+mapping of ccdata
+
+```{r echo=FALSE}
+# mapping
+cc_loc2<-cc_location[-special_cc,]
+
+# altering sf_mpsz first
+sf_mpsz <- sf_mpsz %>%
+  mutate(FROM = pmin(FRADDL,FRADDR,TOADDL,TOADDR, na.rm = TRUE)) %>%
+  mutate(FROM = floor(FROM/100)*100)
+
+
+# altering number in cc_loc2 (round down)
+cc_loc2 <- cc_loc2 %>%
+  mutate(num_round = floor(num/100)*100)
+
+
+# cc_loc2$geo <- "-"
+# for (i in 1:nrow(cc_loc2)){
+#   for (j in 1:nrow(sf_mpsz)){
+#     if(cc_loc2$fetype[i]==sf_mpsz$FETYPE[j] &
+#        cc_loc2$street[i]==sf_mpsz$FENAME[j] &
+#        cc_loc2$dir[i]==sf_mpsz$FEDIRP[j] &
+#        cc_loc2$num_round[i]==sf_mpsz$FROM[j]) {
+#       
+#       cc_loc2$geo[i] <- sf_mpsz$geometry[j]
+#     }
+#     
+#   }
+# }
+
+# merging data --> note that not all will match!
+cc_loc3 <- right_join(cc_loc2, sf_mpsz,
+                     by = c("fetype" = "FETYPE",
+                            "street" = "FENAME",
+                            "dir" = "FEDIRP",
+                            "num_round" = "FROM"),
+                     all.x = TRUE)
+
+
+```
+
+
+
+
+```{r}
+
+cc_loc4 <- cc_loc3[!is.na(cc_loc3$type),]
+
+ggplot() + 
+  geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
+  coord_sf() +
+  geom_point(data = tweet_summary, aes(x = longitude, 
+                 y = latitude, 
+                 size = msg_count,
+                 colour = factor(id))) +
+  geom_sf(data = cc_loc4$geometry, size = 0.8, color="darkred") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  guides(col=guide_legend("Distinct Locations"),
+         size=guide_legend("Microblog Counts")) +
+  labs(title = "Location of Microblogs")
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
 
 
 
