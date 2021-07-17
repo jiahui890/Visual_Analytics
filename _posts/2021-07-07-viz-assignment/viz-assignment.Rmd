@@ -10,7 +10,7 @@ author:
 date: 07-07-2021
 output:
   distill::distill_article:
-    code_folding: Click to see code
+    #code_folding: Click to see code
     self_contained: false
     toc: true
     toc_float: true
@@ -73,7 +73,7 @@ The code chunk below dictates the installation or loading of packages.
 packages = c('lubridate','tidyverse', 'ggplot2', 'ggraph', 'igraph', 'lsa', 'DT',
              'tm', 'wordcloud', 'tidytext', 'dplyr','textmineR', 'ggExtra', 'stringr',
              'TSstudio','hrbrthemes','plotly', 'ggridges','dygraphs','tokenizers',
-             'data.table')
+             'data.table','geosphere')
 
 for (p in packages){
   if(!require(p, character.only = T)){
@@ -219,7 +219,7 @@ corpus<-tm_map(corpus, removeWords, stopwords("en"))
 # stemming the words to its root form in the corpus
 corpus<-tm_map(corpus, stemDocument)
 # creating document term matrix from corpus
-Doc_mat <- DocumentTermMatrix(corpus)
+#Doc_mat <- DocumentTermMatrix(corpus)
 # term matrix and get the frequency counts of each word
 term_doc_mat <- TermDocumentMatrix(corpus)
 tokens <- as.matrix(term_doc_mat)
@@ -339,7 +339,7 @@ wordcloud(words = w.d$word, freq = w.d$freq, min.freq = 1,
 
 To gather some initial ideas of the content or event happening, we will be using the hashtags and plot against time. 
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=8}
 HT_df <- mb[, c("datetime", "time", "message", "hashtags")]
 HT_df <- unnest(HT_df)
 # removing symbols and converting to lowercase
@@ -349,19 +349,24 @@ HT_per_time <- HT_df %>%
   group_by(time, hashtags) %>%
   summarize(HT_count = n())
   
-#length(unique(HT_per_time$hashtags))
-# ts_plot(HT_per_time,
-#         title = "Microblog Frequency Per Time",
-#         Xtitle = "Time",
-#         Ytitle = "Frequency",
-#         line.mode = "markers",
-#         slider = TRUE)
+# plot_ly(data = HT_per_time, 
+#         x = ~time, y = ~HT_count,
+#         text = ~paste("Hashtag:", hashtags,
+#                       "<br>Count:", HT_count),   # how to adjust tooltip
+#         mode = "markers",     # changing marker type
+#         color = ~hashtags)
+
+
+
 plot_ly(data = HT_per_time, 
         x = ~time, y = ~HT_count,
+        type = 'scatter',
+        marker = list(size = 8),
         text = ~paste("Hashtag:", hashtags,
-                      "<br>Count:", HT_count),   # how to adjust tooltip
-        mode = "markers",     # changing marker type
+                      "<br>Count:", HT_count),
         color = ~hashtags)
+  #layout(legend = list(orientation = 'h'))
+
 ```
 
 From analysis of the hashtags, we noticed that there are 3 main events so far - a shooting, a fire and a rally.
@@ -466,23 +471,10 @@ Plotting boxplot to look at the spread of tfidf
 tfidf <- text_df2 %>%
   bind_tf_idf(word, line, n) %>%
   arrange(desc(tf_idf))
-# Interactive table for TF-IDF
-# DT::datatable(tfidf, filter = 'top') %>%
-#   formatRound(columns = c('tf','idf','tf_idf'),
-#               digits = 3) %>%
-#   formatStyle(0,
-#               target = 'row',
-#               lineHeight = '25%')
+
 tfidf %>%
   ggplot( aes(y=tf_idf)) +
     geom_boxplot() +
-    # scale_fill_viridis(discrete = TRUE, alpha=0.6) +
-    # geom_jitter(color="black", size=0.4, alpha=0.9) +
-    # theme_ipsum() +
-    # theme(
-    #   legend.position="none",
-    #   plot.title = element_text(size=11)
-    # ) +
     ggtitle("A boxplot for TF-IDF") +
     xlab("")
 ```
@@ -538,7 +530,6 @@ text_df3 <- text_df3 %>%
   unnest_tokens(word,text) %>%
   filter(str_detect(word, "[a-z']$"),
          !word %in% stop_words$word) 
-  #mutate(word = wordStem(word))  #stemming from package "SnowballC"
   
 ```
 
@@ -562,7 +553,7 @@ To prevent unnecessary noises, we will use texts that are preprocessed and witho
 
 
 
-#### Topic Modeling by Cosine Similarity and Walktrap Algorithm
+### Topic Modeling by Cosine Similarity and Walktrap Algorithm
 
 mapping words with cosine similarity (finding how similar words are irrespective of their size) > 80th percentile
 
@@ -770,7 +761,7 @@ hitrun <- c("hit", "run", "van")
 ```
 
 
-```{r echo=FALSE, fig.height=6}
+```{r echo=FALSE, fig.height=6, fig.width=9}
 tfidf2 <- text_df4 %>%
   select(time, line, word) %>%
   count(time,line, word, sort = TRUE) %>%
@@ -840,9 +831,10 @@ topics_df %>%
   group_by(time, group) %>%
   summarize(count = n()) %>%
   plot_ly(x= ~time, y= ~count, color= ~group,
+          type = 'scatter',
+          markers = list(size=8),
           text = ~paste("Timestamp:", time,
-                      "<br>Count:", count),
-          mode = "markers") %>%
+                      "<br>Count:", count)) %>%
   layout(title = 'Chatter per Topic against Time')
 ```
 
@@ -852,7 +844,10 @@ topics_df %>%
 
 
 ```{r echo=FALSE}
-s <- nrc_words %>%
+
+### ADD IN DROP DOWN MENU / at least make sure the time is not overlapped
+
+s <- nrc_words %>% 
   group_by(time, sentiment) %>%
   summarize(n = n()) %>%
   ggplot(aes(x=time, y=n, size=n, color=sentiment)) +
@@ -861,7 +856,6 @@ s <- nrc_words %>%
     xlab("Time") +
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE))
 ggplotly(s)
-#s
 ```
 
 
@@ -957,6 +951,7 @@ DT::datatable(tweet_summary, filter = 'top') %>%
 # plotting graph
 
 sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
+abila <- st_read('data/Geospatial/Abila.shp',quiet=TRUE)
 
 loc <- ggplot() + 
   geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
@@ -1039,12 +1034,6 @@ for (i in 1:nrow(cc_location)){
 }
 
 
-```
-
-
-
-```{r echo=FALSE}
-
 # checking if all street names are parsed correctly
 n <- c()
 for (i in 1:nrow(cc_location)){
@@ -1062,16 +1051,18 @@ cc_location[139,"street"]<-"Schaber"
 special_cc <- 141
 
 
+
 ```
 
-mapping of ccdata
+
 
 ```{r echo=FALSE}
+
 # mapping
 cc_loc2<-cc_location[-special_cc,]
 
 # altering sf_mpsz first
-sf_mpsz <- sf_mpsz %>%
+sf_mpsz2 <- sf_mpsz %>%
   mutate(FROM = pmin(FRADDL,FRADDR,TOADDL,TOADDR, na.rm = TRUE)) %>%
   mutate(FROM = floor(FROM/100)*100)
 
@@ -1081,38 +1072,79 @@ cc_loc2 <- cc_loc2 %>%
   mutate(num_round = floor(num/100)*100)
 
 
-# cc_loc2$geo <- "-"
-# for (i in 1:nrow(cc_loc2)){
-#   for (j in 1:nrow(sf_mpsz)){
-#     if(cc_loc2$fetype[i]==sf_mpsz$FETYPE[j] &
-#        cc_loc2$street[i]==sf_mpsz$FENAME[j] &
-#        cc_loc2$dir[i]==sf_mpsz$FEDIRP[j] &
-#        cc_loc2$num_round[i]==sf_mpsz$FROM[j]) {
-#       
-#       cc_loc2$geo[i] <- sf_mpsz$geometry[j]
-#     }
-#     
-#   }
-# }
-
-# merging data --> note that not all will match!
-cc_loc3 <- right_join(cc_loc2, sf_mpsz,
+# merging data --> note that not all will match as they are not avail in the shape file!
+cc_loc3 <- right_join(cc_loc2, sf_mpsz2,
                      by = c("fetype" = "FETYPE",
                             "street" = "FENAME",
                             "dir" = "FEDIRP",
                             "num_round" = "FROM"),
                      all.x = TRUE)
 
+#### INNNER JOIN?
+# sf_mpsz %>%
+#   inner_join(cc_loc2, by=c("FROM"="num_round",
+#                            "FEDIRP"="dir",
+#                            "FENAME"="street",
+#                            "FETYPE"="fetype"))
+
 
 ```
 
+mapping of ccdata
 
 
+Plotting it
 
 ```{r}
 
 cc_loc4 <- cc_loc3[!is.na(cc_loc3$type),]
 
+# cc_loc4$long <- "-"
+# cc_loc4$lat <- "-"
+# for (i in 1:nrow(cc_loc4)){
+#   geo <- unlist(cc_loc4$geometry[i])
+#   cc_loc4$long[i] <- as.numeric(mean(geo[geo<30]))
+#   cc_loc4$lat[i] <- as.numeric(mean(geo[geo>=30]))
+# }
+
+cc_loc4$long <- "-"
+cc_loc4$lat <- "-"
+for (i in 1:nrow(cc_loc4)){
+  geo <- unlist(cc_loc4$geometry[i])
+  lo <- as.numeric(as.character(geo[geo<30]))
+  la <- as.numeric(as.character(geo[geo>=30]))
+  f <- do.call(rbind,Map(data.frame, LONG=lo, LAT=la))
+  centre <- geomean(f)
+  
+  cc_loc4$long[i]<-centre[1]
+  cc_loc4$lat[i]<-centre[2]
+}
+
+
+
+
+
+
+# geo <- unlist(cc_loc4$geometry[1])
+# lo <- as.numeric(as.character(geo[geo<30]))
+# la <- as.numeric(as.character(geo[geo>=30]))
+# f <- do.call(rbind,Map(data.frame, LONG=lo, LAT=la))
+# 
+# ff <- geomean(f)
+# ff[2]
+# 
+# 
+# 
+
+
+
+
+
+# cc_loc4 <- cc_loc4 %>%
+#   mutate(long = unlist(map(geometry,2)), 
+#          lat = unlist(map(geometry,3)))
+
+  
 ggplot() + 
   geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
   coord_sf() +
@@ -1120,7 +1152,7 @@ ggplot() +
                  y = latitude, 
                  size = msg_count,
                  colour = factor(id))) +
-  geom_sf(data = cc_loc4$geometry, size = 0.8, color="darkred") +
+  geom_sf(data = cc_loc4$geometry, size=1, color="darkred") +
   xlab("Longitude") +
   ylab("Latitude") +
   guides(col=guide_legend("Distinct Locations"),
@@ -1128,9 +1160,70 @@ ggplot() +
   labs(title = "Location of Microblogs")
 
 
+```
+
+
+
+
+
+```{r}
+ ggplot() + 
+  geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
+  coord_sf() +
+  geom_point(data = cc_loc4,
+              mapping = aes(x = long, y = lat),
+              color="darkred")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+draft
+
+```{r echo=FALSE}
+
+# cc_loc2 %>%
+#   separate(location2, c("number","st"), sep = "(?<=[0-9]) ", convert=T)
+# 
+# 
+# 
+# sf_mpsz %>%
+#   unite(street, FEDIRP:FENAME, sep = "")
+# 
+# 
+# sf_mpsz %>%
+#   inner_join(cc_loc2, by=c("FROM"="num_round",
+#                            "FEDIRP"="dir",
+#                            "FENAME"="street",
+#                            "FETYPE"="fetype"))
+# 
+# 
 
 
 ```
+
+
+
+
+
+
 
 
 
