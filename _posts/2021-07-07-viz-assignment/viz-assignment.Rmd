@@ -73,7 +73,7 @@ The code chunk below dictates the installation or loading of packages.
 packages = c('lubridate','tidyverse', 'ggplot2', 'ggraph', 'igraph', 'lsa', 'DT',
              'tm', 'wordcloud', 'tidytext', 'dplyr','textmineR', 'ggExtra', 'stringr',
              'TSstudio','hrbrthemes','plotly', 'ggridges','dygraphs','tokenizers',
-             'data.table','geosphere')
+             'data.table','leaflet')
 
 for (p in packages){
   if(!require(p, character.only = T)){
@@ -121,6 +121,7 @@ indx
 
 Preparing data by seperating call centre data and microblog data. 
 
+Create time bins and Plotting call frequency received by call center wrt to time bins
 
 ```{r echo=FALSE}
 # separating cc and mb data
@@ -139,11 +140,9 @@ cc[cc$time >= "19:30:00" & cc$time < "20:00:00", "timebin"] <- "7:30pm-8pm"
 cc[cc$time >= "20:00:00" & cc$time < "20:30:00", "timebin"] <- "8-8:30pm"
 cc[cc$time >= "20:30:00" & cc$time < "21:00:00", "timebin"] <- "8:30pm-9pm"
 cc[cc$time >= "21:00:00", "timebin"] <- "9-9:30pm"
-```
 
-Create time bins and Plotting call frequency received by call center wrt to time bins
 
-```{r echo=FALSE}
+
 # getting call frequency from 1700-2131
 freq <- cc %>% group_by(timebin) %>%
   summarize(num = n())
@@ -153,8 +152,9 @@ bar1 <- barplot(height=freq$num, names=freq$timebin, col=c(rgb(0.3,0.1,0.4,0.6) 
                 main="Call Frequencies per Time Interval", ylim=c(0,50))
 # Add the text 
 text(bar1, freq$num, paste("Freq: ", freq$num, sep=""), cex=1, pos=3)
-```
 
+
+```
 
 
 Types of call received by call center
@@ -339,7 +339,7 @@ wordcloud(words = w.d$word, freq = w.d$freq, min.freq = 1,
 
 To gather some initial ideas of the content or event happening, we will be using the hashtags and plot against time. 
 
-```{r echo=FALSE, fig.width=8, fig.height=8}
+```{r echo=FALSE, fig.width=8}
 HT_df <- mb[, c("datetime", "time", "message", "hashtags")]
 HT_df <- unnest(HT_df)
 # removing symbols and converting to lowercase
@@ -357,7 +357,6 @@ HT_per_time <- HT_df %>%
 #         color = ~hashtags)
 
 
-
 plot_ly(data = HT_per_time, 
         x = ~time, y = ~HT_count,
         type = 'scatter',
@@ -365,7 +364,6 @@ plot_ly(data = HT_per_time,
         text = ~paste("Hashtag:", hashtags,
                       "<br>Count:", HT_count),
         color = ~hashtags)
-  #layout(legend = list(orientation = 'h'))
 
 ```
 
@@ -382,19 +380,14 @@ author_spam <- mb %>%
   summarize(no_messages = n(), distinct_msg = n_distinct(message)) %>% 
   mutate(spam_index = distinct_msg/no_messages) %>%
   arrange(spam_index)
-# ggplot(author_spam)  + 
-#     geom_bar(aes(x=author, y=no_messages),stat="identity", fill="tan1", colour="sienna3") +
-#     geom_point(aes(x=author, y=spam_index), size=1, color="black") +
-#     # geom_text(aes(label=spam_index, x=author, y=spam_index), colour="black")+
-#     # geom_text(aes(label=no_messages, x=author, y=no_messages), colour="black")+
-#     scale_y_continuous(sec.axis = sec_axis(~.*0.001, name="spam_index"))
-# 
+
 # giving authors a number
 author_spam$id <- 1:nrow(author_spam)
 #showing table
 DT::datatable(author_spam, filter = 'top') %>%
   formatStyle(0,
               target = 'row')
+
 ## add extra space to right margin of plot within frame
 par(mar=c(5, 6, 4, 6) + 0.2)
 ## Plot first set of data and draw its axis
@@ -404,6 +397,7 @@ plot(author_spam$id, author_spam$no_messages, pch=16,
 axis(2, ylim=c(0,1),col="black",las=1)  ## las=1 makes horizontal labels
 mtext("No. of messages",side=2,line=4)
 box()
+
 ## Allow a second plot on the same graph
 par(new=TRUE)
 ## Plot the second plot and put axis scale on right
@@ -416,9 +410,7 @@ axis(4, ylim=c(0,7000), col="red",col.axis="red",las=1)
 ## Draw the time axis
 axis(1,pretty(range(author_spam$id),10))
 mtext("Author's ID",side=1,col="black",line=2.5)  
-## Add Legend
-# legend("topright",legend=c("Beta Gal","Cell Density"),
-#   text.col=c("black","red"),pch=c(16,15),col=c("black","red"))
+
 ```
 
 
@@ -485,7 +477,7 @@ Based on boxplot, filter threshold of TF-IDF > = 6
 tfidf.cluster <- tfidf[, c('word','tf_idf')]
 set.seed(1234)
 tfidf.cluster %>%
-  filter(tf_idf >= 6) %>%
+  filter(tf_idf >= 4) %>%
         graph_from_data_frame() %>%
         ggraph(layout = "fr") +
         # geom_edge_link(aes(edge_alpha = n, edge_width = n))
@@ -630,7 +622,7 @@ set.seed(1234)
 ggraph(g, layout = "nicely") +
   geom_edge_link(aes(alpha = weight, 
                      width = weight), 
-                 show.legend = FALSE) + 
+                 show.legend = TRUE) + 
   geom_node_label(
     aes(label = name, color = factor(cluster)), 
     show.legend = TRUE
@@ -670,6 +662,7 @@ for (i in 1:nrow(text_df3)){
     topics_df$latitude[i] <- mb3$latitude[no]
   }
 }
+
 topics_df <- topics_df %>%
   filter_all(any_vars(!. %in% c("-")))
 ```
@@ -893,6 +886,7 @@ affected %>%
   summarize(no_authors = n_distinct(author)) %>%
   ggplot(aes(x=Topic, y=no_authors)) +
   geom_bar(stat="identity", fill="#f68060", alpha=.6) +
+  geom_text(aes(label = no_authors), position=position_dodge(width=0.9), vjust=-0.25) +
   theme_bw()
   
 ```
@@ -950,24 +944,24 @@ DT::datatable(tweet_summary, filter = 'top') %>%
 ```{r echo=FALSE}
 # plotting graph
 
-sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
-abila <- st_read('data/Geospatial/Abila.shp',quiet=TRUE)
+#sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
+# abila <- st_read('data/Geospatial/Abila.shp',quiet=TRUE)
 
-loc <- ggplot() + 
-  geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
-  coord_sf() +
-  geom_point(data = tweet_summary, aes(x = longitude, 
-                 y = latitude, 
-                 size = msg_count,
-                 colour = factor(id))) +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  guides(col=guide_legend("Distinct Locations"),
-         size=guide_legend("Microblog Counts")) +
-  labs(title = "Location of Microblogs")
-
-
-ggplotly(loc)
+# loc <- ggplot() + 
+#   geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
+#   coord_sf() +
+#   geom_point(data = tweet_summary, aes(x = longitude, 
+#                  y = latitude, 
+#                  size = msg_count,
+#                  colour = factor(id))) +
+#   xlab("Longitude") +
+#   ylab("Latitude") +
+#   guides(col=guide_legend("Distinct Locations"),
+#          size=guide_legend("Microblog Counts")) +
+#   labs(title = "Location of Microblogs")
+# 
+# 
+# ggplotly(loc)
 
 ```
 
@@ -979,6 +973,7 @@ ggplotly(loc)
 separating street names to geocoded version to get geometry
 
 ```{r echo=FALSE}
+sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
 
 cc_location <- cc %>% 
   filter(location != "N/A")
@@ -1054,7 +1049,7 @@ special_cc <- 141
 
 ```
 
-
+mapping of ccdata
 
 ```{r echo=FALSE}
 
@@ -1073,167 +1068,115 @@ cc_loc2 <- cc_loc2 %>%
 
 
 # merging data --> note that not all will match as they are not avail in the shape file!
-cc_loc3 <- right_join(cc_loc2, sf_mpsz2,
-                     by = c("fetype" = "FETYPE",
-                            "street" = "FENAME",
-                            "dir" = "FEDIRP",
-                            "num_round" = "FROM"),
-                     all.x = TRUE)
+
+## right join?
+# cc_loc3 <- right_join(cc_loc2, sf_mpsz2,
+#                      by = c("fetype" = "FETYPE",
+#                             "street" = "FENAME",
+#                             "dir" = "FEDIRP",
+#                             "num_round" = "FROM"),
+#                      all.x = TRUE)
 
 #### INNNER JOIN?
-# sf_mpsz %>%
-#   inner_join(cc_loc2, by=c("FROM"="num_round",
-#                            "FEDIRP"="dir",
-#                            "FENAME"="street",
-#                            "FETYPE"="fetype"))
+cc_loc3 <- sf_mpsz2 %>%
+  inner_join(cc_loc2, by=c("FROM"="num_round",
+                           "FEDIRP"="dir",
+                           "FENAME"="street",
+                           "FETYPE"="fetype"))
 
 
 ```
 
-mapping of ccdata
+
+Note --> 128 rows are matched only to shape file and some addresses are duplicate but have different lat/long
 
 
-Plotting it
 
-```{r}
 
-cc_loc4 <- cc_loc3[!is.na(cc_loc3$type),]
 
-# cc_loc4$long <- "-"
-# cc_loc4$lat <- "-"
-# for (i in 1:nrow(cc_loc4)){
-#   geo <- unlist(cc_loc4$geometry[i])
-#   cc_loc4$long[i] <- as.numeric(mean(geo[geo<30]))
-#   cc_loc4$lat[i] <- as.numeric(mean(geo[geo>=30]))
+
+
+
+<br/>
+Plotting static graph showing the volume in microblogs 
+
+```{r echo=FALSE}
+# library(geosphere)
+# cc_loc3$long <- "-"
+# cc_loc3$lat <- "-"
+# for (i in 1:nrow(cc_loc3)){
+#   geo <- unlist(cc_loc3$geometry[i])
+#   lo <- as.numeric(as.character(geo[geo<30]))
+#   la <- as.numeric(as.character(geo[geo>=30]))
+#   f <- do.call(rbind,Map(data.frame, LONG=lo, LAT=la))
+#   if (length(f)==2){
+#     centre <- midPoint(c(f$LONG[1],f$LAT[1]),c(f$LONG[2], f$LAT[2]))
+#   } else {
+#     centre <- centroid(f)
+#   }
+#   
+#   cc_loc3$long[i]<-centre[1]
+#   cc_loc3$lat[i]<-centre[2]
 # }
 
-cc_loc4$long <- "-"
-cc_loc4$lat <- "-"
-for (i in 1:nrow(cc_loc4)){
-  geo <- unlist(cc_loc4$geometry[i])
-  lo <- as.numeric(as.character(geo[geo<30]))
-  la <- as.numeric(as.character(geo[geo>=30]))
-  f <- do.call(rbind,Map(data.frame, LONG=lo, LAT=la))
-  centre <- geomean(f)
-  
-  cc_loc4$long[i]<-centre[1]
-  cc_loc4$lat[i]<-centre[2]
-}
+sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
+
+cc_loc3$centre_geom <- st_centroid(cc_loc3$geometry)
 
 
-
-
-
-
-# geo <- unlist(cc_loc4$geometry[1])
-# lo <- as.numeric(as.character(geo[geo<30]))
-# la <- as.numeric(as.character(geo[geo>=30]))
-# f <- do.call(rbind,Map(data.frame, LONG=lo, LAT=la))
-# 
-# ff <- geomean(f)
-# ff[2]
-# 
-# 
-# 
-
-
-
-
-
-# cc_loc4 <- cc_loc4 %>%
-#   mutate(long = unlist(map(geometry,2)), 
-#          lat = unlist(map(geometry,3)))
-
-  
-ggplot() + 
+combo <- ggplot() + 
   geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
   coord_sf() +
   geom_point(data = tweet_summary, aes(x = longitude, 
                  y = latitude, 
                  size = msg_count,
                  colour = factor(id))) +
-  geom_sf(data = cc_loc4$geometry, size=1, color="darkred") +
+  geom_sf(data = cc_loc3$centre_geom, shape = 23, fill = "red") +
   xlab("Longitude") +
   ylab("Latitude") +
-  guides(col=guide_legend("Distinct Locations"),
+  guides(col=guide_legend("Microblog Location"),
          size=guide_legend("Microblog Counts")) +
-  labs(title = "Location of Microblogs")
+  labs(title = "Location of Microblogs and Call Centre Tag")
 
-
-```
-
-
-
-
-
-```{r}
- ggplot() + 
-  geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
-  coord_sf() +
-  geom_point(data = cc_loc4,
-              mapping = aes(x = long, y = lat),
-              color="darkred")
+combo
 
 ```
 
 
 
+Interactive plot showing call-type and topics of microblog at location
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-draft
 
 ```{r echo=FALSE}
 
-# cc_loc2 %>%
-#   separate(location2, c("number","st"), sep = "(?<=[0-9]) ", convert=T)
-# 
-# 
-# 
-# sf_mpsz %>%
-#   unite(street, FEDIRP:FENAME, sep = "")
-# 
-# 
-# sf_mpsz %>%
-#   inner_join(cc_loc2, by=c("FROM"="num_round",
-#                            "FEDIRP"="dir",
-#                            "FENAME"="street",
-#                            "FETYPE"="fetype"))
-# 
-# 
+library(leaflet)
 
+sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
+
+shapeData <- st_transform(sf_mpsz, '+proj=longlat +datum=WGS84')
+
+# getting lat and long separately from centroid
+cc_loc3$long <- "-"
+cc_loc3$lat <- "-"
+for (i in 1:nrow(cc_loc3)){
+  cc_loc3$long[i] <- unlist(cc_loc3$centre_geom[i])[1]
+  cc_loc3$lat[i] <- unlist(cc_loc3$centre_geom[i])[2]
+}
+
+
+leaflet(data = cc_loc3) %>% 
+  addTiles() %>%
+  addPolygons(data = shapeData, weight = 2, col='black') %>%
+  addMarkers(lng = ~as.numeric(cc_loc3$long),
+             lat = ~as.numeric(cc_loc3$lat),
+             popup = ~as.character(cc_loc3$message)) %>%
+  addCircleMarkers(lng = ~as.numeric(tweet_summary$longitude),
+                   lat = ~as.numeric(tweet_summary$latitude),
+                   label = ~as.character(tweet_summary$topics),
+                   clusterOptions = markerClusterOptions())
+  
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
