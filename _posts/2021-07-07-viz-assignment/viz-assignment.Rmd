@@ -18,13 +18,20 @@ output:
     number_sections: true
 ---
 
+<style type="text/css">
+  body{
+  font-size: 12pt;
+}
+</style>
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, 
                       warning = FALSE,
                       message = FALSE,
                       eval = TRUE,
-                      fig.retina = 3)
+                      fig.retina = 3,
+                      fig.align = "center")
 ```
 
 > This post was written as part of requirements for Visual Analytics course in MITB. The VAST Challenge 2021 scenario and all people, places, information are all fictitious.
@@ -73,7 +80,7 @@ The code chunk below dictates the installation or loading of packages.
 packages = c('lubridate','tidyverse', 'ggplot2', 'ggraph', 'igraph', 'lsa', 'DT',
              'tm', 'wordcloud', 'tidytext', 'dplyr','textmineR', 'ggExtra', 'stringr',
              'TSstudio','hrbrthemes','plotly', 'ggridges','dygraphs','tokenizers',
-             'data.table','leaflet')
+             'data.table','leaflet','crosstalk')
 
 for (p in packages){
   if(!require(p, character.only = T)){
@@ -129,19 +136,23 @@ cc <- data %>% filter(type=="ccdata")
 mb <- data %>% filter(type=="mbdata")
 
 
+timeintervals <- function(df) {
+  df$timebin <- "-"
+  df[df$time < "17:30:00", "timebin"] <- "5-5:30pm"
+  df[df$time >= "17:30:00" & df$time < "18:00:00", "timebin"] <- "5:30pm-6pm"
+  df[df$time >= "18:00:00" & df$time < "18:30:00", "timebin"] <- "6-6:30pm"
+  df[df$time >= "18:30:00" & df$time < "19:00:00", "timebin"] <- "6:30pm-7pm"
+  df[df$time >= "19:00:00" & df$time < "19:30:00", "timebin"] <- "7-7:30pm"
+  df[df$time >= "19:30:00" & df$time < "20:00:00", "timebin"] <- "7:30pm-8pm"
+  df[df$time >= "20:00:00" & df$time < "20:30:00", "timebin"] <- "8-8:30pm"
+  df[df$time >= "20:30:00" & df$time < "21:00:00", "timebin"] <- "8:30pm-9pm"
+  df[df$time >= "21:00:00", "timebin"] <- "9-9:31pm"
+  return(df)
+}
+
+
 # creating time bin for analysis
-cc$timebin <- "-"
-cc[cc$time < "17:30:00", "timebin"] <- "5-5:30pm"
-cc[cc$time >= "17:30:00" & cc$time < "18:00:00", "timebin"] <- "5:30pm-6pm"
-cc[cc$time >= "18:00:00" & cc$time < "18:30:00", "timebin"] <- "6-6:30pm"
-cc[cc$time >= "18:30:00" & cc$time < "19:00:00", "timebin"] <- "6:30pm-7pm"
-cc[cc$time >= "19:00:00" & cc$time < "19:30:00", "timebin"] <- "7-7:30pm"
-cc[cc$time >= "19:30:00" & cc$time < "20:00:00", "timebin"] <- "7:30pm-8pm"
-cc[cc$time >= "20:00:00" & cc$time < "20:30:00", "timebin"] <- "8-8:30pm"
-cc[cc$time >= "20:30:00" & cc$time < "21:00:00", "timebin"] <- "8:30pm-9pm"
-cc[cc$time >= "21:00:00", "timebin"] <- "9-9:30pm"
-
-
+cc <- timeintervals(cc)
 
 # getting call frequency from 1700-2131
 freq <- cc %>% group_by(timebin) %>%
@@ -182,7 +193,9 @@ ggplot(count_type, aes(x = count, y = message, fill = timebin,
 Number of Microblogs per time interval (interactive)
 
 ```{r echo = FALSE}
-mb_per_time <- mb %>% group_by(as.POSIXct(datetime, format = "%H:%M:%S")) %>% summarize(no_microblogs = n())
+mb_per_time <- mb %>% 
+  group_by(as.POSIXct(datetime, format = "%H:%M:%S")) %>% 
+  summarize(no_microblogs = n())
 ts_plot(mb_per_time,
         title = "Microblog Frequency Per Time",
         Xtitle = "Time",
@@ -339,25 +352,43 @@ wordcloud(words = w.d$word, freq = w.d$freq, min.freq = 1,
 
 To gather some initial ideas of the content or event happening, we will be using the hashtags and plot against time. 
 
-```{r echo=FALSE, fig.width=8}
-HT_df <- mb[, c("datetime", "time", "message", "hashtags")]
+
+```{r echo=FALSE}
+# getting timebins
+mb <- timeintervals(mb)
+
+HT_df <- mb[, c("datetime", "time", "timebin", "message", "hashtags")]
 HT_df <- unnest(HT_df)
 # removing symbols and converting to lowercase
 HT_df$hashtags <- lapply(HT_df$hashtags, tolower)
 HT_df$hashtags <- str_replace_all(HT_df$hashtags, "[[:punct:]]", "")
+
 HT_per_time <- HT_df %>%
+  group_by(timebin, hashtags) %>%
+  summarize(HT_count = n()) %>%
+  ungroup()
+
+# creating matrix
+library(reshape2)
+matrix <- acast(HT_per_time, hashtags~timebin, value.var='HT_count', fill=0)
+
+comparison.cloud(matrix, max.words = 500, 
+                 random.order = FALSE, 
+                 c(4,0.5), 
+                 title.size = 1.2,
+                 colors = brewer.pal(9, "Dark2") )
+
+```
+
+
+```{r echo=FALSE, fig.width=8}
+
+HT_per_time2 <- HT_df %>%
   group_by(time, hashtags) %>%
-  summarize(HT_count = n())
-  
-# plot_ly(data = HT_per_time, 
-#         x = ~time, y = ~HT_count,
-#         text = ~paste("Hashtag:", hashtags,
-#                       "<br>Count:", HT_count),   # how to adjust tooltip
-#         mode = "markers",     # changing marker type
-#         color = ~hashtags)
+  summarize(HT_count = n()) %>%
+  ungroup()
 
-
-plot_ly(data = HT_per_time, 
+plot_ly(data = HT_per_time2, 
         x = ~time, y = ~HT_count,
         type = 'scatter',
         marker = list(size = 8),
@@ -420,9 +451,9 @@ As the spam index for "KronosQuoth" and "Clevvah4Evah" is very low despite the l
 
 ### Removing Junk
 
-Using texts with hashtags only (removed mentions and retweets) as hashtags proved to inform readers on the events too.
 
 ```{r echo=FALSE}
+
 # removal of the 2 authors
 mb2 <- mb[mb$author!="KronosQuoth" & mb$author!="Clevvah4Evah", ]
 # ======== preparing corpus to be used ========
@@ -436,6 +467,61 @@ for (i in 1:nrow(mb2)){
   # mentions
   mb2$words.with.HT[i] <- gsub("@\\S+", " ", mb2$words.with.HT[i])
 }
+
+```
+
+
+
+```{r echo=FALSE}
+# library(tm)
+# library(proxy)
+# 
+# 
+# # ==== TFIDF ====
+# TFIDF <- function(vector) {
+#     # tf 
+#     news_corpus  <- Corpus( VectorSource(vector) )
+#     control_list <- list(removePunctuation = TRUE, stopwords = TRUE, tolower = TRUE)
+#     tf <- TermDocumentMatrix(news_corpus, control = control_list) %>% as.matrix()
+# 
+#     # idf
+#     idf <- log( ncol(tf) / ( 1 + rowSums(tf != 0) ) ) %>% diag()
+#     return( crossprod(tf, idf) )
+# }
+# 
+# 
+# # ==== cosine similarity ====
+# Cosine <- function(x, y) {
+#   similarity <- sum(x * y) / ( sqrt( sum(y ^ 2) ) * sqrt( sum(x ^ 2) ) )
+#   
+#   # given the cosine value, use acos to convert back to degrees
+#   # acos returns the radian, multiply it by 180 and divide by pi to obtain degrees
+#   cosine_sim <-  acos(similarity) * 180 / pi 
+#   return(1 - cosine_sim)
+# }
+# 
+# 
+# msg_tfidf <- TFIDF(mb2$words.with.HT)
+# 
+# # 3. calculate pair-wise distance matrix 
+# #pr_DB$set_entry( FUN = Cosine, names = c("Cosine") )
+# d1 <- dist(msg_tfidf, method = "euclidean")
+# #pr_DB$delete_entry("Cosine")
+# 
+# # 4. heirachical clustering 
+# cluster1 <- hclust(d1, method = "ward.D")
+# plot(cluster1)
+# #rect.hclust(cluster1, 17)
+# 
+
+```
+
+
+
+Using texts with hashtags only (removed mentions and retweets) as hashtags proved to inform readers on the events too.
+
+```{r echo=FALSE}
+
 # ========= tidytext ========
 text_df2 <- tibble(line = 1:nrow(mb2), text = mb2$words.with.HT)
 # tokenizations and removal of stopwords, numbers and patterns
@@ -471,7 +557,7 @@ tfidf %>%
     xlab("")
 ```
 
-Based on boxplot, filter threshold of TF-IDF > = 6
+Based on boxplot, filter threshold of TF-IDF > = 4
 
 ```{r echo = FALSE}
 tfidf.cluster <- tfidf[, c('word','tf_idf')]
@@ -648,7 +734,7 @@ topics_df$author <- "-"
 topics_df$longitude <- "-"
 topics_df$latitude <- "-"
 
-
+library(lubridate)
 for (i in 1:nrow(text_df3)){
   if (text_df3$word[i] %in% topic_words){
     no <- text_df3$line[i]
@@ -664,7 +750,10 @@ for (i in 1:nrow(text_df3)){
 }
 
 topics_df <- topics_df %>%
-  filter_all(any_vars(!. %in% c("-")))
+  filter_all(any_vars(!. %in% c("-"))) %>%
+  mutate(date = ymd("2014-01-23")) %>%
+  mutate(datetime = ymd_hms(paste(date, time)))
+
 ```
 
 
@@ -768,20 +857,9 @@ tfidf2[tfidf2$word %in% shooting, "Event"] <- "Shooting"
 tfidf2[tfidf2$word %in% fire, "Event"] <- "Fire"
 tfidf2[tfidf2$word %in% hitrun, "Event"] <- "Hit&Run"
 
-timeintervals <- function(df) {
-  df$timebin <- "-"
-  df[df$time < "17:30:00", "timebin"] <- "5-5:30pm"
-  df[df$time >= "17:30:00" & df$time < "18:00:00", "timebin"] <- "5:30pm-6pm"
-  df[df$time >= "18:00:00" & df$time < "18:30:00", "timebin"] <- "6-6:30pm"
-  df[df$time >= "18:30:00" & df$time < "19:00:00", "timebin"] <- "6:30pm-7pm"
-  df[df$time >= "19:00:00" & df$time < "19:30:00", "timebin"] <- "7-7:30pm"
-  df[df$time >= "19:30:00" & df$time < "20:00:00", "timebin"] <- "7:30pm-8pm"
-  df[df$time >= "20:00:00" & df$time < "20:30:00", "timebin"] <- "8-8:30pm"
-  df[df$time >= "20:30:00" & df$time < "21:00:00", "timebin"] <- "8:30pm-9pm"
-  df[df$time >= "21:00:00", "timebin"] <- "9-9:30pm"
-  return(df)
-}
+# getting time bin
 tfidf2 <- timeintervals(tfidf2)
+
 tfidf2 %>%
   group_by(timebin, word, Event) %>%
   summarize(mean_tfidf = mean(tf_idf)) %>%
@@ -819,7 +897,7 @@ t_graph
 
 To compare different topics against each other?
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=10}
 topics_df %>%
   group_by(time, group) %>%
   summarize(count = n()) %>%
@@ -836,19 +914,24 @@ topics_df %>%
 #### Sentiment vs Time
 
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=10}
 
-### ADD IN DROP DOWN MENU / at least make sure the time is not overlapped
-
-s <- nrc_words %>% 
+nrc_words %>%
   group_by(time, sentiment) %>%
-  summarize(n = n()) %>%
-  ggplot(aes(x=time, y=n, size=n, color=sentiment)) +
-  geom_point(alpha=0.5) +
-    ylab("Sentiment Count") +
-    xlab("Time") +
-  scale_x_discrete(guide = guide_axis(check.overlap = TRUE))
-ggplotly(s)
+  summarize(Count = n()) %>%
+  plot_ly(x=~time, y=~Count,
+          size=~Count,
+          color=~sentiment,
+          type='scatter',
+          marker=list(opacity=0.8),
+          text = ~paste("Timestamp:", time,
+                      "<br>Count:", Count,
+                      "<br>Sentiment:", sentiment)) %>%
+  layout(title = 'Sentiment vs Time')
+         # xaxis = list(showgrid=FALSE),
+         # yaxis = list(showgrid=FALSE))
+
+
 ```
 
 
@@ -887,7 +970,8 @@ affected %>%
   ggplot(aes(x=Topic, y=no_authors)) +
   geom_bar(stat="identity", fill="#f68060", alpha=.6) +
   geom_text(aes(label = no_authors), position=position_dodge(width=0.9), vjust=-0.25) +
-  theme_bw()
+  theme_bw() +
+  labs(title = "Number of authors showing negative sentiment per topic")
   
 ```
 
@@ -973,7 +1057,12 @@ DT::datatable(tweet_summary, filter = 'top') %>%
 separating street names to geocoded version to get geometry
 
 ```{r echo=FALSE}
-sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
+# reading shape files
+Abila <- st_read(dsn = "data/Geospatial", layer = "Abila")
+Kronos <- st_as_sf(st_read(dsn = "data/Geospatial", layer = "Kronos_Island"))
+Kronos_small <- st_crop(Kronos, 
+                        c(xmin = 24.8232, xmax = 24.91075, ymin = 36.0445, ymax = 36.09543))
+
 
 cc_location <- cc %>% 
   filter(location != "N/A")
@@ -996,7 +1085,7 @@ cc_location <- cc_location %>%
   mutate(dir = str_remove(dir, "\\."))
 
 # getting the street abbrev, eg. dr, way, ave, st
-abb <- unique(sf_mpsz$FETYPE)
+abb <- unique(Abila$FETYPE)
 abb <- abb[!is.na(abb)]
 cc_location$fetype <- "-"
 
@@ -1038,6 +1127,7 @@ for (i in 1:nrow(cc_location)){
   }
 }
 
+## === MANUAL EDIT ===
 # editing the names
 cc_location[n,]
 cc_location[23,"fetype"]<-"St"
@@ -1057,7 +1147,7 @@ mapping of ccdata
 cc_loc2<-cc_location[-special_cc,]
 
 # altering sf_mpsz first
-sf_mpsz2 <- sf_mpsz %>%
+Abila2 <- Abila %>%
   mutate(FROM = pmin(FRADDL,FRADDR,TOADDL,TOADDR, na.rm = TRUE)) %>%
   mutate(FROM = floor(FROM/100)*100)
 
@@ -1068,17 +1158,8 @@ cc_loc2 <- cc_loc2 %>%
 
 
 # merging data --> note that not all will match as they are not avail in the shape file!
-
-## right join?
-# cc_loc3 <- right_join(cc_loc2, sf_mpsz2,
-#                      by = c("fetype" = "FETYPE",
-#                             "street" = "FENAME",
-#                             "dir" = "FEDIRP",
-#                             "num_round" = "FROM"),
-#                      all.x = TRUE)
-
 #### INNNER JOIN?
-cc_loc3 <- sf_mpsz2 %>%
+cc_loc3 <- Abila2 %>%
   inner_join(cc_loc2, by=c("FROM"="num_round",
                            "FEDIRP"="dir",
                            "FENAME"="street",
@@ -1100,7 +1181,7 @@ Note --> 128 rows are matched only to shape file and some addresses are duplicat
 <br/>
 Plotting static graph showing the volume in microblogs 
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=10}
 # library(geosphere)
 # cc_loc3$long <- "-"
 # cc_loc3$lat <- "-"
@@ -1119,13 +1200,12 @@ Plotting static graph showing the volume in microblogs
 #   cc_loc3$lat[i]<-centre[2]
 # }
 
-sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
-
 cc_loc3$centre_geom <- st_centroid(cc_loc3$geometry)
 
 
 combo <- ggplot() + 
-  geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
+  geom_sf(data = Kronos_small, size = 0.5, color = 'darkblue') +
+  geom_sf(data = Abila, size = 0.5, color = 'black') + 
   coord_sf() +
   geom_point(data = tweet_summary, aes(x = longitude, 
                  y = latitude, 
@@ -1151,9 +1231,7 @@ Interactive plot showing call-type and topics of microblog at location
 
 library(leaflet)
 
-sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
-
-shapeData <- st_transform(sf_mpsz, '+proj=longlat +datum=WGS84')
+shapeData <- st_transform(Abila, '+proj=longlat +datum=WGS84')
 
 # getting lat and long separately from centroid
 cc_loc3$long <- "-"
@@ -1166,6 +1244,7 @@ for (i in 1:nrow(cc_loc3)){
 
 leaflet(data = cc_loc3) %>% 
   addTiles() %>%
+  addPolygons(data = Kronos_small, weight = 4, col = 'black') %>%
   addPolygons(data = shapeData, weight = 2, col='black') %>%
   addMarkers(lng = ~as.numeric(cc_loc3$long),
              lat = ~as.numeric(cc_loc3$lat),
@@ -1177,6 +1256,91 @@ leaflet(data = cc_loc3) %>%
   
 
 ```
+
+
+
+Finding out each event starting time >>> map to tweets timing >>> map to call centre timing
+
+```{r echo=FALSE}
+library(dplyr)
+
+#mbdata
+mb_loctime <- timeintervals(topics_df) #timebins
+
+mb_loctime2 <- mb_loctime %>%
+  filter(longitude!="") %>%
+  group_by(latitude, longitude, time, timebin, datetime) %>%
+  summarize(topics = paste(unique(group), collapse = ", ")) %>%
+  ungroup()
+
+#ccdata
+cc_loctime <- cc_loc3 %>%
+  select(message, time, timebin, datetime, location2, long, lat) %>%
+  group_by(time, location2, message)
+
+# changing column names for cc data
+colnames(cc_loctime)[6]<-"longitude"
+colnames(cc_loctime)[7]<-"latitude"
+
+```
+
+Filtering with time/topic?
+
+```{r echo=FALSE}
+
+# # finding columns that are different and fill with NA
+# cc_loctime[setdiff(names(mb_loctime2), names(cc_loctime))] <- NA
+# mb_loctime2[setdiff(names(cc_loctime), names(mb_loctime2))] <- NA
+
+#combine them
+all_data <- dplyr::bind_rows(cc_loctime,mb_loctime2)
+
+all_data$type <- "-"
+all_data$msg <- "-"
+for (i in 1:nrow(all_data)){
+  if(is.na(all_data$message[i])){
+    all_data$type[i]<-"mb"
+    all_data$msg[i]<-all_data$topics[i]
+  } else {
+    all_data$type[i]<-"cc"
+    all_data$msg[i]<-all_data$message[i]
+  }
+}
+
+#names(all_data)
+all_data2 <- all_data[, c("time","type","msg","longitude","latitude","datetime")]
+all_data2 <- all_data2 %>% arrange(datetime)
+
+library(crosstalk)
+library(leaflet)
+
+col <- colorFactor(c("red", "blue"), domain = unique(all_data2$type))
+
+sd <- SharedData$new(all_data2)
+#filter_slider("datetime","Time", sd, column = ~datetime, timeFormat = "%T", timezone = "+0000")
+
+bscols(
+  # filter_slider("datetime","Time", 
+  #               sd, column = ~datetime, 
+  #               timeFormat = "%T", timezone = "+0000",
+  #               width = 250),
+  leaflet(data = sd) %>%
+    addTiles() %>%
+    addPolygons(data = Kronos_small, weight = 4, col = 'black') %>%
+    addPolygons(data = shapeData, weight = 2, col='black') %>%
+    addCircleMarkers(lng = ~as.numeric(longitude),
+                     lat = ~as.numeric(latitude),
+                     label = ~as.character(msg),
+                     color = ~col(type),
+                     stroke = FALSE,
+                     fillOpacity = 0.7),
+  datatable(sd, extensions="Scroller", style="bootstrap", class="compact", width="100%",
+            options=list(deferRender=TRUE, scrollY=300, scroller=TRUE))
+)
+
+
+```
+
 
 
 
@@ -1194,6 +1358,7 @@ leaflet(data = cc_loc3) %>%
 - [VAST Challenge 2014](http://www.vacommunity.org/VAST+Challenge+2014)
 - [VAST Challenge Mini-Challenge 3, UBA-Rukina-Group51-MC3](http://visualdata.wustl.edu/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/University%20of%20Buenos%20Aires%20-%20Rukavina/)
 - [Plotting Graphs in R](https://www.r-graph-gallery.com/index.html)
+- [Plotly graphs](https://plotly.com/r/)
 - [Tidytextmining](https://www.tidytextmining.com/topicmodeling.html)
 - [Clustering Topics](https://www.markhw.com/blog/word-similarity-graphs)
 - [Time-series Plotting](https://cran.r-project.org/web/packages/TSstudio/vignettes/Plotting_Time_Series.html)
