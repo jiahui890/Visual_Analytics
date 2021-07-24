@@ -42,9 +42,6 @@ On the day of January 23 2014, there are also multiple events happening across A
 
 ### 2.1 Past Mini-Challenge 3 Approaches
 
-Past Mini-Challenge methods to deal with spam --> spam index
-
-
 In VAST Challenge 2014, a similar setting and tasks were given out to participants and thus this serves as a learning platform for the 2021 challenge. Literature review is crucial to guide us in understanding the data provided, the background information and further formulate our analysis to discover meaningful insights via visualizations. 
 
 Based on MC3 in 2014, the questions given were to derive the exact events occurring throughout the evening. The diagram below depicts overall findings of how the events unfold based on the microblog data (Figure 1) and the call centre messages (Figure 2).
@@ -54,7 +51,6 @@ Based on MC3 in 2014, the questions given were to derive the exact events occurr
 
 ![Fig 2: Location of messages received by Call Centre](img/cc1.png)
 
-<br/>
 
 Overall, we can understand what are the major events that we can find from the data and this allow us to perform cross-referencing when doing the analysis later. In the data, mbdata are given together with longitude and latitude, while the ccdata is only given the street name. Using the shape file, we will be able to map the locations into geographical points and identify the both mb and cc locations.
 
@@ -89,6 +85,13 @@ The table below shows the R packages that will be used in this challenge.
 
 ### 3.1 Setting up environment
 
+| File | Description |
+|:-------|:-------------|
+| csv-1700-1830 | Covers the time period from 1700 to 1830 Abila time on January 23  |
+| csv-1831-2000 | Covers the time period from 1830 to 2000 Abila time on January 23 |
+| csv-2001-2131 | Covers the time period from 2000 to shortly after 2130 Abila time on January 23. |
+| Geospatial Folder | Consisting of shapefiles for Abila and Kronos Island |
+
 The data given in this challenge consists of three csv files, each spanning across different time period (1700-1830, 1831-2000, 2001-2131). In each file, the data includes mbdata (microblog) and ccdata (call centre), which then further elaborated with details such as datetime, message and location. Geospatial and Aspatial files were also included for location tracking.
 
 
@@ -99,7 +102,7 @@ packages = c('lubridate','tidyverse', 'ggplot2', 'ggraph', 'igraph',
              'lsa', 'DT','tm', 'wordcloud', 'tidytext', 'dplyr',
              'textmineR', 'ggExtra', 'stringr','TSstudio',
              'hrbrthemes','plotly', 'ggridges','dygraphs','tokenizers',
-             'data.table','leaflet','crosstalk')
+             'data.table','leaflet','crosstalk','reshape2')
 
 for (p in packages){
   if(!require(p, character.only = T)){
@@ -112,14 +115,25 @@ for (p in packages){
 
 ### 3.2 Data Extraction and Preparation
 
+The table below shows an overall breakdown of the raw data format for both microblog messages (mbdata) and call center data (ccdata):
+
+| Variables | mbdata format | ccdata format |
+|:-------|:-------------|:-------------|
+| date | In YYYYMMDDHHMMSS format. For example, July 8, 2014 at 11:59 pm would be 20140708235900 | In YYYYMMDDHHMMSS format. For example, July 8, 2014 at 11:59 pm would be 20140708235900 |
+| author | Author name, a text string | - |
+| message | The message string, containing up to 200 characters of content | Call center message type, containing up to 200 characters of content |
+| latitude | Latitude from which the message was sent | - |
+| longitude | Longitude from which the message was sent | - |
+| location | - | The street or cross streets at which the incident took place |
+
+
 We will then upload all the related file and combine it into one for easier processing. A glimpse of the combined data will be shown below.
 
 ```{r}
 csv1 <- read_csv('data/csv-1700-1830.csv')
 csv2 <- read_csv('data/csv-1831-2000.csv')
 csv3 <- read_csv('data/csv-2001-2131.csv')
-# sample glimpse of one csv as the rest are similar
-#glimpse(csv1)
+
 data <- rbind(csv1, csv2, csv3)
 glimpse(data)
 ```
@@ -233,10 +247,20 @@ ts_plot(mb_per_time,
 
 ### 3.4 Text Pre-processing and Exploratory Analysis
 
-Using text mining package to create corpus, lowercase, remove punctuations, remove stopwords and stemming
+Using the _tm_ package, the microblog messages will now be broken down using text mining techniques in the following order:
 
+1. Creating a corpus by combining all messages as documents
+2. Converting all text to lowercase for easier referencing
+3. Remove punctuation, symbols and numbers
+4. Tokenize each words (seperate them from sentences)
+5. Removing stopwords (words that are common such as pronouns and prepositions)
+6. Converting texts to its root form via stemming (eg. from "ran" to "run")
+
+With the words broken down, we will be able to study the relationship(s), meaning and count the individual frequency.
 
 #### Considering all words
+
+We will first combine all words together (regardless of retweets, mentions etc) to get an overall understanding of the most frequently occurred word(s).
 
 ```{r echo = FALSE}
 # Build a corpus containing all the microblogs
@@ -244,8 +268,6 @@ corpus <- VCorpus(VectorSource(mb$message))
 # convert the text to lowercase
 corpus <- tm_map(corpus, content_transformer(tolower))
 corpus<-tm_map(corpus, PlainTextDocument)
-# for debugging
-#writeLines(as.character(corpus[[5]])) # inspect doc number 5
 # creating own punctuation removal instead of using from tm as they do not insert blank spaces
 replacePunctuation <- content_transformer(function(x) {return (gsub("[[:punct:]]"," ", x))})
 # remove all punctuation from the corpus
@@ -256,27 +278,28 @@ corpus<-tm_map(corpus, removeNumbers)
 corpus<-tm_map(corpus, removeWords, stopwords("en"))
 # stemming the words to its root form in the corpus
 corpus<-tm_map(corpus, stemDocument)
-# creating document term matrix from corpus
-#Doc_mat <- DocumentTermMatrix(corpus)
 # term matrix and get the frequency counts of each word
 term_doc_mat <- TermDocumentMatrix(corpus)
 tokens <- as.matrix(term_doc_mat)
 f <- sort(rowSums(tokens),decreasing=TRUE)
 d <- data.frame(word = names(f),freq=f)
-# showing top 10 words
-#head(d, 10)
-#barplot(f, las=2, col = rainbow(25))
-#showing top 200 words via wordclous
+
+# showing top 200 words
 set.seed(1234)
 wordcloud(words = d$word, freq = d$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
 ```
 
+The frequencies of each word are plotted using _wordcloud_, and we observe that the most commonly posted words (the bigger the size, the higher the count) are "pokral", "kronosstar" and "abila".
 
-#### Showing Hashtags only
+
+#### Top trending Hashtags, Retweets and Mentions
+
+Separately, we wish to understand the trending topics or events occurring during the evening. This can be tracked via hashtags (words with "#" in front). Hence, we will use regular expresssion techniques (regex) to sieve out the hashtags and count the frequency.
 
 ```{r echo = FALSE}
+
 mb$hashtags <- "-"
 for (i in 1:nrow(mb)){
   mb$hashtags[i] <- str_extract_all(mb$message[i], "#\\S+")
@@ -291,15 +314,22 @@ HT.tdm <- TermDocumentMatrix(HT.corpus)
 HT <- as.matrix(HT.tdm)
 HT.f <- sort(rowSums(HT),decreasing=TRUE)
 HT.d <- data.frame(word = names(HT.f),freq=HT.f)
-# showing top 10 words
-#head(HT.d, 10)
+
+
 set.seed(1234)
 wordcloud(words = HT.d$word, freq = HT.d$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
+
 ```
 
-#### Top Mentions
+Based on the wordcloud, we observe that the top trending hashtag is "#pokrally", and this suggests that there are many messages related to the rally happening that evening.
+
+
+#### Top Mentions or Retweets
+
+Besides hashtags, we can also explore the number of mentions or retweets by different authors. 
+
 
 ```{r echo = FALSE}
 mb$mentions <- "-"
@@ -316,21 +346,20 @@ MEN.tdm <- TermDocumentMatrix(MEN.corpus)
 MEN <- as.matrix(MEN.tdm)
 MEN.f <- sort(rowSums(MEN),decreasing=TRUE)
 MEN.d <- data.frame(word = names(MEN.f),freq=MEN.f)
-# showing top 10 words
-#head(HT.d, 10)
+
 set.seed(1234)
 wordcloud(words = MEN.d$word, freq = MEN.d$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
 ```
 
-
+From the wordcloud, the most frequently mentioned or retweeted messages are related to "@abilapost" and "@kronosstar". This suggests that these authors belong to official organizations or media outlets.
 
 
 
 #### Showing words without hashtags and mentions
 
-Removing all hashtags, mentions and retweets
+After analyzing all the different type of messages, we will now evaluate the raw text - that is by removing all hashtags, mentions and retweets. Similarly, the text will also undergo text mining techniques to retrieve the root tokenized form. This will allow us to understand the topics of messages trending by counting frequency of these words.
 
 ```{r echo = FALSE}
 mb$words.only <- "-"
@@ -359,8 +388,7 @@ tdm_words <- TermDocumentMatrix(corpus_words)
 w <- as.matrix(tdm_words)
 w.f <- sort(rowSums(w),decreasing=TRUE)
 w.d <- data.frame(word = names(w.f),freq=w.f)
-# showing top 10 words
-#head(w.d, 10)
+
 # wordcloud
 set.seed(1234)
 wordcloud(words = w.d$word, freq = w.d$freq, min.freq = 1,
@@ -368,15 +396,16 @@ wordcloud(words = w.d$word, freq = w.d$freq, min.freq = 1,
           colors=brewer.pal(8, "Dark2"))
 ```
 
+From the wordcloud, we noticed that the most commonly appeared word is "fire". This suggests that there might be a fire-related accident occurring during the evening. 
 
 
 ## 4. Unsupervised Text Classification (Q1)
 
 >Using visual analytics, characterize the different types of content in the dataset. What distinguishes meaningful event reports from typical chatter from junk or spam? Please limit your answer to 8 images and 500 words.
-### Brief overview of events by Hashtags (interactive)
 
-To gather some initial ideas of the content or event happening, we will be using the hashtags and plot against time. 
+### Brief overview of events by Hashtags
 
+From above analysis, we noticed that hashtags can give some initial ideas of the content or events happening. Hence, we will be using the hashtags frequencies and plot against time to observe how the top hashtags changes throughout the whole evening.
 
 ```{r echo=FALSE}
 # getting timebins
@@ -405,6 +434,17 @@ comparison.cloud(matrix, max.words = 500,
 
 ```
 
+As we plot a static wordcloud based on the timebins, the top trending hashtag changes across time. The main observations can be broken down below:
+
+- **6-6:30pm:** The most posted hashtag throughout whole evening is "pokrally", and it is shown to occur within the time frame of 6-6:30pm. Hence, this gives a rough idea of the starting time or period of the rally occurring that evening.
+
+- **7:30pm-8pm:** There seems to be a shooting happening during this time period, as shown by the hashtags with top hashtag word of the time period to be "shooting".
+
+- **9-9:31pm:** The shooting seems to have intensified during this period, as one of the top hashtags apears to be "standoff" and "apd" (apd seems to stand for Abila Police Department).
+
+
+The changes in hashtags can be further explored and validated using the interactive plot below, where we see the extact time the hashtags appear throughout the evening.
+
 
 ```{r echo=FALSE, fig.width=8}
 
@@ -423,12 +463,20 @@ plot_ly(data = HT_per_time2,
 
 ```
 
-From analysis of the hashtags, we noticed that there are 3 main events so far - a shooting, a fire and a rally.
+As we click onto the hashtag = "standoffover", we see that this hashtag appeared from 21:18:47 to "21:27:12". We can now understand the beginning and ending of this entire shooting event.
+
+Additionally, we observe that "pokrally" hashtag trended throughout the evening regardless if the event ended.
 
 
-### Removing Spam
+### Removing Spam messages
 
-Detecting spam index by author - lots of messages but low spam index = spam
+After having a rough idea of the major events happening, we will now proceed to identify the important messages by classifying the junk and spam. Spam messages means that the same message type is repeated many times, and this can be determined by calculating the spam index of EACH author, with the formula given below:
+
+$$
+spam index = \frac{number of distinct messages}{total number of messages}
+$$
+
+As such, the lower the spam index, the more likely it is a spam.
 
 ```{r echo=FALSE}
 author_spam <- mb %>% 
@@ -469,12 +517,16 @@ mtext("Author's ID",side=1,col="black",line=2.5)
 
 ```
 
-
+The interactive table shows a column of the spam index per author, as well as the raw counts and distinct author ID. The rows of the table are arranged in ascending order of spam index. The graph is then plotted to show the various message counts as well as the spam index.
 
 As the spam index for "KronosQuoth" and "Clevvah4Evah" is very low despite the large number of messages sent during the entire time-period, they are classified as spam accounts (sending messages of same type every interval). Hence, messages from these 2 authors will be removed.
 
 
-### Removing Junk
+### Removing Junk messages
+
+Junk messages are classified as messages that do not hold importance or irrelevant context. This can be identified by measuring the tf-idf (term frequency - inverse document frequency) of each word. The rarer the word occur in the entire corpus, the higher the tf-idf value, and hence showing the words of "least importance".
+
+To proceed in creating the corpus, we will first remove messages from the 2 authors identified as spam earlier. As hashtags proved to give certain importance in identifying events, we will include them into the corpus (while removing retweets and mentions). The code below shows the relevant data wrangling of messages.
 
 
 ```{r echo=FALSE}
@@ -496,54 +548,8 @@ for (i in 1:nrow(mb2)){
 ```
 
 
+Using the _tidytext_ package, we will create a _tibble_ and perform _dplyr_ operations to process and prepare the new corpus into tokenize words. The tf-idf will then be calculated using the *bind_tf_idf* function.
 
-```{r echo=FALSE}
-# library(tm)
-# library(proxy)
-# 
-# 
-# # ==== TFIDF ====
-# TFIDF <- function(vector) {
-#     # tf 
-#     news_corpus  <- Corpus( VectorSource(vector) )
-#     control_list <- list(removePunctuation = TRUE, stopwords = TRUE, tolower = TRUE)
-#     tf <- TermDocumentMatrix(news_corpus, control = control_list) %>% as.matrix()
-# 
-#     # idf
-#     idf <- log( ncol(tf) / ( 1 + rowSums(tf != 0) ) ) %>% diag()
-#     return( crossprod(tf, idf) )
-# }
-# 
-# 
-# # ==== cosine similarity ====
-# Cosine <- function(x, y) {
-#   similarity <- sum(x * y) / ( sqrt( sum(y ^ 2) ) * sqrt( sum(x ^ 2) ) )
-#   
-#   # given the cosine value, use acos to convert back to degrees
-#   # acos returns the radian, multiply it by 180 and divide by pi to obtain degrees
-#   cosine_sim <-  acos(similarity) * 180 / pi 
-#   return(1 - cosine_sim)
-# }
-# 
-# 
-# msg_tfidf <- TFIDF(mb2$words.with.HT)
-# 
-# # 3. calculate pair-wise distance matrix 
-# #pr_DB$set_entry( FUN = Cosine, names = c("Cosine") )
-# d1 <- dist(msg_tfidf, method = "euclidean")
-# #pr_DB$delete_entry("Cosine")
-# 
-# # 4. heirachical clustering 
-# cluster1 <- hclust(d1, method = "ward.D")
-# plot(cluster1)
-# #rect.hclust(cluster1, 17)
-# 
-
-```
-
-
-
-Using texts with hashtags only (removed mentions and retweets) as hashtags proved to inform readers on the events too.
 
 ```{r echo=FALSE}
 
@@ -556,51 +562,51 @@ text_df2 <- text_df2 %>%
   unnest_tokens(word,text) %>%
   filter(str_detect(word, "[a-z']$"),
          !word %in% stop_words$word) 
-  #mutate(word = wordStem(word))  #stemming from package "SnowballC"
+
   
 text_df2 <- text_df2 %>%
   group_by(line) %>%
   count(word, sort = TRUE) %>%
   ungroup()
-```
 
-
-Distinguishing event reports from junk using tf-idf (higher tf-idf = rarer term)
-
-Plotting boxplot to look at the spread of tfidf
-
- 
-```{r echo = FALSE}
 tfidf <- text_df2 %>%
   bind_tf_idf(word, line, n) %>%
   arrange(desc(tf_idf))
 
-tfidf %>%
+# === tfidf boxplot ===
+tfidf_1 <- tfidf %>%
   ggplot( aes(y=tf_idf)) +
     geom_boxplot() +
-    ggtitle("A boxplot for TF-IDF") +
+    geom_hline(yintercept = 4, linetype = "dashed", color = "red") +
+    ggtitle("TF-IDF") +
     xlab("")
-```
 
-Based on boxplot, filter threshold of TF-IDF > = 4
-
-```{r echo = FALSE}
+# === tfidf cluster ===
 tfidf.cluster <- tfidf[, c('word','tf_idf')]
 set.seed(1234)
-tfidf.cluster %>%
+tfidf_2 <- tfidf.cluster %>%
   filter(tf_idf >= 4) %>%
         graph_from_data_frame() %>%
         ggraph(layout = "fr") +
-        # geom_edge_link(aes(edge_alpha = n, edge_width = n))
-        # geom_edge_link(aes(edge_alpha = n, edge_width = n)) +
         geom_node_point(color = "darkslategray4", size = 3) +
         geom_node_text(aes(label = name), vjust = 1.8, size = 3) +
         labs(title = "TF-IDF Cluster: Junk Detection",
              subtitle = "Microblog Messages ",
              x = "", y = "")
+
+library(gridExtra)
+grid.arrange(tfidf_1, tfidf_2,
+             ncol=2, nrow=1,
+             widths=c(1.5,4))
+
 ```
 
-Getting sentences of words with tf-idf >= 6
+
+As we get the tf-idf values, we will plot them into a boxplot to look at the spread of the values. Note that the spread becomes lesser after tf-idf = 4 (indicated by the red dash line), hence we will plot out the words with tfidf >= 4 and observe the clusters formed. 
+
+The nodes are plotted according to their tf-idf value, with the center node labeled as the value each surrounding word has. From here, we observe that words with lesser importance are generally clustered with tf-idf >= 6. To better evaluate the messages with these words, the table below is generated.
+
+
 
 ```{r echo = FALSE}
 junk <- tfidf %>% filter(tf_idf >= 6)
@@ -615,9 +621,7 @@ DT::datatable(junk, filter = 'top') %>%
               target = 'row')
 ```
 
-The higher the tf-idf, the more rare the term is and may not hold importance.
-
-Based on prior knowledge of the 3 events, we can identify some junk messages - those that does not add value to the content. Hence, we can eliminate lines 189, 600, 1252, 1266, 1496, 1580 and 2440.
+The higher the tf-idf, the more rare the term is and may not hold importance. Based on prior knowledge of the major events by hashtags analysis, we can identify some junk messages - those that does not add value to the content. Hence, we can eliminate lines 189, 600, 1252, 1266, 1496, 1580 and 2440.
 
 
 ```{r echo=FALSE}
@@ -638,32 +642,19 @@ text_df3 <- text_df3 %>%
 
 
 
-
-
-
-
-
 ## 5. Topic Modeling and Sentiment Analysis (Q1, Q2)
 
 > Use visual analytics to represent and evaluate how the level of the risk to the public evolves over the course of the evening. Consider the potential consequences of the situation and the number of people who could be affected. Please limit your answer to 10 images and 1000 words.
 
 
-Time-series Analysis
--showing how top 10 words changes across time????
-
-
-To prevent unnecessary noises, we will use texts that are preprocessed and without hashtags, retweets or mentions.
-
-
-
 ### Topic Modeling by Cosine Similarity and Walktrap Algorithm
 
-mapping words with cosine similarity (finding how similar words are irrespective of their size) > 80th percentile
+To further evaluate the messages and obtain words that forms a certain topic, we will conduct Topic Modeling by calculating the Cosine Similarity of each words, as it is a fair measure since it disregard the size of the document. The words are considered similar if they are frequently occurred together within the same message. Hence, the closer the word vectors, the nearer the cosine similarity value is to 1.
 
-Cosine Similarity close to 1 = vectors are similar
+Topic modeling has various techniques, and one of the most commonly used method is the Latent Dirichlet Allocation (LDA). However, as we are using Cosine similarity as a measure, we will be using Latent Semantic Analysis (LSA) instead. A final term matrix with similarity values will be generated, and they are evaluated by plotting a network graph. An algorithm known as the Walktrap Algorithm is introduced, as it is a community detection algorithm for clusters within the network graph. This means that it is able to automatically generate clusters of nodes by random walks of T steps. These clusters will then form a topic each.
 
-- Word similarity are calculated based on how often certain group of words co-occur.
-- Using Walktrap algorithm to auto-generated number of topics and cluster nodes together
+
+As the corpus is relatively large, we will focus on visualizing top 80 percentile of similarity values among the words.
 
 ```{r echo = FALSE}
 cosine_matrix <- function(tokenized_data, lower = 0, upper = 1, filt = 0) {
@@ -700,11 +691,7 @@ cosine_matrix <- function(tokenized_data, lower = 0, upper = 1, filt = 0) {
 cos_mat <- cosine_matrix(text_df3, lower = .01, upper = .80, filt = .80)
 # graph
 g <- graph_from_adjacency_matrix(cos_mat, mode = "undirected", weighted = TRUE)
-# set.seed(1234)
-# ggraph(g, layout = "nicely") +
-#   geom_edge_link(aes(alpha = weight, width = weight), show.legend = FALSE) + 
-#   geom_node_label(aes(label = name)) +
-#   theme_void()
+
 walktrap_topics <- function(g, ...) {
   wt <- igraph::cluster_walktrap(g, ...)
   
@@ -726,7 +713,6 @@ topics$membership %>%
   summarise(words = paste(word, collapse = ", "))
 ```
 
-
 ```{r echo = FALSE}
 V(g)$cluster <- arrange(topics$membership, word)$group
 set.seed(1234)
@@ -741,12 +727,26 @@ ggraph(g, layout = "nicely") +
   theme_void()
 ```
 
-Finding messages that consist of the top words per topic to understand the context of each topic.
+In the code chunks above, the pre-processed text goes through the algorithm to generate the similarity matrix and the final output generated is shown in the graph above. A total of 8 topics are generated and we are able to observe the words belonging to these topics (colour-coded). The similarity values are also plotted via the weights of the edges.
+
+The overall topics of the microblogs generated are:
+
+- **Topic 1:** Shooting standoff at a gelato place
+- **Topic 2:** Influential figurehead or speakers
+- **Topic 3:** 2 incidents - Fire at Dancing Dolphin building and a possible hit-and-run
+- **Topic 4:** About Kronos
+- **Topic 5:** Details of the incident(s)
+- **Topic 6:** POK rally
+- **Topic 7:** An incident regarding to a van and cops 
+- **Topic 8:** Casualties or seriousness in the incidents
+
+Overall, there are a total of 4 major events occurred during that evening; a fire at dancing dolphin, a hit-and-run accident, a rally and a shooting standoff.
+
+We will now find the messages containing these words in order to better understand the timeline and context of the topics generated, which will also prepare for further analysis later.
+
 
 ```{r echo=FALSE}
-# groupings <- topics$membership %>% 
-#   group_by(group) %>% 
-#   summarise(words = paste(word, collapse = ", "))
+
 topic_words <- unique(topics$membership$word)
 groupings <- topics$membership
 topics_df <- data.frame(matrix(ncol=0, nrow=nrow(text_df3)))
@@ -782,32 +782,17 @@ topics_df <- topics_df %>%
 ```
 
 
-Topics of the microblogs generated:
-
-- **Group 1:** Shooting standoff at a gelato place
-- **Group 2:** Influential figurehead or speakers
-- **Group 3:** 2 incidents - Fire at Dancing Dolphin building and a possible hit-and-run
-- **Group 4:** About Kronos
-- **Group 5:** Details of the incident(s)
-- **Group 6:** POK rally
-- **Group 7:** An incident regarding to a van and cops 
-- **Group 8:** Casualties or seriousness in the incidents
-
-
-
-There seems to be a 4th event that have overlapped with the shooting incident in group 3 --> a hit-and-run incident by a van. Hence, this brings the total major events up to 4 for the evening.
-
-
 
 ### Sentiment Analysis (Risk Level)
 
-Using tidytext
+Now that we know the major events happened, we can better evaluate the risk levels via sentiment analyis of the words. Sentiment lexicons can be found using the _nrc_ package, where it consists of a dictionary of words that has similar meanings to certain emotions. Hence, we are able to match the tokenized words with these lexicons and get a better understanding of the underlying sentiment with each topics.
 
 ```{r echo=FALSE}
 # tokenizations and removal of stopwords, numbers and patterns
 text_df4 <- mb3 %>% 
   select(datetime, time, author, words.with.HT) %>%
   mutate(line = 1:nrow(mb3))
+
 text_df4 <- text_df4 %>% 
   mutate(text_df4, text = gsub(x = words.with.HT, 
                                pattern = "[0-9]+|[[:punct:]]|\\(.*\\)", 
@@ -815,9 +800,11 @@ text_df4 <- text_df4 %>%
   unnest_tokens(word,text) %>%
   filter(str_detect(word, "[a-z']$"),
          !word %in% stop_words$word) 
+
 # getting sentiment lexicons from "nrc" --> it contains emotions
 nrc_words <- text_df4 %>%
   inner_join(get_sentiments("nrc"), by = "word")
+
 count_sentiment <- nrc_words %>% 
   group_by(sentiment) %>%
   summarize(n = n()) %>%
@@ -834,9 +821,12 @@ count_sentiment <- nrc_words %>%
     panel.border = element_blank(),
     axis.ticks.y = element_blank()
   )
+
 count_sentiment
 ```
 
+
+A quick analysis of the sentiments detected can be done by counting the frequencies, and we noticed that "Fear" and "positive" emotions were generated the most. The sentiment levels will be further evaluated across the whole time period in the later part of the post, where we can better understand the changes in risk levels.
 
 
 
@@ -857,7 +847,9 @@ Key Words generated by network graph above:
 
 #### TF-IDF vs Time
 
-Based on main 4 events and timebins
+Previously, we understood that TF-IDF determines how important a word is. Hence, we will further analyse how the most important words (lowest TF-IDF) changes within each time intervals.
+
+Firstly, we generate a list of words pertaining to the 4 major events.
 
 ```{r echo=FALSE}
 # words for each topic
@@ -867,6 +859,7 @@ fire <- c("floor", "newsonline", "resident", "top", "trapped", "word", "achilleo
 hitrun <- c("hit", "run", "van")
 ```
 
+Using this generated list, we will then proceed to sieve out relevant messages and measure their TF-IDF.
 
 ```{r echo=FALSE, fig.height=6, fig.width=9}
 tfidf2 <- text_df4 %>%
@@ -900,9 +893,12 @@ tfidf2 %>%
        x = NULL)
 ```
 
+From the graph above, we observed that the Fire incident only started to gain importance from 6:30pm onwards, which suggests the beginning of the incident. In addition, the hit-and-run accident only appears from 7-7:30pm, which suggests that it may not be a very important event as compared to the other 3, given the lack of importance in the words related to it.
 
 
 #### Topics vs time
+
+Next, we will now analyse the changes in topics across the entire evening. As we have generated a total of 8 topics previously, the messages and words related to these topics are retrieved from text and plotted across time by their frequency of occurrence.
 
 ```{r echo=FALSE, fig.height = 8, fig.width=10}
 t_graph <- topics_df %>%
@@ -914,13 +910,12 @@ t_graph <- topics_df %>%
   labs(title = "Chatter with regards to each topic throughout whole evening",
        subtitle = "Top topic words frequency against time") +
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE))
-  #theme(axis.text.x = element_text(angle = 90))
+
 t_graph
  
 ```
 
-
-To compare different topics against each other?
+Interestingly, we are able to determine the rough starting time of each topic within the evening. The interactive graph below also allow us to select the topics individually to track the timeline of each topics.
 
 ```{r echo=FALSE, fig.width=10}
 topics_df %>%
@@ -934,9 +929,24 @@ topics_df %>%
   layout(title = 'Chatter per Topic against Time')
 ```
 
+From the 2 graphs, we are able to determine that:
+
+| Topic No. | Description | Timeline Estimate |
+|:---:|:------------------|:--------------|
+| 1 | Shooting standoff at a gelato place | From 7:15pm onwards |
+| 2 | Influential figurehead or speakers | From 5-7pm |
+| 3 | 2 incidents - Fire at Dancing Dolphin building and a possible hit-and-run |From 6:45pm onwards|
+| 4 | About Kronos | About 5-8pm |
+| 5 | Details of the incident(s) | About 6:45pm to 7:30pm, and 8:30pm onwards |
+| 6 | POK rally | Fluctuates from 5-6pm and 7-8pm |
+| 7 | An incident regarding to a van and cops | From 7pm onwards |
+| 8 | Casualties or seriousness in the incidents | About 8pm onwards |
+
 
 
 #### Sentiment vs Time
+
+After getting the estimated timeline of the topics and events, we will now evaluate the change in risk levels via sentiment against time. The graph below shows the count (depicted by dot size) and the different sentiment spread across the whole evening.
 
 
 ```{r echo=FALSE, fig.width=10}
@@ -953,19 +963,21 @@ nrc_words %>%
                       "<br>Count:", Count,
                       "<br>Sentiment:", sentiment)) %>%
   layout(title = 'Sentiment vs Time')
-         # xaxis = list(showgrid=FALSE),
-         # yaxis = list(showgrid=FALSE))
-
 
 ```
 
+Using an interactive graph, we are able to determine that the top risk factors, which are "fear" and "negative" emotions, increases sharply after 6:30pm. This is inline with the estimated timeline of the 3 major events such as shooting, fire and hit-and-run. There were some "negative" emotions from 5-6pm (during rally timing), and this can be due to some personal resentment to the rallies as shown below. 
 
 
+```{r}
+nrc_words %>%
+  filter(sentiment == "negative") %>%
+  filter(time <= "18:00:00")
 
+```
 
-Number of people affected --> how many people tweeted about each event?
+As risk level increases during the incidents, we can further analyse how many people (aka authors) are affected by these events given their sentiment. Hence, we categorized the affected sentiments to be *fear, disgusted, negative, anger and sadness*. We will further retrieve the words and sentiment per author with respect to the topics and plot the number of authors showing negative sentiment for each topic.
 
-Affected --> sentiment = fear, disgusted, negative, anger, sadness
 
 ```{r echo=FALSE}
 # takes awhile to run
@@ -985,8 +997,11 @@ for (j in 1:nrow(affected)){
 }
 ```
 
+<aside>
 
 Note: Topic=0 means not among top topics
+
+</aside>
 
 ```{r echo=FALSE}
 affected %>% 
@@ -1000,29 +1015,28 @@ affected %>%
   
 ```
 
+Based on the bar graph, we noticed that Topics 1, 3, 7 and 8 (ignoring Topic 0 as it is not relevant) shows the most number of authors being affected. As these topics are all related to the fire, shooting and hit-and-run incidents, we can thus deduce that there were quite alot of people affected by these events (can be physically or emotionally).
+
 
 
 ## 6. Geospatial Analysis with mbdata and ccdata (Q3)
 
 > If you were able to send a team of first responders to any single place, where would it be? Provide your rationale. How might your response be different if you had to respond to the events in real time rather than retrospectively? Please limit your answer to 8 images and 500 words.
 
-Mapping event vs time + calls received vs time
+In order to understand to compare both mbdata and ccdata together, we will perform some data wrangling to retrieve the relevant information for each dataset and inspect their locations together.
 
 
-### mbdata
+### Microblogs Data
+
+From the microblogs, we were only able to retrieve 9 distinct coordinates location tags as the rest are all NULL values. The authors and topics related to the messages from these 9 locations were also identified for easier analysis and comparison later. The table below shows the consolidated results.
+
 
 ```{r echo=FALSE}
 
 library(sf)
-#layers <- c("Abila","Kronos_Island")
 
 data_location <- mb3 %>% 
   filter(longitude!="")
-
-# counting tweets location against time
-# tweet_count <- data_location %>%
-#   group_by(time) %>%
-#   summarize(count = n())
 
 # counting tweets by location
 tweet_loc <- data_location %>%
@@ -1050,36 +1064,10 @@ DT::datatable(tweet_summary, filter = 'top') %>%
 ```
 
 
-```{r echo=FALSE}
-# plotting graph
 
-#sf_mpsz = st_read(dsn = "data/Geospatial", layer = "Abila")
-# abila <- st_read('data/Geospatial/Abila.shp',quiet=TRUE)
+### Call Center Data
 
-# loc <- ggplot() + 
-#   geom_sf(data = sf_mpsz, size = 0.5, color = 'black') + 
-#   coord_sf() +
-#   geom_point(data = tweet_summary, aes(x = longitude, 
-#                  y = latitude, 
-#                  size = msg_count,
-#                  colour = factor(id))) +
-#   xlab("Longitude") +
-#   ylab("Latitude") +
-#   guides(col=guide_legend("Distinct Locations"),
-#          size=guide_legend("Microblog Counts")) +
-#   labs(title = "Location of Microblogs")
-# 
-# 
-# ggplotly(loc)
-
-```
-
-
-
-
-### ccdata
-
-separating street names to geocoded version to get geometry
+In the call center data, the location tags were in the presence of street names instead of latitude and longitude, hence the street names have to be cross-referenced with the Abila shape files and retrieve the respective geo coordinates.
 
 ```{r echo=FALSE}
 # reading shape files
@@ -1164,7 +1152,10 @@ special_cc <- 141
 
 ```
 
-mapping of ccdata
+In between data preparation, we perform some checks to ensure that the street addresses are all correctly parsed into the same format as shapefile. We noticed that the character strings are not separated or categorized properly, hence manual edits are made.
+
+
+After checks, we can then proceed to map with shapefile and retrieve the geo coordinates.
 
 ```{r echo=FALSE}
 
@@ -1194,21 +1185,85 @@ cc_loc3 <- Abila2 %>%
 ```
 
 
-Note --> 128 rows are matched only to shape file and some addresses are duplicate but have different lat/long
+Because of the unstructuredness in the street addresses given in ccdata, some addresses cannot be matched properly. Hence, the code below will try to match the remaining street names / orphan lines that does not have numbers.
+
+```{r echo=FALSE}
+# all streets / orphan lines
+orphan <- cc_loc2[!cc_loc2$line %in% unique(cc_loc3$line),]
 
 
+# ==== dealing with street names with directions ====
+temp <- orphan %>%
+  filter(is.na(num))
+
+streets <- Abila2 %>%
+  inner_join(temp, by=c("FEDIRP"="dir",
+                        "FENAME"="street",
+                        "FETYPE"="fetype"))
+
+# getting geometry with more than 1 point
+idx <- c()
+for (i in 1:nrow(streets)){
+  if(length(streets$geometry[[i]])>=4){
+    idx <- c(idx,i)
+  }
+}
+
+streets2<-streets[idx,]
+streets2 <- streets2 %>% 
+  mutate(centre_geom = st_centroid(geometry)) 
+
+# streets3 <- streets2 %>%
+#   group_by(message, datetime, time, location2, line) %>%
+#   mutate(c = st_centroid(centre_geom))
+
+# streets2$long <- "-"
+# streets2$lat <- "-"
+# for (i in 1:nrow(streets2)){
+#   streets2$long[i] <- as.numeric(streets2$centre_geom[[i]][1])
+#   streets2$lat[i] <- as.numeric(streets2$centre_geom[[i]][2])
+# }
+# 
+# library(geosphere)
+# 
+# streets2$center <- "-"
+# for (n in unique(streets2$line)){
+#   lon <- as.numeric(streets2[streets2$line==n,]$long)
+#   la <- as.numeric(streets2[streets2$line==n,]$lat)
+#   df <- data.frame(lon = lon, lat = la)
+#   if (dim(df)[1]>2){
+#     c <- centroid(df)
+#   } else {
+#     c <- geomean(df)
+#   }
+#   for (i in 1:nrow(streets2)){
+#     if (streets2$line[i]==n){
+#       streets2$center[i] <- st_geometry(c(c[1],c[2]))
+#     }
+#   }
+# }
 
 
+# retrieving first line as the coordinates does not seem too far off for each street to get centroid
+streets3 <- data.frame()
+for (n in unique(streets2$line)){
+  df <- streets2[streets2$line==n,]
+  streets3 <- rbind(streets3, df[1,])
+}
 
 
+```
 
 
-<br/>
-Plotting static graph showing the volume in microblogs 
+### Combining both mbdata and ccdata
+
+Once we are able to get the coordinates for both mbdata and ccdata, we can now plot them onto the abila map using the geospatial packages.
 
 ```{r echo=FALSE, fig.width=10, fig.height=8}
 
 cc_loc3$centre_geom <- st_centroid(cc_loc3$geometry)
+
+cc_loc4 <- dplyr::bind_rows(cc_loc3,streets3)
 
 
 combo <- ggplot() + 
@@ -1219,7 +1274,7 @@ combo <- ggplot() +
                  y = latitude, 
                  size = msg_count,
                  colour = factor(id))) +
-  geom_sf(data = cc_loc3$centre_geom, shape = 23, fill = "red") +
+  geom_sf(data = cc_loc4$centre_geom, shape = 23, fill = "red") +
   xlab("Longitude") +
   ylab("Latitude") +
   guides(col=guide_legend("Microblog Location"),
@@ -1231,8 +1286,10 @@ combo
 ```
 
 
+The static plot above denotes mbdata locations as colourful dots with different sizing based on the number of microblogs posted at that location. The call center location received were plotted as red dots. We observe that there are many locations from ccdata that are not relevant to the mbdata.
 
-Interactive plot showing call-type and topics of microblog at location
+
+To provide better analysis, we will use interactive plots showing the type of calls received by call center and the topics of microblog their respective locations. This plot utilizes clustering interactivity of nearest geo points, hence we can zoom in to show the details.
 
 
 ```{r echo=FALSE}
@@ -1242,21 +1299,21 @@ library(leaflet)
 shapeData <- st_transform(Abila, '+proj=longlat +datum=WGS84')
 
 # getting lat and long separately from centroid
-cc_loc3$long <- "-"
-cc_loc3$lat <- "-"
-for (i in 1:nrow(cc_loc3)){
-  cc_loc3$long[i] <- unlist(cc_loc3$centre_geom[i])[1]
-  cc_loc3$lat[i] <- unlist(cc_loc3$centre_geom[i])[2]
+cc_loc4$long <- "-"
+cc_loc4$lat <- "-"
+for (i in 1:nrow(cc_loc4)){
+  cc_loc4$long[i] <- unlist(cc_loc4$centre_geom[i])[1]
+  cc_loc4$lat[i] <- unlist(cc_loc4$centre_geom[i])[2]
 }
 
 
-leaflet(data = cc_loc3) %>% 
+leaflet(data = cc_loc4) %>% 
   addTiles() %>%
   addPolygons(data = Kronos_small, weight = 4, col = 'black') %>%
   addPolygons(data = shapeData, weight = 2, col='black') %>%
-  addMarkers(lng = ~as.numeric(cc_loc3$long),
-             lat = ~as.numeric(cc_loc3$lat),
-             popup = ~as.character(cc_loc3$message)) %>%
+  addMarkers(lng = ~as.numeric(cc_loc4$long),
+             lat = ~as.numeric(cc_loc4$lat),
+             popup = ~as.character(cc_loc4$message)) %>%
   addCircleMarkers(lng = ~as.numeric(tweet_summary$longitude),
                    lat = ~as.numeric(tweet_summary$latitude),
                    label = ~as.character(tweet_summary$topics),
@@ -1266,8 +1323,27 @@ leaflet(data = cc_loc3) %>%
 ```
 
 
+From the map, we can hover or click on the markers to show the respective messages received. Some observations noted were:
 
-Finding out each event starting time >>> map to tweets timing >>> map to call centre timing
+- Areas where the microblogs messages are related to Topic 1, 3, 7 and 8 (events related to shooting, fire, hit-and-run) have received call type(s) of:
+    * CRIME SCENE INVESTIGATION REQUEST-LOCATION/PERSON/INCIDENT OF INTEREST
+    * CRIME SCENE INVESTIGATION-REQUEST-ADDITIONAL UNITS-LOCATION/DWELLING OF INTEREST
+    * CRIME SCENE INVESTIGATION-REQUEST
+    * SUSPICIOUS SUBJECT/CIRCUMSTANCES-IN PROGRESS
+    * SUSPICIOUS OCCUPIED VEHICLE-BLACK VAN
+    * DISTURBANCE-NOISE
+    * PURSUIT-CONTINUES-POLICE UNITS #253 AND #357
+    
+- Areas related to the Topic 2, 4 and 6 (about the rally) received call type(s) of:
+    * DISTURBANCE-NOISE
+
+
+Based on the observations, the call types received by emergency dispatchers were not very specific to the incidents occurring and there may be lack of proper documentation (due to lack of data location tags acquired).
+
+
+Next, we will then analyse the timing whereby the microblogs are posted versus the time when the call center receives the calls to determine if the response time were prompt enough.
+
+Before that, some data wrangling has to be done to map the timings of mbdata and ccdata.
 
 ```{r echo=FALSE}
 library(dplyr)
@@ -1282,7 +1358,7 @@ mb_loctime2 <- mb_loctime %>%
   ungroup()
 
 #ccdata
-cc_loctime <- cc_loc3 %>%
+cc_loctime <- cc_loc4 %>%
   select(message, time, timebin, datetime, location2, long, lat) %>%
   group_by(time, location2, message)
 
@@ -1292,13 +1368,9 @@ colnames(cc_loctime)[7]<-"latitude"
 
 ```
 
-Filtering with time/topic?
+To allow better evaluation, we will use an interactive plot from _leaflet_ package to provide selections and better highlight the areas of interest. 
 
 ```{r echo=FALSE}
-
-# # finding columns that are different and fill with NA
-# cc_loctime[setdiff(names(mb_loctime2), names(cc_loctime))] <- NA
-# mb_loctime2[setdiff(names(cc_loctime), names(mb_loctime2))] <- NA
 
 #combine them
 all_data <- dplyr::bind_rows(cc_loctime,mb_loctime2)
@@ -1351,21 +1423,41 @@ bscols(
 ```
 
 
+With reference to datatable beside, we are able to click onto each row (or select multiple rows at once) to highlight the markers on the map. The datatable is also sorted according to time, starting from the earliest to the latest.
+
+In addition, we can refer to the table denoting the estimated timeline for each topic, and hence filter the markers based on the time period of interest. 
+
+The final compiled findings is shown in the table below:
+
+| Topic No. | Description | Timeline Estimate | Call Centre Timing | Microblog Timing |
+|:---:|:------------|:----------| :---------|  :---------| 
+| 1 | Shooting standoff at a gelato place | From 7:15pm onwards | - | - |
+| 2 | Influential figurehead or speakers | From 5-7pm | - |
+| 3 | 2 incidents - Fire at Dancing Dolphin building and a possible hit-and-run | From 6:45pm onwards | - | - |
+| 4 | About Kronos | About 5-8pm | - | - |
+| 5 | Details of the incident(s) | About 6:45pm to 7:30pm, and 8:30pm onwards | - | - |
+| 6 | POK rally | Fluctuates from 5-6pm and 7-8pm | - | - |
+| 7 | An incident regarding to a van and cops | From 7pm onwards | - | - |
+| 8 | Casualties or seriousness in the incidents | About 8pm onwards | - | - |
+
+
+#### Suggestions
+
+Based on the results, 
 
 
 
-
-## 7. Conclusion and Recommendations
-
+## 7. Conclusion 
 
 
 
 ---
-#### References
+## References {.appendix}
 
 - [VAST Challenge 2021](https://vast-challenge.github.io/2021/MC3.html)
 - [VAST Challenge 2014](http://www.vacommunity.org/VAST+Challenge+2014)
 - [VAST Challenge Mini-Challenge 3, UBA-Rukina-Group51-MC3](http://visualdata.wustl.edu/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/University%20of%20Buenos%20Aires%20-%20Rukavina/)
+- [VAST Challenge Mini-Challenge 3, TJU-Yang-MC3](http://visualdata.wustl.edu/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Tianjin%20University/)
 - [Plotting Graphs in R](https://www.r-graph-gallery.com/index.html)
 - [Plotly graphs](https://plotly.com/r/)
 - [Tidytextmining](https://www.tidytextmining.com/topicmodeling.html)
