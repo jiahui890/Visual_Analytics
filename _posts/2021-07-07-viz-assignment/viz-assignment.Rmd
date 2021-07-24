@@ -10,19 +10,14 @@ author:
 date: 07-07-2021
 output:
   distill::distill_article:
-    #code_folding: Click to see code
+    code_folding: Code
+    theme: theme.css
     self_contained: false
     toc: true
     toc_float: true
     toc_depth: 3
     number_sections: true
 ---
-
-<style type="text/css">
-  body{
-  font-size: 12pt;
-}
-</style>
 
 
 ```{r setup, include=FALSE}
@@ -35,6 +30,7 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 > This post was written as part of requirements for Visual Analytics course in MITB. The VAST Challenge 2021 scenario and all people, places, information are all fictitious.
+
 ## 1. Introduction and Objectives
 
 In the island country of Kronos, a Tethys-based GAStech has been operating a natural gas production site on the island, producing remarkable profits and obtained strong relations with the Kronos government officials. However, GAStech's operations has affected the environmental stewardship. In January 2014, the leaders of GAStech were celebrating their new-found fortune when suddenly, in the midst of the celebration, several employees disappear. An organization known as Protectors of Kronos (POK) were suspected to be involved in the disappearance.
@@ -49,6 +45,22 @@ On the day of January 23 2014, there are also multiple events happening across A
 Past Mini-Challenge methods to deal with spam --> spam index
 
 
+In VAST Challenge 2014, a similar setting and tasks were given out to participants and thus this serves as a learning platform for the 2021 challenge. Literature review is crucial to guide us in understanding the data provided, the background information and further formulate our analysis to discover meaningful insights via visualizations. 
+
+Based on MC3 in 2014, the questions given were to derive the exact events occurring throughout the evening. The diagram below depicts overall findings of how the events unfold based on the microblog data (Figure 1) and the call centre messages (Figure 2).
+
+![Fig 1: Overall sketch of how the events are linked together](img/events1.png)
+<br/>
+
+![Fig 2: Location of messages received by Call Centre](img/cc1.png)
+
+<br/>
+
+Overall, we can understand what are the major events that we can find from the data and this allow us to perform cross-referencing when doing the analysis later. In the data, mbdata are given together with longitude and latitude, while the ccdata is only given the street name. Using the shape file, we will be able to map the locations into geographical points and identify the both mb and cc locations.
+
+Further literature review from the past challenges indicate several methods used in the analysis that includes wordcloud, network analysis and term frequency. However, there were also manual searching of the data which can be intensive. Hence, our approach will try to utilize graphical methods for analysis and reduce such manual activity.
+
+Although the questions assigned for this year's challenge is slightly different, the main analysis and approach will be similar - to find the major events and timeline while understanding the risk level via sentiment analysis. From there, we can better evaluate when each event occurs and determine how the emergency dispatchers should be allocated and respond to such threats swiftly.
 
 
 ### 2.2 R Packages
@@ -61,8 +73,14 @@ The table below shows the R packages that will be used in this challenge.
 | dplyr |  |
 | ggplot2 |   |
 | plotly |   |
-
-
+| lubridate |   |
+| ggraph |   |
+| igraph |   |
+| DT |   |
+| tm |   |
+| wordcloud |   |
+| tidytext |   |
+| leaflet |   |
 
 
 
@@ -77,9 +95,10 @@ The data given in this challenge consists of three csv files, each spanning acro
 The code chunk below dictates the installation or loading of packages.
 
 ```{r echo=TRUE}
-packages = c('lubridate','tidyverse', 'ggplot2', 'ggraph', 'igraph', 'lsa', 'DT',
-             'tm', 'wordcloud', 'tidytext', 'dplyr','textmineR', 'ggExtra', 'stringr',
-             'TSstudio','hrbrthemes','plotly', 'ggridges','dygraphs','tokenizers',
+packages = c('lubridate','tidyverse', 'ggplot2', 'ggraph', 'igraph', 
+             'lsa', 'DT','tm', 'wordcloud', 'tidytext', 'dplyr',
+             'textmineR', 'ggExtra', 'stringr','TSstudio',
+             'hrbrthemes','plotly', 'ggridges','dygraphs','tokenizers',
              'data.table','leaflet','crosstalk')
 
 for (p in packages){
@@ -93,7 +112,7 @@ for (p in packages){
 
 ### 3.2 Data Extraction and Preparation
 
-Uploading csv data and combining all together (show glimpse of data)
+We will then upload all the related file and combine it into one for easier processing. A glimpse of the combined data will be shown below.
 
 ```{r}
 csv1 <- read_csv('data/csv-1700-1830.csv')
@@ -105,8 +124,8 @@ data <- rbind(csv1, csv2, csv3)
 glimpse(data)
 ```
 
+From here, we noticed that the date format of the raw data is not in a friendly format for data wrangling. Hence, we will utilize the _lubridate_ package functions to convert the format into POSIXct datetime. The time will also be extracted out for ease of analysis in later parts.
 
-Converting time format and extracting the time
 
 ```{r}
 data$datetime <- ymd_hms(data$`date(yyyyMMddHHmmss)`)
@@ -114,21 +133,20 @@ data$time <- format(as.POSIXct(data$datetime), format = "%H:%M:%S")
 glimpse(data$datetime)
 ```
 
-
-checking NAs
+To ensure that the data can be used for manipulation, we will first check for any missing or NULL values in the respective columns. 
 
 ```{r}
 indx <- apply(data, 2, function(x) any(is.na(x) | is.infinite(x)))
 indx
 ```
 
+As the columns with NULL values are reasonable, we will thus proceed with the data processing and analysis.
 
 
 ### 3.3 Pre-processing Analysis
 
-Preparing data by seperating call centre data and microblog data. 
+To get some understanding of the data, we will first seperate the call centre data and the microblog data. Then, we will create a function to categorize the datetime into timebins for easier analysis in both datasets. The timebins chosen are within 30 minutes interval.
 
-Create time bins and Plotting call frequency received by call center wrt to time bins
 
 ```{r echo=FALSE}
 # separating cc and mb data
@@ -168,7 +186,10 @@ text(bar1, freq$num, paste("Freq: ", freq$num, sep=""), cex=1, pos=3)
 ```
 
 
-Types of call received by call center
+Based on each timebins, we will first plot the call frequencies received by the call centre. The counts are plotted into a bar graph as shown above, and we observe that the highest number of calls received is from 7:30pm to 8pm. Hence, this suggests that there might be some incident happening.
+
+
+Next, we will proceed to further break down the type of calls received within each timebin.
 
 ```{r fig.align="center", echo = FALSE, fig.width=10, fig.height=10}
 # type of calls
@@ -189,8 +210,11 @@ ggplot(count_type, aes(x = count, y = message, fill = timebin,
                                    size=8, angle=0))
 ```
 
+The graph is plotted by total counts of calls for each call type, and also further segmented based on the different time bins as shown in the legend. We observe that the most common call is for "Traffic Stop", with its highest frequency noted from 6-6:30pm.Interestingly, we noticed that from 7:30pm-8pm, the most number of calls are related to a "Suspicious occupied vehicle - black van". From here, we can deduce that there is a pursuit ongoing within the timeframe.
 
-Number of Microblogs per time interval (interactive)
+
+Besides call center data, we will now explore the microblog data. The messages were grouped by each timestamp and counted by the frequency of microblogs. The plot below shows the frequency of messages posted throughout the entire timeline. As the plot is interactive, we can drag across the timeline and hover to see the counts. Based on the graph, it was observed that the most active period falls from 6:45pm to 8:35pm, whereby the frequency of microblogs are the highest with lots of fluctuations.
+
 
 ```{r echo = FALSE}
 mb_per_time <- mb %>% 
@@ -201,7 +225,8 @@ ts_plot(mb_per_time,
         Xtitle = "Time",
         Ytitle = "Frequency",
         line.mode = "lines+markers",
-        slider = TRUE)
+        slider = TRUE,
+        Ygrid = TRUE)
 ```
 
 
@@ -1181,24 +1206,7 @@ Note --> 128 rows are matched only to shape file and some addresses are duplicat
 <br/>
 Plotting static graph showing the volume in microblogs 
 
-```{r echo=FALSE, fig.width=10}
-# library(geosphere)
-# cc_loc3$long <- "-"
-# cc_loc3$lat <- "-"
-# for (i in 1:nrow(cc_loc3)){
-#   geo <- unlist(cc_loc3$geometry[i])
-#   lo <- as.numeric(as.character(geo[geo<30]))
-#   la <- as.numeric(as.character(geo[geo>=30]))
-#   f <- do.call(rbind,Map(data.frame, LONG=lo, LAT=la))
-#   if (length(f)==2){
-#     centre <- midPoint(c(f$LONG[1],f$LAT[1]),c(f$LONG[2], f$LAT[2]))
-#   } else {
-#     centre <- centroid(f)
-#   }
-#   
-#   cc_loc3$long[i]<-centre[1]
-#   cc_loc3$lat[i]<-centre[2]
-# }
+```{r echo=FALSE, fig.width=10, fig.height=8}
 
 cc_loc3$centre_geom <- st_centroid(cc_loc3$geometry)
 
@@ -1313,31 +1321,32 @@ all_data2 <- all_data2 %>% arrange(datetime)
 
 library(crosstalk)
 library(leaflet)
-
+  
 col <- colorFactor(c("red", "blue"), domain = unique(all_data2$type))
 
 sd <- SharedData$new(all_data2)
-#filter_slider("datetime","Time", sd, column = ~datetime, timeFormat = "%T", timezone = "+0000")
+# slider <- filter_slider("datetime","Time", sd, column = ~datetime,
+#                           timeFormat = "%T", timezone ="+000000", step = 1)
 
 bscols(
-  # filter_slider("datetime","Time", 
-  #               sd, column = ~datetime, 
-  #               timeFormat = "%T", timezone = "+0000",
-  #               width = 250),
+  #slider,
   leaflet(data = sd) %>%
     addTiles() %>%
     addPolygons(data = Kronos_small, weight = 4, col = 'black') %>%
     addPolygons(data = shapeData, weight = 2, col='black') %>%
     addCircleMarkers(lng = ~as.numeric(longitude),
-                     lat = ~as.numeric(latitude),
-                     label = ~as.character(msg),
-                     color = ~col(type),
-                     stroke = FALSE,
-                     fillOpacity = 0.7),
-  datatable(sd, extensions="Scroller", style="bootstrap", class="compact", width="100%",
-            options=list(deferRender=TRUE, scrollY=300, scroller=TRUE))
+                    lat = ~as.numeric(latitude),
+                    label = ~as.character(msg),
+                    color = ~col(type),
+                    stroke = FALSE,
+                    fillOpacity = 0.7) %>%
+    addLegend("topright", colors = ~unique(col(type)), labels = ~unique(type))
+  ,
+  datatable(sd, extensions="Scroller", style="auto", class="compact", width="100%",
+              options=list(deferRender=TRUE, scrollY=300, scroller=TRUE,
+              columnDefs = list(list(visible=FALSE,
+                                        targets=c(4,5,6)))))
 )
-
 
 ```
 
