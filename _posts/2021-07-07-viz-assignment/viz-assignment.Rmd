@@ -47,7 +47,9 @@ In VAST Challenge 2014, a similar setting and tasks were given out to participan
 Based on MC3 in 2014, the questions given were to derive the exact events occurring throughout the evening. The diagram below depicts overall findings of how the events unfold based on the microblog data (Figure 1) and the call centre messages (Figure 2).
 
 ![Fig 1: Overall sketch of how the events are linked together](img/events1.png)
-<br/>
+
+
+
 
 ![Fig 2: Location of messages received by Call Centre](img/cc1.png)
 
@@ -61,23 +63,24 @@ Although the questions assigned for this year's challenge is slightly different,
 
 ### 2.2 R Packages
 
-The table below shows the R packages that will be used in this challenge.
+The table below shows the important R packages that will be used in this challenge.
 
 | Package | Description |
 |:-------|:-------------|
-| tidyverse |   |
-| dplyr |  |
-| ggplot2 |   |
-| plotly |   |
-| lubridate |   |
-| ggraph |   |
-| igraph |   |
-| DT |   |
-| tm |   |
-| wordcloud |   |
-| tidytext |   |
-| leaflet |   |
-
+| tidyverse | Used in data wrangling techniques  |
+| dplyr | Provided operaters/functions for data wrangling techniques |
+| ggplot2 | Basic package in plotting various types of graphs |
+| plotly |  To create interactive graphical visuals |
+| lubridate | To convert and deal with unstructured datetime |
+| ggraph | To plot network graphs  |
+| igraph | Similar to ggraph |
+| DT | To provide interactive data tables |
+| tm | Providing functions to pre-process words  |
+| wordcloud | Visualizing words |
+| tidytext | To pre-process words |
+| sf | Loading of Geospatial shapefiles. |
+| leaflet | To provide interactivity in maps |
+| crosstalk | Used together with leaflet package, require the latest version for HTML non-dependencies as if not there will be some issues |
 
 
 
@@ -403,7 +406,7 @@ From the wordcloud, we noticed that the most commonly appeared word is "fire". T
 
 >Using visual analytics, characterize the different types of content in the dataset. What distinguishes meaningful event reports from typical chatter from junk or spam? Please limit your answer to 8 images and 500 words.
 
-### Brief overview of events by Hashtags
+### 4.1 Brief overview of events by Hashtags
 
 From above analysis, we noticed that hashtags can give some initial ideas of the content or events happening. Hence, we will be using the hashtags frequencies and plot against time to observe how the top hashtags changes throughout the whole evening.
 
@@ -438,6 +441,8 @@ As we plot a static wordcloud based on the timebins, the top trending hashtag ch
 
 - **6-6:30pm:** The most posted hashtag throughout whole evening is "pokrally", and it is shown to occur within the time frame of 6-6:30pm. Hence, this gives a rough idea of the starting time or period of the rally occurring that evening.
 
+- **7-7:30pm:** The most frequent hashtag is "dancingdolphinfire", and this suggest a fire broke out in a place called Dancing Dolphin.
+
 - **7:30pm-8pm:** There seems to be a shooting happening during this time period, as shown by the hashtags with top hashtag word of the time period to be "shooting".
 
 - **9-9:31pm:** The shooting seems to have intensified during this period, as one of the top hashtags apears to be "standoff" and "apd" (apd seems to stand for Abila Police Department).
@@ -468,7 +473,7 @@ As we click onto the hashtag = "standoffover", we see that this hashtag appeared
 Additionally, we observe that "pokrally" hashtag trended throughout the evening regardless if the event ended.
 
 
-### Removing Spam messages
+### 4.2 Removing Spam messages
 
 After having a rough idea of the major events happening, we will now proceed to identify the important messages by classifying the junk and spam. Spam messages means that the same message type is repeated many times, and this can be determined by calculating the spam index of EACH author, with the formula given below:
 
@@ -522,7 +527,7 @@ The interactive table shows a column of the spam index per author, as well as th
 As the spam index for "KronosQuoth" and "Clevvah4Evah" is very low despite the large number of messages sent during the entire time-period, they are classified as spam accounts (sending messages of same type every interval). Hence, messages from these 2 authors will be removed.
 
 
-### Removing Junk messages
+### 4.3 Removing Junk messages
 
 Junk messages are classified as messages that do not hold importance or irrelevant context. This can be identified by measuring the tf-idf (term frequency - inverse document frequency) of each word. The rarer the word occur in the entire corpus, the higher the tf-idf value, and hence showing the words of "least importance".
 
@@ -647,7 +652,7 @@ text_df3 <- text_df3 %>%
 > Use visual analytics to represent and evaluate how the level of the risk to the public evolves over the course of the evening. Consider the potential consequences of the situation and the number of people who could be affected. Please limit your answer to 10 images and 1000 words.
 
 
-### Topic Modeling by Cosine Similarity and Walktrap Algorithm
+### 5.1 Topic Modeling by Cosine Similarity and Walktrap Algorithm
 
 To further evaluate the messages and obtain words that forms a certain topic, we will conduct Topic Modeling by calculating the Cosine Similarity of each words, as it is a fair measure since it disregard the size of the document. The words are considered similar if they are frequently occurred together within the same message. Hence, the closer the word vectors, the nearer the cosine similarity value is to 1.
 
@@ -783,7 +788,7 @@ topics_df <- topics_df %>%
 
 
 
-### Sentiment Analysis (Risk Level)
+### 5.2 Sentiment Analysis (Risk Level)
 
 Now that we know the major events happened, we can better evaluate the risk levels via sentiment analyis of the words. Sentiment lexicons can be found using the _nrc_ package, where it consists of a dictionary of words that has similar meanings to certain emotions. Hence, we are able to match the tokenized words with these lexicons and get a better understanding of the underlying sentiment with each topics.
 
@@ -830,7 +835,7 @@ A quick analysis of the sentiments detected can be done by counting the frequenc
 
 
 
-### Time-series Analysis of Topics and Sentiment
+### 5.3 Time-series Analysis of Topics and Sentiment
 
 As we have identified the 4 main events happening during the time period, we will focus on analysing the words and hashtags that describes these events.
 
@@ -935,7 +940,7 @@ From the 2 graphs, we are able to determine that:
 |:---:|:------------------|:--------------|
 | 1 | Shooting standoff at a gelato place | From 7:15pm onwards |
 | 2 | Influential figurehead or speakers | From 5-7pm |
-| 3 | 2 incidents - Fire at Dancing Dolphin building and a possible hit-and-run |From 6:45pm onwards|
+| 3 | 2 incidents - Fire at Dancing Dolphin building and a possible hit-and-run |From 6:45pm onwards (fire), and 7pm onwards (hit-and-run)|
 | 4 | About Kronos | About 5-8pm |
 | 5 | Details of the incident(s) | About 6:45pm to 7:30pm, and 8:30pm onwards |
 | 6 | POK rally | Fluctuates from 5-6pm and 7-8pm |
@@ -1026,7 +1031,7 @@ Based on the bar graph, we noticed that Topics 1, 3, 7 and 8 (ignoring Topic 0 a
 In order to understand to compare both mbdata and ccdata together, we will perform some data wrangling to retrieve the relevant information for each dataset and inspect their locations together.
 
 
-### Microblogs Data
+### 6.1 Microblogs Data
 
 From the microblogs, we were only able to retrieve 9 distinct coordinates location tags as the rest are all NULL values. The authors and topics related to the messages from these 9 locations were also identified for easier analysis and comparison later. The table below shows the consolidated results.
 
@@ -1065,7 +1070,7 @@ DT::datatable(tweet_summary, filter = 'top') %>%
 
 
 
-### Call Center Data
+### 6.2 Call Center Data
 
 In the call center data, the location tags were in the presence of street names instead of latitude and longitude, hence the street names have to be cross-referenced with the Abila shape files and retrieve the respective geo coordinates.
 
@@ -1185,7 +1190,7 @@ cc_loc3 <- Abila2 %>%
 ```
 
 
-Because of the unstructuredness in the street addresses given in ccdata, some addresses cannot be matched properly. Hence, the code below will try to match the remaining street names / orphan lines that does not have numbers.
+Because of the unstructuredness in the street addresses given in ccdata, some addresses cannot be matched properly. Hence, the code below will try to match the remaining street names / orphan lines that does not have numbers or directions
 
 ```{r echo=FALSE}
 # all streets / orphan lines
@@ -1213,36 +1218,6 @@ streets2<-streets[idx,]
 streets2 <- streets2 %>% 
   mutate(centre_geom = st_centroid(geometry)) 
 
-# streets3 <- streets2 %>%
-#   group_by(message, datetime, time, location2, line) %>%
-#   mutate(c = st_centroid(centre_geom))
-
-# streets2$long <- "-"
-# streets2$lat <- "-"
-# for (i in 1:nrow(streets2)){
-#   streets2$long[i] <- as.numeric(streets2$centre_geom[[i]][1])
-#   streets2$lat[i] <- as.numeric(streets2$centre_geom[[i]][2])
-# }
-# 
-# library(geosphere)
-# 
-# streets2$center <- "-"
-# for (n in unique(streets2$line)){
-#   lon <- as.numeric(streets2[streets2$line==n,]$long)
-#   la <- as.numeric(streets2[streets2$line==n,]$lat)
-#   df <- data.frame(lon = lon, lat = la)
-#   if (dim(df)[1]>2){
-#     c <- centroid(df)
-#   } else {
-#     c <- geomean(df)
-#   }
-#   for (i in 1:nrow(streets2)){
-#     if (streets2$line[i]==n){
-#       streets2$center[i] <- st_geometry(c(c[1],c[2]))
-#     }
-#   }
-# }
-
 
 # retrieving first line as the coordinates does not seem too far off for each street to get centroid
 streets3 <- data.frame()
@@ -1255,7 +1230,7 @@ for (n in unique(streets2$line)){
 ```
 
 
-### Combining both mbdata and ccdata
+### 6.3 Combining both mbdata and ccdata
 
 Once we are able to get the coordinates for both mbdata and ccdata, we can now plot them onto the abila map using the geospatial packages.
 
@@ -1425,29 +1400,26 @@ bscols(
 
 With reference to datatable beside, we are able to click onto each row (or select multiple rows at once) to highlight the markers on the map. The datatable is also sorted according to time, starting from the earliest to the latest.
 
-In addition, we can refer to the table denoting the estimated timeline for each topic, and hence filter the markers based on the time period of interest. 
+In addition, we can refer to the table denoting the estimated timeline for each topic, and hence filter the markers based on the time period of interest. We are also interested in knowing the topics related to the 4 major events - Fire, shooting, hit-and-run and rally. Hence, topics 2 and 4 will be removed from analysis, while topics 5, 7 and 8 will be merged together with 4 events since they are related.
 
-The final compiled findings is shown in the table below:
+By comparing the location of mmdata and ccdata, a brief compiled findings is shown in the table below:
 
-| Topic No. | Description | Timeline Estimate | Call Centre Timing | Microblog Timing |
-|:---:|:------------|:----------| :---------|  :---------| 
-| 1 | Shooting standoff at a gelato place | From 7:15pm onwards | - | - |
-| 2 | Influential figurehead or speakers | From 5-7pm | - |
-| 3 | 2 incidents - Fire at Dancing Dolphin building and a possible hit-and-run | From 6:45pm onwards | - | - |
-| 4 | About Kronos | About 5-8pm | - | - |
-| 5 | Details of the incident(s) | About 6:45pm to 7:30pm, and 8:30pm onwards | - | - |
-| 6 | POK rally | Fluctuates from 5-6pm and 7-8pm | - | - |
-| 7 | An incident regarding to a van and cops | From 7pm onwards | - | - |
-| 8 | Casualties or seriousness in the incidents | About 8pm onwards | - | - |
-
-
-#### Suggestions
-
-Based on the results, 
+| Topic No. | Description | Timeline Estimate from Microblog | First Call Centre Timing (wrt to Microblog Location) |
+|:---:|:------------------|:------------| :-------------| 
+| 1, 7, 8 | Shooting standoff at a gelato place | From 7:15pm onwards | 7:39pm |
+| 3, 5, 7, 8 | Fire at Dancing Dolphin building  | From 6:45pm onwards | 6:40pm |
+| 3, 7, 8 | A possible hit-and-run | From 7pm onwards | 7:18pm |
+| 6 | POK rally | Fluctuates from 5-6pm and 7-8pm | 6:04pm |
 
 
 
-## 7. Conclusion 
+## 7. Conclusion and Suggestions
+
+Upon deeper analysis, we noticed that all 3 major events; Fire, hit-and-run and shooting standoff are actually interlinked and happened in that corresponding order.
+
+From the geospatial and timeline results, we noticed that the call timings received by the emergency dispatches are not relative to the estimated starting time of each events. The only on-time call for assistance received is from the Fire at Dancing Dolphin, and we can see there are several call reports following the incident. This indicates the severity of the situation, which is validated by the sudden increase in fear sentiment from 6:45pm onwards, the approximate starting point of the Fire. 
+
+In comparison to the other events, the reports made were about 10-20 minutes later, and this might be due to chaos in the situation especially for the hit-and-run as well as the shooting standoff. As the fire was the first to occur, emergency responders (fire department, police department and paramedics) should be dispatched there first (which in this case they responded promptly). The only difference that I would recommend is for them to cordon off entire area as well as dispatch more officers to the scene for crowd controlling as well as surveying. From there, the suspicious black van can be sighted faster and when the hit-and-run occurs, there are actually police nearby the scene to assist the victim or pursuit. This might help to prevent the shooting event that occur later if the black van has been captured prompty.
 
 
 
